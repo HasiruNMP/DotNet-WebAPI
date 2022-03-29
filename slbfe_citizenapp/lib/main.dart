@@ -1,8 +1,7 @@
 import 'package:flutter/material.dart';
-import 'package:slbfe_citizenapp/view/changepassword.dart';
-import 'package:slbfe_citizenapp/view/contacts.dart';
-import 'package:slbfe_citizenapp/view/home.dart';
-import 'package:slbfe_citizenapp/view/personaldetails.dart';
+import 'package:slbfe_citizenapp/view/accountSetting.dart';
+import 'package:slbfe_citizenapp/view/login.dart';
+import 'package:slbfe_citizenapp/view/resetPassword.dart';
 
 void main() {
   runApp(const MyApp());
@@ -18,7 +17,7 @@ class MyApp extends StatelessWidget {
       theme: ThemeData(
         primarySwatch: Colors.blue,
       ),
-      home: Home(),
+      home: accountSetting(),
     );
   }
 }
