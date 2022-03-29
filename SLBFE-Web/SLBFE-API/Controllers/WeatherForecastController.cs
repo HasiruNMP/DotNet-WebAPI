@@ -35,7 +35,7 @@ namespace SLBFE_API.Controllers
         public DataTable GetUser()
         {
             string q = @"SELECT TOP (1000) [Id],[Name] FROM [dbo].[User]";
-
+            string sss;
             DataTable table = new DataTable();
             string sqlDataSource = _configuration.GetConnectionString("SLBFEDB");
             SqlDataReader myReader;
