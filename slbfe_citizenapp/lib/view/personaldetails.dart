@@ -33,6 +33,7 @@ class _PersonaInfoState extends State<PersonaInfo> {
     genderController.text = 'Male';
     nationalityController.text = 'Sinhala';
     marriedStatusController.text = 'Single';
+    affilicationController.text = 'company1';
 
     return Scaffold(
       appBar: AppBar(
@@ -55,6 +56,7 @@ class _PersonaInfoState extends State<PersonaInfo> {
                     filled: true,
                     fillColor: Colors.white,
                     labelText: 'Email',
+                    border: InputBorder.none,
                   ),
                   validator: (value) {
                     if (value!.isEmpty) {
@@ -76,6 +78,7 @@ class _PersonaInfoState extends State<PersonaInfo> {
                     filled: true,
                     fillColor: Colors.white,
                     labelText: 'NIC',
+                    border: InputBorder.none,
                     // border: InputBorder.none,
                   ),
                 ),

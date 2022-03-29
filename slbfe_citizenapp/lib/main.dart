@@ -1,5 +1,8 @@
 import 'package:flutter/material.dart';
+import 'package:slbfe_citizenapp/view/changepassword.dart';
+import 'package:slbfe_citizenapp/view/contacts.dart';
 import 'package:slbfe_citizenapp/view/home.dart';
+import 'package:slbfe_citizenapp/view/personaldetails.dart';
 
 void main() {
   runApp(const MyApp());
