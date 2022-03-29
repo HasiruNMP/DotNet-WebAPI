@@ -1,41 +1,25 @@
+﻿using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using System.Data;
 using System.Data.SqlClient;
 
 namespace SLBFE_API.Controllers
 {
+    [Route("api/[controller]")]
     [ApiController]
-    [Route("[controller]")]
-    public class WeatherForecastController : ControllerBase
+    public class TestController : ControllerBase
     {
-        private static readonly string[] Summaries = new[]
-        {
-        "Freezing", "Bracing", "Chilly", "Cool", "Mild", "Warm", "Balmy", "Hot", "Sweltering", "Scorching"
-    };
 
         private readonly IConfiguration _configuration;
-        public WeatherForecastController(IConfiguration configuration)
+        public TestController(IConfiguration configuration)
         {
             _configuration = configuration;
         }
 
-        [HttpGet(Name = "GetWeatherForecast")]
-        public IEnumerable<WeatherForecast> Get()
-        {
-            return Enumerable.Range(1, 5).Select(index => new WeatherForecast
-            {
-                Date = DateTime.Now.AddDays(index),
-                TemperatureC = Random.Shared.Next(-20, 55),
-                Summary = Summaries[Random.Shared.Next(Summaries.Length)]
-            })
-            .ToArray();
-        }
-
-        [HttpGet, Route("getuser")]
-        public DataTable GetUser()
+        [HttpGet]
+        public JsonResult TestGet()
         {
             string q = @"SELECT TOP (1000) [Id],[Name] FROM [dbo].[User]";
-            string sss;
             DataTable table = new DataTable();
             string sqlDataSource = _configuration.GetConnectionString("SLBFEDB");
             SqlDataReader myReader;
@@ -50,9 +34,7 @@ namespace SLBFE_API.Controllers
                     myCon.Close();
                 }
             }
-
-            return table;
+            return new JsonResult(table);
         }
-
     }
 }
