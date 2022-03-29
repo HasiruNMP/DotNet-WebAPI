@@ -1,5 +1,6 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:slbfe_citizenapp/view/resetPassword.dart';
 
 class accountSetting extends StatefulWidget {
   const accountSetting({Key? key}) : super(key: key);
@@ -30,7 +31,13 @@ class _accountSettingState extends State<accountSetting> {
                   child: ElevatedButton(
                     // color: Colors.deepPurple[200],
                     // textColor: Colors.black, // foreground
-                    onPressed: () {},
+                    onPressed: () {
+                      Navigator.push(
+                        context,
+                        MaterialPageRoute(
+                            builder: (context) => const resetPassword()),
+                      );
+                    },
                     child: Text('Reset Password'),
                   ),
                 ),

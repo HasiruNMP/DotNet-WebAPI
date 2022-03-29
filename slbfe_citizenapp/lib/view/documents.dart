@@ -16,8 +16,7 @@ class _DocumentsState extends State<Documents> {
         title: Text('Documents'),
       ),
       body: SafeArea(
-        child: Column(
-          crossAxisAlignment: CrossAxisAlignment.start,
+        child: ListView(
           children: [
             Container(
               margin: EdgeInsets.only(top: 10, left: 10),
@@ -38,7 +37,30 @@ class _DocumentsState extends State<Documents> {
                   crossAxisAlignment: CrossAxisAlignment.start,
                   mainAxisAlignment: MainAxisAlignment.center,
                   children: [
-                    Text('vaccine.jpg'),
+                    Row(
+                      children: [
+                        Expanded(
+                          child: Text('vaccine.jpg'),
+                        ),
+                        SizedBox(
+                          width: 10,
+                        ),
+                        Expanded(
+                          child: Container(
+                            margin: EdgeInsets.only(left: 30, right: 30),
+                            height: 20,
+                            width: MediaQuery.of(context).size.width / 3,
+                            child: ElevatedButton(
+                              style: ElevatedButton.styleFrom(
+                                primary: Colors.grey,
+                              ),
+                              onPressed: () {},
+                              child: Text('Choose a file'),
+                            ),
+                          ),
+                        )
+                      ],
+                    ),
                     SizedBox(
                       height: 20,
                     ),
@@ -66,7 +88,30 @@ class _DocumentsState extends State<Documents> {
                   crossAxisAlignment: CrossAxisAlignment.start,
                   mainAxisAlignment: MainAxisAlignment.center,
                   children: [
-                    Text('drivinglicence.jpg'),
+                    Row(
+                      children: [
+                        Expanded(
+                          child: Text('drivinglicensce.jpg'),
+                        ),
+                        SizedBox(
+                          width: 10,
+                        ),
+                        Expanded(
+                          child: Container(
+                            margin: EdgeInsets.only(left: 30, right: 30),
+                            height: 20,
+                            width: MediaQuery.of(context).size.width / 3,
+                            child: ElevatedButton(
+                              style: ElevatedButton.styleFrom(
+                                primary: Colors.grey,
+                              ),
+                              onPressed: () {},
+                              child: Text('Choose a file'),
+                            ),
+                          ),
+                        )
+                      ],
+                    ),
                     const SizedBox(
                       height: 20,
                     ),
@@ -97,7 +142,30 @@ class _DocumentsState extends State<Documents> {
                   crossAxisAlignment: CrossAxisAlignment.start,
                   mainAxisAlignment: MainAxisAlignment.center,
                   children: [
-                    Text('NAR Dilshan CV.docs'),
+                    Row(
+                      children: [
+                        Expanded(
+                          child: Text('NAR Dilshan.docs'),
+                        ),
+                        SizedBox(
+                          width: 10,
+                        ),
+                        Expanded(
+                          child: Container(
+                            margin: EdgeInsets.only(left: 30, right: 30),
+                            height: 20,
+                            width: MediaQuery.of(context).size.width / 3,
+                            child: ElevatedButton(
+                              style: ElevatedButton.styleFrom(
+                                primary: Colors.grey,
+                              ),
+                              onPressed: () {},
+                              child: Text('Choose a file'),
+                            ),
+                          ),
+                        )
+                      ],
+                    ),
                     const SizedBox(
                       height: 20,
                     ),
@@ -125,7 +193,30 @@ class _DocumentsState extends State<Documents> {
                   crossAxisAlignment: CrossAxisAlignment.start,
                   mainAxisAlignment: MainAxisAlignment.center,
                   children: [
-                    Text('mahinda hora'),
+                    Row(
+                      children: [
+                        Expanded(
+                          child: Text('Mahinda Hora'),
+                        ),
+                        SizedBox(
+                          width: 10,
+                        ),
+                        Expanded(
+                          child: Container(
+                            margin: EdgeInsets.only(left: 30, right: 30),
+                            height: 20,
+                            width: MediaQuery.of(context).size.width / 3,
+                            child: ElevatedButton(
+                              style: ElevatedButton.styleFrom(
+                                primary: Colors.grey,
+                              ),
+                              onPressed: () {},
+                              child: Text('Choose a file'),
+                            ),
+                          ),
+                        )
+                      ],
+                    ),
                     const SizedBox(
                       height: 20,
                     ),
