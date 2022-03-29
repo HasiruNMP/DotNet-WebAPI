@@ -13,6 +13,9 @@ class _AddComplaintState extends State<AddComplaint> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
+      appBar: AppBar(
+        title: const Text('Complaint'),
+      ),
       body: SafeArea(
         child: Form(
           key: formkey,
@@ -20,7 +23,6 @@ class _AddComplaintState extends State<AddComplaint> {
             children: [
               Center(
                 child: Text('New Complaint'),
-
               ),
               // TextFormField(
               //   decoration: InputDecoration(
@@ -79,14 +81,11 @@ class _AddComplaintState extends State<AddComplaint> {
                     },
                   ),
                 ),
-
               ),
               ElevatedButton(
-
                 onPressed: () {},
                 child: const Text('Send'),
               ),
-
             ],
           ),
         ),
