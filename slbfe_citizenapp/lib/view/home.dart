@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:slbfe_citizenapp/view/account.dart';
 import 'package:slbfe_citizenapp/view/addcomplaint.dart';
+import 'package:slbfe_citizenapp/view/profile.dart';
 
 class Home extends StatefulWidget {
   const Home({Key? key}) : super(key: key);
@@ -15,7 +16,7 @@ class _HomeState extends State<Home> {
       TextStyle(fontSize: 30, fontWeight: FontWeight.bold);
   static const List<Widget> _widgetOptions = <Widget>[
     AddComplaint(),
-    Account(),
+    Profile(),
   ];
 
   void _onItemTapped(int index) {
@@ -35,26 +36,16 @@ class _HomeState extends State<Home> {
           BottomNavigationBarItem(
             icon: Icon(Icons.home),
             label: 'Complaint',
-            backgroundColor: Colors.red,
+            backgroundColor: Colors.blue,
           ),
           BottomNavigationBarItem(
             icon: Icon(Icons.business),
             label: 'Profile',
-            backgroundColor: Colors.red,
-          ),
-          BottomNavigationBarItem(
-            icon: Icon(Icons.school),
-            label: 'School',
-            backgroundColor: Colors.purple,
-          ),
-          BottomNavigationBarItem(
-            icon: Icon(Icons.settings),
-            label: 'Settings',
-            backgroundColor: Colors.pink,
+            backgroundColor: Colors.blue,
           ),
         ],
         currentIndex: _selectedIndex,
-        selectedItemColor: Colors.white,
+        selectedItemColor: Colors.blue,
         onTap: _onItemTapped,
       ),
     );
