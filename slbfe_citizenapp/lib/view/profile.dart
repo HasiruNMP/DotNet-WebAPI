@@ -41,18 +41,26 @@ class _ProfileState extends State<Profile> {
                           Text("name")
                         ],
                       ),
-
+                    SizedBox(
+                      height: 13,
+                    ),
                     Row(
                       children: [
                         Icon(Icons.mail),
                         Text("E-Mail")
                       ],
                     ),
+                    SizedBox(
+                      height: 13,
+                    ),
                     Row(
                       children: [
                         Icon(Icons.phone),
                         Text("Phone")
                       ],
+                    ),
+                    SizedBox(
+                      height: 13,
                     ),
                     Row(
                       children: [
@@ -64,46 +72,76 @@ class _ProfileState extends State<Profile> {
                 ),
               )
             ),
-            ElevatedButton(onPressed: (){}, child: const Text('More Details'),style: ButtonStyle(
-                shape: MaterialStateProperty.all<RoundedRectangleBorder>(
-                    RoundedRectangleBorder(
-                        borderRadius: BorderRadius.circular(18.0),
-                        side: BorderSide(color: Colors.red)
-                    )
-                )
-            )),
-            ElevatedButton(onPressed: (){}, child: const Text('Documents'),style: ButtonStyle(
-                shape: MaterialStateProperty.all<RoundedRectangleBorder>(
-                    RoundedRectangleBorder(
-                        borderRadius: BorderRadius.circular(18.0),
-                        side: BorderSide(color: Colors.red)
-                    )
-                )
-            )),
-            ElevatedButton(onPressed: (){}, child: const Text('Location'),style: ButtonStyle(
-                shape: MaterialStateProperty.all<RoundedRectangleBorder>(
-                    RoundedRectangleBorder(
-                        borderRadius: BorderRadius.circular(18.0),
-                        side: BorderSide(color: Colors.red)
-                    )
-                )
-            )),
-            ElevatedButton(onPressed: (){}, child: const Text('Contacts'),style: ButtonStyle(
-                shape: MaterialStateProperty.all<RoundedRectangleBorder>(
-                    RoundedRectangleBorder(
-                        borderRadius: BorderRadius.circular(18.0),
-                        side: BorderSide(color: Colors.red)
-                    )
-                )
-            )),
-            ElevatedButton(onPressed: (){}, child: const Text('Account'),style: ButtonStyle(
-                shape: MaterialStateProperty.all<RoundedRectangleBorder>(
-                    RoundedRectangleBorder(
-                        borderRadius: BorderRadius.circular(18.0),
-                        side: BorderSide(color: Colors.red)
-                    )
-                )
-            )),
+            SizedBox(
+              height: 15,
+            ),
+            SizedBox(
+              width: 360,
+              child: ElevatedButton(onPressed: (){}, child: const Text('More Details'),style: ButtonStyle(
+                  shape: MaterialStateProperty.all<RoundedRectangleBorder>(
+                      RoundedRectangleBorder(
+                          borderRadius: BorderRadius.circular(18.0),
+                          side: BorderSide(color: Colors.red)
+                      )
+                  )
+              )),
+            ),
+            SizedBox(
+              height: 9,
+            ),
+            SizedBox(
+              width: 360,
+              child: ElevatedButton(onPressed: (){}, child: const Text('Documents'),style: ButtonStyle(
+                  shape: MaterialStateProperty.all<RoundedRectangleBorder>(
+                      RoundedRectangleBorder(
+                          borderRadius: BorderRadius.circular(18.0),
+                          side: BorderSide(color: Colors.red)
+                      )
+                  )
+              )),
+            ),
+            SizedBox(
+              height: 9,
+            ),
+            SizedBox(
+              width: 360,
+              child: ElevatedButton(onPressed: (){}, child: const Text('Location'),style: ButtonStyle(
+                  shape: MaterialStateProperty.all<RoundedRectangleBorder>(
+                      RoundedRectangleBorder(
+                          borderRadius: BorderRadius.circular(18.0),
+                          side: BorderSide(color: Colors.red)
+                      ),
+                  ),
+              )),
+            ),
+            SizedBox(
+              height: 9,
+            ),
+            SizedBox(
+              width: 360,
+              child: ElevatedButton(onPressed: (){}, child: const Text('Contacts'),style: ButtonStyle(
+                  shape: MaterialStateProperty.all<RoundedRectangleBorder>(
+                      RoundedRectangleBorder(
+                          borderRadius: BorderRadius.circular(18.0),
+                          side: BorderSide(color: Colors.red)
+                      )
+                  )
+              )),
+            ),
+            SizedBox(
+              height: 9,
+            ),
+            SizedBox(
+              width: 360,
+              child: ElevatedButton(onPressed: (){}, child: const Text('Account'),style: ButtonStyle(
+                  shape: MaterialStateProperty.all<RoundedRectangleBorder>(
+                      RoundedRectangleBorder(
+                          borderRadius: BorderRadius.circular(18.0),
+                          side: BorderSide(color: Colors.red)
+                      )
+                  )
+              )),
+            ),
           ],
           
         ),
