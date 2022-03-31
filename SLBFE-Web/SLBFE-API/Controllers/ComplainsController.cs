@@ -65,6 +65,35 @@ namespace SLBFE_API.Controllers
             return new JsonResult("Updated Successfully");
         }
 
+
+        [HttpPost]
+        public JsonResult PostFeedback(JsComplain comp)
+        {
+            string query = @"insert into [dbo].[JS_COMPLAINS] values(@JS_NIC,@Complain,@Feedback)";
+            DataTable table = new DataTable();
+            string sqlDataSource = _configuration.GetConnectionString("SLBFEDB");
+            SqlDataReader myReader;
+            using (SqlConnection myCon = new SqlConnection(sqlDataSource))
+            {
+                myCon.Open();
+                using (SqlCommand myCommand = new SqlCommand(query, myCon))
+                {
+                    //myCommand.Parameters.AddWithValue("@NIC", comp.JsNicNavigation);
+                
+                    myCommand.Parameters.AddWithValue("@JS_NIC", comp.JsNic);
+                    myCommand.Parameters.AddWithValue("@Complain", comp.Complain);
+                    myCommand.Parameters.AddWithValue("@Feedback", comp.Feedback);
+                    
+                   
+                    myReader = myCommand.ExecuteReader();
+                    table.Load(myReader);
+                    myReader.Close();
+                    myCon.Close();
+                }
+            }
+            return new JsonResult("Added Successfully");
+        }
+
     }
 
     
