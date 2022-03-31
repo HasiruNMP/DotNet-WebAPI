@@ -53,6 +53,7 @@ namespace SLBFE_API.Controllers
                 myCon.Open();
                 using (SqlCommand myCommand = new SqlCommand(query, myCon))
                 {
+                    //myCommand.Parameters.AddWithValue("@NIC", comp.JsNicNavigation);
                     myCommand.Parameters.AddWithValue("@ComplaintID", comp.ComplaintId);
                     myCommand.Parameters.AddWithValue("@Feedback", comp.Feedback);
                     myReader = myCommand.ExecuteReader();

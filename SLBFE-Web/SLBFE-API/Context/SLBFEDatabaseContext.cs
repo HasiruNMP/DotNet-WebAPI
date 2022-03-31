@@ -103,11 +103,11 @@ namespace SLBFE_API.Context
 
                 entity.Property(e => e.JsNic).HasColumnName("JS_NIC");
 
-                entity.HasOne(d => d.JsNicNavigation)
+                /*entity.HasOne(d => d.JsNicNavigation)
                     .WithMany(p => p.JsComplains)
                     .HasForeignKey(d => d.JsNic)
                     .OnDelete(DeleteBehavior.ClientSetNull)
-                    .HasConstraintName("FK__JS_COMPLA__JS_NI__151B244E");
+                    .HasConstraintName("FK__JS_COMPLA__JS_NI__151B244E");*/
             });
 
             modelBuilder.Entity<JsContact>(entity =>
