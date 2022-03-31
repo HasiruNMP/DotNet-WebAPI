@@ -28,6 +28,7 @@ namespace SLBFE_API.Models
         public string Nationality { get; set; } = null!;
         public string MaritalStatus { get; set; } = null!;
         public bool Validity { get; set; }
+        public bool PrimaryPhone { get; set; }
 
         public virtual ICollection<JsComplain> JsComplains { get; set; }
         public virtual ICollection<JsContact> JsContacts { get; set; }
