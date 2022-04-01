@@ -135,8 +135,8 @@ class _RegistrationState extends State<Registration> {
                     DateTime? pickedDate = await showDatePicker(
                         context: context,
                         initialDate: DateTime.now(),
-                        firstDate: DateTime(2000),
-                        lastDate: DateTime(2101));
+                        firstDate: DateTime(1950),
+                        lastDate: DateTime.now());
 
                     if (pickedDate != null) {
                       print(pickedDate);
