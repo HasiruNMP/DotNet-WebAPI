@@ -3,7 +3,7 @@ using Microsoft.AspNetCore.Mvc;
 
 namespace SLBFE_API.Controllers
 {
-    [Route("api/[controller]")]
+    [Route("documents")]
     [ApiController]
     public class DocumentsController : ControllerBase
     {
@@ -15,8 +15,8 @@ namespace SLBFE_API.Controllers
             _webHostEnvironment = webHostEnvironment;
         }
 
-        [HttpPut,Route("savefile")]
-        public ActionResult SaveFile(string fileType)
+        [HttpPut,Route("save")]
+        public ActionResult SaveFile()
         {
             try
             {
@@ -30,12 +30,21 @@ namespace SLBFE_API.Controllers
                     postedFile.CopyTo(stream);
                 }
 
-                return Ok("File Uploaded");
+                return Ok("Document Uploaded Succesfully");
             }
             catch (Exception ex)
             {
                 return Ok(ex);
             }
+        }
+
+        [HttpGet("testget")]
+        public async Task<ActionResult> DownloadFile()
+        {
+            var filePath = $"FileStorage/pexels-cottonbro-7095500.jpg";
+
+            var bytes = await System.IO.File.ReadAllBytesAsync(filePath);
+            return File(bytes, "text/plain", Path.GetFileName(filePath));
         }
     }
 }
