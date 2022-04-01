@@ -1,4 +1,6 @@
 import 'package:flutter/material.dart';
+import 'package:slbfe_citizenapp/view/personaldetails.dart';
+import 'package:slbfe_citizenapp/view/registration.dart';
 
 class SignIn extends StatefulWidget {
   const SignIn({Key? key}) : super(key: key);
@@ -13,39 +15,55 @@ class _SignInState extends State<SignIn> {
     return MaterialApp(
       home: Scaffold(
         appBar: AppBar(
-          title: const Center(child: Text('Sign In')),
+          title: Center(
+            child: Text('Sign In'),
+          ),
         ),
         body: SafeArea(
           child: Column(
-            children: const [
-              SizedBox(
+            crossAxisAlignment: CrossAxisAlignment.center,
+            children: [
+              const SizedBox(
                 height: 100,
               ),
-              Padding(
+              const Padding(
                 padding: EdgeInsets.all(8.0),
-                child: Expanded(
-                  child: TextField(
-                    decoration: InputDecoration(
-                      hintText: 'Email',
-                      border: OutlineInputBorder(),
-                    ),
+                child: TextField(
+                  decoration: InputDecoration(
+                    hintText: 'Email',
+                    border: OutlineInputBorder(),
                   ),
                 ),
               ),
-              Padding(
+              const Padding(
                 padding: EdgeInsets.all(8.0),
-                child: Expanded(
-                  child: TextField(
-                    decoration: InputDecoration(
-                      hintText: 'Password',
-                      border: OutlineInputBorder(),
-                    ),
+                child: TextField(
+                  decoration: InputDecoration(
+                    hintText: 'Password',
+                    border: OutlineInputBorder(),
                   ),
                 ),
               ),
-              ElevatedButton(
+              const ElevatedButton(
                 onPressed: null,
                 child: Text('Sign In'),
+              ),
+              Row(
+                mainAxisAlignment: MainAxisAlignment.center,
+                children: [
+                  Text('Don\t have an account'),
+                  TextButton(
+                    onPressed: () {
+                      Navigator.push(
+                        context,
+                        MaterialPageRoute(
+                          builder: (context) => Registration(),
+                        ),
+                      );
+                    },
+                    child: Text('Sign In'),
+                  ),
+                ],
               ),
             ],
           ),

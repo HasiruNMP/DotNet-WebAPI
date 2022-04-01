@@ -58,14 +58,14 @@ namespace SLBFE_API.Controllers
                     myCommand.Parameters.AddWithValue("@LastName", user.LastName);
                     myCommand.Parameters.AddWithValue("@DOB", user.Dob);
                     myCommand.Parameters.AddWithValue("@Address", user.Address);
-                    myCommand.Parameters.AddWithValue("@Latitude", user.Latitude);
-                    myCommand.Parameters.AddWithValue("@Longitude", user.Longitude);
+                    myCommand.Parameters.AddWithValue("@Latitude", 0);
+                    myCommand.Parameters.AddWithValue("@Longitude", 0);
                     myCommand.Parameters.AddWithValue("@Profession", user.Profession);
                     myCommand.Parameters.AddWithValue("@Affiliation", user.Affiliation);
                     myCommand.Parameters.AddWithValue("@Gender", user.Gender);
                     myCommand.Parameters.AddWithValue("@Nationality", user.Nationality);
                     myCommand.Parameters.AddWithValue("@MaritalStatus", user.MaritalStatus);
-                    myCommand.Parameters.AddWithValue("@Validity", user.Validity);
+                    myCommand.Parameters.AddWithValue("@Validity", false);
                     myCommand.Parameters.AddWithValue("@PrimaryPhone", user.PrimaryPhone);
 
                     myReader = myCommand.ExecuteReader();
@@ -116,6 +116,56 @@ namespace SLBFE_API.Controllers
                 }
             }
             return new JsonResult("Updated Successfully!");
+        }
+
+
+        [HttpDelete]
+        public JsonResult DeleteUser(int nic)
+        {
+            string query = @"delete from dbo.Js_Users where NIC=@NIC";
+            DataTable table = new DataTable();
+            string sqlDataSource = _configuration.GetConnectionString("SLBFEDB");
+            SqlDataReader myReader;
+            using (SqlConnection myCon = new SqlConnection(sqlDataSource))
+            {
+                myCon.Open();
+                using (SqlCommand myCommand = new SqlCommand(query, myCon))
+                {
+                    myCommand.Parameters.AddWithValue("@NIC", nic);
+                    myReader = myCommand.ExecuteReader();
+                    table.Load(myReader);
+                    myReader.Close();
+                    myCon.Close();
+
+                }
+            }
+            return new JsonResult("Delteted Successfully!");
+        }
+
+
+        [HttpGet, Route("login")]
+        public ActionResult JsUserLogin(String email, String password)
+        {
+            string query = @"SELECT [Email]
+                      ,[Password]
+                  FROM [dbo].[JS_USERS]
+                  Where Email ="+email+"  AND Password ="+password+"";
+
+            DataTable table = new DataTable();
+            string sqlDataSource = _configuration.GetConnectionString("SLBFEDB");
+            SqlDataReader myReader;
+            using (SqlConnection myCon = new SqlConnection(sqlDataSource))
+            {
+                myCon.Open();
+                using (SqlCommand myCommand = new SqlCommand(query, myCon))
+                {
+                    myReader = myCommand.ExecuteReader();
+                    table.Load(myReader);
+                    myReader.Close();
+                    myCon.Close();
+                }
+            }
+            return Ok(table);
         }
     }
 }
