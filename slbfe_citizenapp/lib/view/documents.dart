@@ -1,4 +1,8 @@
+import 'dart:io';
+
+import 'package:file_picker/file_picker.dart';
 import 'package:flutter/material.dart';
+import 'package:http/http.dart' as http;
 
 class Documents extends StatefulWidget {
   const Documents({Key? key}) : super(key: key);
@@ -230,4 +234,25 @@ class _DocumentsState extends State<Documents> {
       ),
     );
   }
+
+  Future<void> updateLocation() async{
+
+    final result = await FilePicker.platform.pickFiles(allowMultiple: false);
+    if (result == null) return;
+    String vPath = result.files.single.path!;
+    File file = File(vPath);
+
+    var request = http.MultipartRequest('PUT', Uri.parse('https://localhost:7018/documents/save'));
+    request.files.add(await http.MultipartFile.fromPath('file', vPath));
+
+    http.StreamedResponse response = await request.send();
+
+    if (response.statusCode == 200) {
+      print(await response.stream.bytesToString());
+    }
+    else {
+      print(response.reasonPhrase);
+    }
+  }
+
 }

@@ -5,6 +5,12 @@
       "resourceId": "/subscriptions/[parameters('subscriptionId')]/resourceGroups/[parameters('resourceGroupName')]/providers/Microsoft.Sql/servers/ddhprr-cw/databases/SLBFE-Database",
       "type": "mssql.azure",
       "connectionId": "SLBFEDB"
+    },
+    "mssql2": {
+      "ignored": "true",
+      "suggestion": "true",
+      "type": "mssql",
+      "connectionId": "ConnectionStrings:SLBFEDB"
     }
   }
 }
