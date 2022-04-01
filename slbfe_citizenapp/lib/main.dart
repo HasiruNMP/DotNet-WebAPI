@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:slbfe_citizenapp/view/accountSetting.dart';
+import 'package:slbfe_citizenapp/view/bottomnavigation.dart';
 import 'package:slbfe_citizenapp/view/home.dart';
 import 'package:slbfe_citizenapp/view/login.dart';
 import 'package:slbfe_citizenapp/view/profile.dart';
@@ -19,7 +20,7 @@ class MyApp extends StatelessWidget {
       theme: ThemeData(
         primarySwatch: Colors.blue,
       ),
-      home: Home(),
+      home: BottomNavigation(),
     );
   }
 }

@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:slbfe_citizenapp/view/documents.dart';
 import 'package:slbfe_citizenapp/view/personaldetails.dart';
+import 'package:slbfe_citizenapp/view/updatelocation.dart';
 
 import 'accountSetting.dart';
 import 'contacts.dart';
@@ -137,7 +138,13 @@ class _ProfileState extends State<Profile> {
             SizedBox(
               width: 360,
               child: ElevatedButton(
-                  onPressed: () {},
+                  onPressed: () {
+                    Navigator.push(
+                      context,
+                      MaterialPageRoute(
+                          builder: (context) => UpdateLocation()),
+                    );
+                  },
                   child: const Text('Location'),
                   style: ButtonStyle(
                     shape: MaterialStateProperty.all<RoundedRectangleBorder>(
