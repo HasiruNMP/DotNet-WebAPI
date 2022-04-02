@@ -4,6 +4,7 @@ import 'package:flutter/material.dart';
 import 'package:google_maps_flutter/google_maps_flutter.dart';
 import 'package:geolocator/geolocator.dart';
 
+
 class UpdateLocation extends StatefulWidget {
   const UpdateLocation({Key? key}) : super(key: key);
 
@@ -107,10 +108,6 @@ class _UpdateLocationState extends State<UpdateLocation> {
         ],
       ),
     );
-  }
-
-  Future<void> updateLocation() async{
-    
   }
 
   @override
