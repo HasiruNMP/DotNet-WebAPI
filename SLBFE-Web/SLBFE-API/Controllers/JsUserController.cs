@@ -144,12 +144,12 @@ namespace SLBFE_API.Controllers
 
 
         [HttpGet, Route("login")]
-        public ActionResult JsUserLogin(String email,String passowrd)
+        public ActionResult JsUserLogin(String email,String password)
         {
             string query = @"SELECT LastName
                       ,FirstName
                   FROM dbo.JS_USERS
-                  Where Email ='" + email + "'  AND Password ='" + passowrd + "'";
+                  Where Email ='" + email + "'  AND Password ='" + password + "'";
 
             DataTable table = new DataTable();
             string sqlDataSource = _configuration.GetConnectionString("SLBFEDB");
