@@ -29,7 +29,7 @@ class _RegistrationState extends State<Registration> {
 
   @override
   void initState() {
-    dobController.text = ""; //set the initial value of text field
+    dobController.text = "";
     super.initState();
   }
 
@@ -90,13 +90,13 @@ class _RegistrationState extends State<Registration> {
             margin: EdgeInsets.only(left: 10, right: 10),
             child: ListView(
               children: [
-                SizedBox(
+                const SizedBox(
                   height: 10,
                 ),
                 TextFormField(
                   controller: emailController,
                   cursorColor: Colors.green,
-                  decoration: InputDecoration(
+                  decoration: const InputDecoration(
                     filled: true,
                     fillColor: Colors.white,
                     labelText: 'Email',
