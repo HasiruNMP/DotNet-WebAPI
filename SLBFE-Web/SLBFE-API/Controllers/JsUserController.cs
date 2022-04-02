@@ -39,7 +39,7 @@ namespace SLBFE_API.Controllers
         }
 
 
-        [HttpPost]
+        [HttpPost ,Route("registerUser")]
         public JsonResult PostUser(JsUser user)
         {
             string query = @"insert into dbo.Js_Users values(@NIC,@Email,@Password,@FirstName,@LastName,@DOB,@Address,@Latitude,@Longitude,@Profession,@Affiliation,@Gender,@Nationality,@MaritalStatus,@Validity,@PrimaryPhone)";

@@ -2,6 +2,7 @@ import 'dart:io';
 
 import 'package:flutter/material.dart';
 import 'package:slbfe_citizenapp/view/bottomnavigation.dart';
+import 'package:slbfe_citizenapp/view/registration.dart';
 import 'package:slbfe_citizenapp/view/signin.dart';
 
 class MyHttpOverrides extends HttpOverrides {
@@ -28,7 +29,7 @@ class MyApp extends StatelessWidget {
       theme: ThemeData(
         primarySwatch: Colors.blue,
       ),
-      home: SignIn(),
+      home: Registration(),
     );
   }
 }
