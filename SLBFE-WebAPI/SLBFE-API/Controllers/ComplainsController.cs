@@ -10,7 +10,7 @@ using SLBFE_API.Models;
 
 namespace SLBFE_API.Controllers
 {
-    [Route("api/[controller]")]
+    [Route("complaints")]
     [ApiController]
     public class ComplainsController : ControllerBase
     {
@@ -20,10 +20,10 @@ namespace SLBFE_API.Controllers
             _configuration = configuration;
         }
 
-        [HttpGet]
-        public JsonResult GetComplain(int NIC)
+        [HttpGet,Route("getcomplaintlist")]
+        public JsonResult GetComplaintList()
         {
-            string query = @"SELECT * FROM [dbo].[JS_COMPLAINS] WHERE JS_NIC =" + NIC;
+            string query = @"SELECT * FROM [dbo].[JS_COMPLAINS]";
             DataTable table = new DataTable();
             string sqlDataSource = _configuration.GetConnectionString("SLBFEDB");
             SqlDataReader myReader;
@@ -41,7 +41,7 @@ namespace SLBFE_API.Controllers
             return new JsonResult(table);
         }
 
-        [HttpPut]
+        [HttpPut,Route("sendfeedback")]
         public JsonResult PutFeedback(JsComplain comp)
         {
             string query = @"UPDATE [dbo].[JS_COMPLAINS] SET Feedback = @Feedback WHERE ComplaintID = @ComplaintID";
@@ -66,8 +66,8 @@ namespace SLBFE_API.Controllers
         }
 
 
-        [HttpPost]
-        public JsonResult PostFeedback(JsComplain comp)
+        [HttpPost,Route("addcomplaint")]
+        public JsonResult PostComplaint(JsComplain comp)
         {
             string query = @"insert into [dbo].[JS_COMPLAINS] values(@JS_NIC,@Complain,@Feedback)";
             DataTable table = new DataTable();

@@ -15,7 +15,7 @@ namespace SLBFE_API.Controllers
             _webHostEnvironment = webHostEnvironment;
         }
 
-        [HttpPut,Route("save")]
+        [HttpPut,Route("upload")]
         public ActionResult SaveFile()
         {
             try
@@ -38,7 +38,7 @@ namespace SLBFE_API.Controllers
             }
         }
 
-        [HttpGet("testget")]
+        [HttpGet("download")]
         public async Task<ActionResult> DownloadFile()
         {
             var filePath = $"FileStorage/pexels-cottonbro-7095500.jpg";
