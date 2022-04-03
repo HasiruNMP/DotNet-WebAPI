@@ -1,4 +1,5 @@
 import 'package:http/http.dart' as http;
+import 'package:slbfe_citizenapp/model/complaintmodel.dart';
 import 'package:slbfe_citizenapp/model/jsusermodel.dart';
 import 'dart:convert';
 import 'dart:async';
@@ -72,4 +73,32 @@ class APIService {
       print(response.reasonPhrase);
     }
   }
+
+
+
+
+  static Future addComplaint(complaintModel complain) async {
+    var headers = {'Content-Type': 'application/json'};
+    var request = http.Request(
+        'POST', Uri.parse('https://10.0.2.2:7018/complaints/addcomplaint'));
+    request.body = json.encode({
+      "jsNic": complain.jsnic,
+      "complain": complain.complain,
+      "feedback": '',
+    });
+    request.headers.addAll(headers);
+
+    http.StreamedResponse response = await request.send();
+
+    if (response.statusCode == 200) {
+      print(response.statusCode);
+      print(await response.stream.bytesToString());
+      return true;
+    } else {
+      print(response.statusCode);
+      print(response.reasonPhrase);
+      return false;
+    }
+  }
 }
+

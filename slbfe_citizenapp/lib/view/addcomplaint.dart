@@ -1,4 +1,7 @@
 import 'package:flutter/material.dart';
+import 'package:slbfe_citizenapp/model/complaintmodel.dart';
+
+import '../api/apiservice.dart';
 
 class AddComplaint extends StatefulWidget {
   const AddComplaint({Key? key}) : super(key: key);
@@ -11,6 +14,30 @@ class _AddComplaintState extends State<AddComplaint> {
   TextEditingController complaintController = TextEditingController();
   TextEditingController feedbackController = TextEditingController();
   final formkey = GlobalKey<FormState>();
+
+
+
+
+  complaintModel complaint = complaintModel(
+      complaintid: 0,
+      jsnic: 1,
+      complain: '',
+      feedback: '',
+
+  );
+
+  Future<void> addDatabase() async {
+    complaint.jsnic = 1;
+    complaint.complain = complaintController.text;
+
+    print(complaint.jsnic);
+    print(complaint.complain);
+    var saveResponse = await APIService.addComplaint(complaint);
+    saveResponse == true
+        ? showAlertDialog('Complaint added Successfully!',context)
+        : showAlertDialog('Failed to add complaint!',context);
+  }
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -93,7 +120,10 @@ class _AddComplaintState extends State<AddComplaint> {
               ),
 
               ElevatedButton(
-                onPressed: () {},
+                onPressed: () {
+
+                  addDatabase();
+                },
                 child: const Text('Send'),
               ),
             ],
@@ -102,4 +132,28 @@ class _AddComplaintState extends State<AddComplaint> {
       ),
     );
   }
+}
+showAlertDialog(message,BuildContext context) {
+  // set up the button
+  Widget okButton = FlatButton(
+    child: Text("OK"),
+    onPressed: () {
+      Navigator.pop(context);
+    },
+  );
+  // set up the AlertDialog
+  AlertDialog alert = AlertDialog(
+    title: Text("Alert Box"),
+    content: Text(message),
+    actions: [
+      okButton,
+    ],
+  );
+  // show the dialog
+  showDialog(
+    context: context,
+    builder: (BuildContext context) {
+      return alert;
+    },
+  );
 }
