@@ -4,6 +4,8 @@ import 'package:intl/intl.dart';
 import 'package:slbfe_citizenapp/api/apiservice.dart';
 import 'package:slbfe_citizenapp/model/jsusermodel.dart';
 
+import 'bottomnavigation.dart';
+
 class Registration extends StatefulWidget {
   const Registration({Key? key}) : super(key: key);
 
@@ -71,7 +73,7 @@ class _RegistrationState extends State<Registration> {
         ? Navigator.push(
             context,
             MaterialPageRoute(
-              builder: (context) => Registration(),
+              builder: (context) => BottomNavigation(user.nic),
             ),
           )
         : showAlertDialog(context);
