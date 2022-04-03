@@ -57,4 +57,19 @@ class APIService {
       return false;
     }
   }
+
+  static Future getUserDetails(String email) async {
+    http.Response response = await http
+        .get(Uri.parse('https://10.0.2.2:7018/api/JsUser?email=$email'));
+
+    if (response.statusCode == 200) {
+      print(response.statusCode);
+      String data = response.body;
+      print(data);
+      return jsonDecode(data);
+    } else {
+      print(response.statusCode);
+      print(response.reasonPhrase);
+    }
+  }
 }
