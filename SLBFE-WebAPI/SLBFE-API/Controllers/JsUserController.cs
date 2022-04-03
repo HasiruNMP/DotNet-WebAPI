@@ -17,9 +17,10 @@ namespace SLBFE_API.Controllers
             _configuration = configuration;
         }
         [HttpGet]
-        public JsonResult GetUser()
+        public JsonResult GetUser(String email)
         {
-            string query = @"select NIC,Email,Password,FirstName,LastName,DOB,Address,Latitude,Longitude,Profession,Affiliation,Gender,Nationality,MaritalStatus,Validity,PrimaryPhone from dbo.Js_Users";
+            string query = @"select NIC,Email,Password,FirstName,LastName,DOB,Address,Latitude,Longitude,Profession,Affiliation,Gender,Nationality,MaritalStatus,Validity,PrimaryPhone from dbo.Js_Users
+            Where Email ='" + email + "' ";
             DataTable table = new DataTable();
             string sqlDataSource = _configuration.GetConnectionString("SLBFEDB");
             SqlDataReader myReader;

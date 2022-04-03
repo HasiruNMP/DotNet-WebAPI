@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:slbfe_citizenapp/api/apiservice.dart';
 
 class PersonaInfo extends StatefulWidget {
   const PersonaInfo({Key? key}) : super(key: key);
@@ -8,6 +9,18 @@ class PersonaInfo extends StatefulWidget {
 }
 
 class _PersonaInfoState extends State<PersonaInfo> {
+  var user;
+  @override
+  void initState() {
+    super.initState();
+    CallApi();
+  }
+
+  Future<void> CallApi() async {
+    user = await APIService.getUserDetails('a@gmail.com');
+    updateUi(user);
+  }
+
   TextEditingController emailController = TextEditingController();
   TextEditingController nicController = TextEditingController();
   TextEditingController fnameController = TextEditingController();
@@ -21,20 +34,23 @@ class _PersonaInfoState extends State<PersonaInfo> {
   TextEditingController marriedStatusController = TextEditingController();
   bool enableTextbox = false;
   final formKey = GlobalKey<FormState>();
+
+  void updateUi(dynamic user) {
+    emailController.text = user[0]["Email"];
+    nicController.text = user[0]["NIC"].toString();
+    fnameController.text = user[0]["FirstName"];
+    lnameController.text = user[0]["LastName"];
+    dobController.text = user[0]["DOB"];
+    addressController.text = user[0]["Address"];
+    professionController.text = user[0]["Profession"];
+    genderController.text = user[0]["Gender"];
+    nationalityController.text = user[0]["Nationality"];
+    marriedStatusController.text = user[0]["MaritalStatus"];
+    affilicationController.text = user[0]["Affiliation"];
+  }
+
   @override
   Widget build(BuildContext context) {
-    emailController.text = 'rakshitha1@gmail.com';
-    nicController.text = '2000001010294';
-    fnameController.text = 'Rakshihta';
-    lnameController.text = 'Dilshan';
-    dobController.text = '1999/01/01';
-    addressController.text = 'No 21, Nuwara Eliya';
-    professionController.text = 'Student';
-    genderController.text = 'Male';
-    nationalityController.text = 'Sinhala';
-    marriedStatusController.text = 'Single';
-    affilicationController.text = 'company1';
-
     return Scaffold(
       appBar: AppBar(
         title: Text('Personal Information'),

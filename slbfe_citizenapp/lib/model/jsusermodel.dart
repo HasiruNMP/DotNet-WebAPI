@@ -33,6 +33,13 @@ class jsUserModel {
       required this.maritalstatus,
       required this.validity,
       required this.primaryphone});
+  int getNic() {
+    return nic;
+  }
+
+  String getPassword() {
+    return password;
+  }
 
   Map<String, dynamic> toJson() {
     Map<String, dynamic> map = {
