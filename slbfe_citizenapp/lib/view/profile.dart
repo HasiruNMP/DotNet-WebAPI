@@ -1,6 +1,8 @@
 import 'package:flutter/material.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 import 'package:slbfe_citizenapp/view/documents.dart';
 import 'package:slbfe_citizenapp/view/personaldetails.dart';
+import 'package:slbfe_citizenapp/view/signin.dart';
 import 'package:slbfe_citizenapp/view/updatelocation.dart';
 
 import 'accountSetting.dart';
@@ -22,7 +24,7 @@ class _ProfileState extends State<Profile> {
         backgroundColor: Colors.blue,
       ),
       body: SafeArea(
-        child: Column(
+        child: ListView(
           children: [
             Center(
               child: InkWell(
@@ -141,8 +143,7 @@ class _ProfileState extends State<Profile> {
                   onPressed: () {
                     Navigator.push(
                       context,
-                      MaterialPageRoute(
-                          builder: (context) => UpdateLocation()),
+                      MaterialPageRoute(builder: (context) => UpdateLocation()),
                     );
                   },
                   child: const Text('Location'),

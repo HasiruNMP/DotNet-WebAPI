@@ -39,7 +39,7 @@ namespace SLBFE_API.Controllers
         }
 
 
-        [HttpPost]
+        [HttpPost ,Route("registerUser")]
         public JsonResult PostUser(JsUser user)
         {
             string query = @"insert into dbo.Js_Users values(@NIC,@Email,@Password,@FirstName,@LastName,@DOB,@Address,@Latitude,@Longitude,@Profession,@Affiliation,@Gender,@Nationality,@MaritalStatus,@Validity,@PrimaryPhone)";
@@ -144,12 +144,12 @@ namespace SLBFE_API.Controllers
 
 
         [HttpGet, Route("login")]
-        public ActionResult JsUserLogin(String email, String password)
+        public ActionResult JsUserLogin(String email,String password)
         {
-            string query = @"SELECT [Email]
-                      ,[Password]
-                  FROM [dbo].[JS_USERS]
-                  Where Email ="+email+"  AND Password ="+password+"";
+            string query = @"SELECT LastName
+                      ,FirstName
+                  FROM dbo.JS_USERS
+                  Where Email ='" + email + "'  AND Password ='" + password + "'";
 
             DataTable table = new DataTable();
             string sqlDataSource = _configuration.GetConnectionString("SLBFEDB");

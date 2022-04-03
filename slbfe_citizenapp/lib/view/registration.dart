@@ -1,6 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:intl/intl.dart';
+import 'package:slbfe_citizenapp/api/apiservice.dart';
+import 'package:slbfe_citizenapp/model/jsusermodel.dart';
 
 class Registration extends StatefulWidget {
   const Registration({Key? key}) : super(key: key);
@@ -18,17 +20,61 @@ class _RegistrationState extends State<Registration> {
   TextEditingController addressController = TextEditingController();
   TextEditingController professionController = TextEditingController();
   TextEditingController passwordController = TextEditingController();
-  TextEditingController genderController = TextEditingController();
   TextEditingController nationalityController = TextEditingController();
   TextEditingController marriedStatusController = TextEditingController();
+  TextEditingController primaryPhoneController = TextEditingController();
   String gender = 'male';
   final formKey = GlobalKey<FormState>();
   DateTime? newDate;
 
   @override
   void initState() {
-    dobController.text = ""; //set the initial value of text field
+    dobController.text = "";
     super.initState();
+  }
+
+  jsUserModel user = jsUserModel(
+      nic: 11,
+      email: '',
+      password: '',
+      firstname: '',
+      lastname: '',
+      dob: '',
+      address: '',
+      latitude: 0,
+      longitude: 0,
+      profession: '',
+      affiliation: '',
+      gender: '',
+      nationality: '',
+      maritalstatus: '',
+      validity: false,
+      primaryphone: '');
+
+  Future<void> SaveValues() async {
+    user.email = emailController.text;
+    user.nic = int.parse(nicController.text);
+    user.firstname = fnameController.text;
+    user.lastname = lnameController.text;
+    user.dob = dobController.text;
+    user.address = addressController.text;
+    user.profession = professionController.text;
+    user.password = passwordController.text;
+    user.gender = gender;
+    user.nationality = nationalityController.text;
+    user.maritalstatus = marriedStatusController.text;
+    user.primaryphone = primaryPhoneController.text;
+    print(user.email);
+    print(user.firstname);
+    var saveResponse = await APIService.adduser(user);
+    saveResponse == true
+        ? Navigator.push(
+            context,
+            MaterialPageRoute(
+              builder: (context) => Registration(),
+            ),
+          )
+        : showAlertDialog(context);
   }
 
   @override
@@ -44,13 +90,13 @@ class _RegistrationState extends State<Registration> {
             margin: EdgeInsets.only(left: 10, right: 10),
             child: ListView(
               children: [
-                SizedBox(
+                const SizedBox(
                   height: 10,
                 ),
                 TextFormField(
                   controller: emailController,
                   cursorColor: Colors.green,
-                  decoration: InputDecoration(
+                  decoration: const InputDecoration(
                     filled: true,
                     fillColor: Colors.white,
                     labelText: 'Email',
@@ -116,6 +162,25 @@ class _RegistrationState extends State<Registration> {
                   validator: (value) {
                     if (value!.isEmpty) {
                       return 'Please enter your first name';
+                    }
+                    return null;
+                  },
+                ),
+                const SizedBox(
+                  height: 10,
+                ),
+                TextFormField(
+                  controller: primaryPhoneController,
+                  cursorColor: Colors.green,
+                  decoration: const InputDecoration(
+                    filled: true,
+                    fillColor: Colors.white,
+                    labelText: 'Mobile No',
+                    border: OutlineInputBorder(),
+                  ),
+                  validator: (value) {
+                    if (value!.isEmpty) {
+                      return 'Please enter phone no';
                     }
                     return null;
                   },
@@ -306,6 +371,7 @@ class _RegistrationState extends State<Registration> {
                 ElevatedButton(
                   onPressed: () {
                     if (formKey.currentState!.validate()) {
+                      SaveValues();
                     } else
                       return null;
                   },
@@ -318,4 +384,29 @@ class _RegistrationState extends State<Registration> {
       ),
     );
   }
+}
+
+showAlertDialog(BuildContext context) {
+  // set up the button
+  Widget okButton = FlatButton(
+    child: Text("OK"),
+    onPressed: () {
+      Navigator.pop(context);
+    },
+  );
+  // set up the AlertDialog
+  AlertDialog alert = AlertDialog(
+    title: Text("Alert Box"),
+    content: Text('Something Wrong'),
+    actions: [
+      okButton,
+    ],
+  );
+  // show the dialog
+  showDialog(
+    context: context,
+    builder: (BuildContext context) {
+      return alert;
+    },
+  );
 }
