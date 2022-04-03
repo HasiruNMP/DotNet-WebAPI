@@ -9,6 +9,7 @@ class AddComplaint extends StatefulWidget {
 
 class _AddComplaintState extends State<AddComplaint> {
   TextEditingController complaintController = TextEditingController();
+  TextEditingController feedbackController = TextEditingController();
   final formkey = GlobalKey<FormState>();
   @override
   Widget build(BuildContext context) {
@@ -25,35 +26,10 @@ class _AddComplaintState extends State<AddComplaint> {
               Center(
                 child: Text('New Complaint'),
               ),
-              // TextFormField(
-              //   decoration: InputDecoration(
-              //     labelText: "New Complaint",
-              //   ),
-              //   maxLines: 5,
-              // )
               const SizedBox(
                 height: 30,
               ),
               Container(
-                // width:250,
-                // height: 50,
-                // margin: const EdgeInsets.all(15.0),
-                // padding: const EdgeInsets.all(3.0),
-                // decoration: BoxDecoration(
-                //   border: Border.all(color: Colors.black,width: 1),
-                //   borderRadius: BorderRadius.all(
-                //       Radius.circular(13.0) //                 <--- border radius here
-                //   ),
-                // ),
-                // child: TextFormField(
-                //     decoration: InputDecoration(
-                //        labelText: "New Complaint",
-                //       border: InputBorder.none,
-                //
-                //      ),
-                //      maxLines: 5,
-                // ),
-
                 child: Padding(
                   padding: const EdgeInsets.all(8.0),
                   child: TextFormField(
@@ -83,6 +59,39 @@ class _AddComplaintState extends State<AddComplaint> {
                   ),
                 ),
               ),
+              Container(
+                child: Padding(
+                  padding: const EdgeInsets.all(8.0),
+                  child: TextFormField(
+                    enabled: false,
+                    controller: feedbackController,
+                    cursorColor: Colors.black,
+                    decoration: InputDecoration(
+                      border: OutlineInputBorder(),
+                      errorStyle: TextStyle(
+
+                        color: Colors.black,
+                      ),
+                      filled: false,
+                      fillColor: Colors.white,
+                      labelText: "Feedback",
+                      labelStyle: TextStyle(
+                          fontSize: 15,
+                          color: Colors.black,
+                          fontWeight: FontWeight.bold),
+                    ),
+                    maxLines: 5,
+                    validator: (value) {
+                      if (value!.isEmpty) {
+                        return 'Enter the Complaint';
+                      } else {
+                        return null;
+                      }
+                    },
+                  ),
+                ),
+              ),
+
               ElevatedButton(
                 onPressed: () {},
                 child: const Text('Send'),
