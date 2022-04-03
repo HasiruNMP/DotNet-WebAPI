@@ -5,6 +5,7 @@ import 'package:slbfe_citizenapp/view/personaldetails.dart';
 import 'package:slbfe_citizenapp/view/signin.dart';
 import 'package:slbfe_citizenapp/view/updatelocation.dart';
 
+import '../api/apiservice.dart';
 import 'accountSetting.dart';
 import 'contacts.dart';
 
@@ -16,6 +17,36 @@ class Profile extends StatefulWidget {
 }
 
 class _ProfileState extends State<Profile> {
+  var user;
+  String fname = '';
+  String lname = '';
+  String email = '';
+  String phoneNo = '';
+  String nic = '';
+  bool loading = false;
+
+  @override
+  void initState() {
+    super.initState();
+    CallApi();
+  }
+
+  Future<void> CallApi() async {
+    user = await APIService.getUserDetails('a@gmail.com');
+    updateUi(user);
+  }
+
+  void updateUi(dynamic user) {
+    setState(() {
+      email = user[0]["Email"];
+      nic = user[0]["NIC"].toString();
+      fname = user[0]["FirstName"];
+      lname = user[0]["LastName"];
+      phoneNo = user[0]["PrimaryPhone"];
+      loading = true;
+    });
+  }
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -26,7 +57,7 @@ class _ProfileState extends State<Profile> {
       body: SafeArea(
         child: ListView(
           children: [
-            Center(
+            const Center(
               child: InkWell(
                 child: ImageIcon(
                   AssetImage("assets/profile.png"),
@@ -35,66 +66,81 @@ class _ProfileState extends State<Profile> {
                 ),
               ),
             ),
-            Container(
-                height: 200,
-                width: 360,
-                decoration: BoxDecoration(
-                  borderRadius: BorderRadius.circular(10.0),
-                  color: Colors.black26,
-                ),
-                child: Padding(
-                  padding: EdgeInsets.fromLTRB(29, 32, 20, 0),
-                  child: Column(
-                    children: [
-                      Row(
+            loading == true
+                ? Container(
+                    height: 200,
+                    width: 360,
+                    decoration: BoxDecoration(
+                      borderRadius: BorderRadius.circular(10.0),
+                      color: Colors.black26,
+                    ),
+                    child: Padding(
+                      padding: const EdgeInsets.fromLTRB(29, 32, 20, 0),
+                      child: Column(
                         children: [
-                          Icon(Icons.person),
-                          SizedBox(
-                            width: 10,
+                          Row(
+                            children: [
+                              Icon(Icons.person),
+                              const SizedBox(
+                                width: 10,
+                              ),
+                              Text('${fname} ${lname}'),
+                            ],
                           ),
-                          Text("Ravindu Arsakulasooriya")
+                          const SizedBox(
+                            height: 15,
+                          ),
+                          Row(
+                            children: [
+                              Icon(Icons.mail),
+                              const SizedBox(
+                                width: 10,
+                              ),
+                              Text(email)
+                            ],
+                          ),
+                          const SizedBox(
+                            height: 15,
+                          ),
+                          Row(
+                            children: [
+                              Icon(Icons.phone),
+                              const SizedBox(
+                                width: 10,
+                              ),
+                              Text(phoneNo)
+                            ],
+                          ),
+                          const SizedBox(
+                            height: 15,
+                          ),
+                          Row(
+                            children: [
+                              Icon(Icons.perm_identity),
+                              const SizedBox(
+                                width: 10,
+                              ),
+                              Text(nic)
+                            ],
+                          ),
                         ],
                       ),
-                      SizedBox(
-                        height: 15,
-                      ),
-                      Row(
-                        children: [
-                          Icon(Icons.mail),
-                          SizedBox(
-                            width: 10,
+                    ))
+                : Column(
+                    mainAxisAlignment: MainAxisAlignment.center,
+                    children: const [
+                      Center(
+                        child: SizedBox(
+                          height: 100,
+                          width: 100,
+                          child: Center(
+                            child: CircularProgressIndicator(),
                           ),
-                          Text("12volt@gmail.com")
-                        ],
-                      ),
-                      SizedBox(
-                        height: 15,
-                      ),
-                      Row(
-                        children: [
-                          Icon(Icons.phone),
-                          SizedBox(
-                            width: 10,
-                          ),
-                          Text("0778888998")
-                        ],
-                      ),
-                      SizedBox(
-                        height: 15,
-                      ),
-                      Row(
-                        children: [
-                          Icon(Icons.perm_identity),
-                          SizedBox(
-                            width: 10,
-                          ),
-                          Text("987006556")
-                        ],
+                        ),
                       ),
                     ],
                   ),
-                )),
-            SizedBox(
+            const SizedBox(
               height: 15,
             ),
             SizedBox(
@@ -114,7 +160,7 @@ class _ProfileState extends State<Profile> {
                               borderRadius: BorderRadius.circular(18.0),
                               side: BorderSide(color: Colors.blue))))),
             ),
-            SizedBox(
+            const SizedBox(
               height: 9,
             ),
             SizedBox(
@@ -134,7 +180,7 @@ class _ProfileState extends State<Profile> {
                               borderRadius: BorderRadius.circular(18.0),
                               side: BorderSide(color: Colors.blue))))),
             ),
-            SizedBox(
+            const SizedBox(
               height: 9,
             ),
             SizedBox(
@@ -155,7 +201,7 @@ class _ProfileState extends State<Profile> {
                     ),
                   )),
             ),
-            SizedBox(
+            const SizedBox(
               height: 9,
             ),
             SizedBox(
@@ -172,9 +218,9 @@ class _ProfileState extends State<Profile> {
                       shape: MaterialStateProperty.all<RoundedRectangleBorder>(
                           RoundedRectangleBorder(
                               borderRadius: BorderRadius.circular(18.0),
-                              side: BorderSide(color: Colors.blue))))),
+                              side: const BorderSide(color: Colors.blue))))),
             ),
-            SizedBox(
+            const SizedBox(
               height: 9,
             ),
             SizedBox(
@@ -192,7 +238,7 @@ class _ProfileState extends State<Profile> {
                       shape: MaterialStateProperty.all<RoundedRectangleBorder>(
                           RoundedRectangleBorder(
                               borderRadius: BorderRadius.circular(18.0),
-                              side: BorderSide(color: Colors.blue))))),
+                              side: const BorderSide(color: Colors.blue))))),
             ),
           ],
         ),

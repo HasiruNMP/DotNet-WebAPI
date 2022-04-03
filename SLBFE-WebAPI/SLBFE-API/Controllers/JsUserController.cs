@@ -81,8 +81,8 @@ namespace SLBFE_API.Controllers
 
 
 
-        [HttpPut]
-        public JsonResult PutUser(JsUser user)
+        [HttpPut, Route("UpdateUserDetails")]
+        public JsonResult userDetailsUpdate(JsUser user)
         {
             string query = @"update dbo.Js_Users set FirstName=@FirstName,LastName=@LastName,
             Address=@Address,Profession=@Profession,Affiliation=@Affiliation,Gender=@Gender,Nationality=@Nationality,

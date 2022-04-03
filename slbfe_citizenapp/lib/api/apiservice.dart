@@ -72,4 +72,40 @@ class APIService {
       print(response.reasonPhrase);
     }
   }
+
+  static Future updateUserDetails(jsUserModel user) async {
+    var headers = {'Content-Type': 'application/json'};
+    var request = http.Request(
+      'PUT',
+      Uri.parse('https://10.0.2.2:7018/api/JsUser/UpdateUserDetails'),
+    );
+    request.body = json.encode({
+      "Email": "",
+      "Password": "",
+      "PrimaryPhone": "",
+      "NIC": user.nic,
+      "Gender": user.gender,
+      "FirstName": user.firstname,
+      "LastName": user.lastname,
+      "DOB": user.dob,
+      "Address": user.address,
+      "Profession": user.profession,
+      "Affiliation": user.affiliation,
+      "Nationality": user.nationality,
+      "MaritalStatus": user.maritalstatus
+    });
+    request.headers.addAll(headers);
+
+    http.StreamedResponse response = await request.send();
+
+    if (response.statusCode == 200) {
+      print(response.statusCode);
+      print(await response.stream.bytesToString());
+      return true;
+    } else {
+      print(response.statusCode);
+      print(response.reasonPhrase);
+      return false;
+    }
+  }
 }
