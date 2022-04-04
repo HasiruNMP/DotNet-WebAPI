@@ -253,5 +253,26 @@ namespace SLBFE_API.Controllers
             return new JsonResult("Updated Successfully!");
         }
 
+
+        [HttpPut, Route("updatelocation")]
+        public JsonResult updateLocation(int NIC, double lat, double lng)
+        {
+            string query = @"UPDATE dbo.JS_USERS SET Latitude=" + lat + ",Longitude=" + lng + " WHERE NIC=" + NIC;
+            DataTable table = new DataTable();
+            string sqlDataSource = _configuration.GetConnectionString("SLBFEDB");
+            SqlDataReader myReader;
+            using (SqlConnection myCon = new SqlConnection(sqlDataSource))
+            {
+                myCon.Open();
+                using (SqlCommand myCommand = new SqlCommand(query, myCon))
+                {
+                    myReader = myCommand.ExecuteReader();
+                    table.Load(myReader);
+                    myReader.Close();
+                }
+            }
+            return new JsonResult("Updated Successfully!");
+        }
+
     }
 }
