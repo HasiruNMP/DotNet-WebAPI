@@ -12,6 +12,9 @@ class Documents extends StatefulWidget {
 }
 
 class _DocumentsState extends State<Documents> {
+
+  late String vPath;
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -58,7 +61,8 @@ class _DocumentsState extends State<Documents> {
                               style: ElevatedButton.styleFrom(
                                 primary: Colors.grey,
                               ),
-                              onPressed: () {},
+                              onPressed: () {
+                              },
                               child: Text('Choose a file'),
                             ),
                           ),
@@ -163,7 +167,9 @@ class _DocumentsState extends State<Documents> {
                               style: ElevatedButton.styleFrom(
                                 primary: Colors.grey,
                               ),
-                              onPressed: () {},
+                              onPressed: () {
+                                selectDocument('CV');
+                              },
                               child: Text('Choose a file'),
                             ),
                           ),
@@ -173,7 +179,12 @@ class _DocumentsState extends State<Documents> {
                     const SizedBox(
                       height: 20,
                     ),
-                    ElevatedButton(onPressed: () {}, child: Text('Update'))
+                    ElevatedButton(
+                        onPressed: () {
+                          updateDocument("CV");
+                        },
+                        child: Text('Update')
+                    )
                   ],
                 ),
               ),
@@ -235,14 +246,18 @@ class _DocumentsState extends State<Documents> {
     );
   }
 
-  Future<void> updateLocation() async{
-
+  Future<void> selectDocument(String documentType) async{
     final result = await FilePicker.platform.pickFiles(allowMultiple: false);
     if (result == null) return;
-    String vPath = result.files.single.path!;
-    File file = File(vPath);
+    setState(() {
+      vPath = result.files.single.path!;
+    });
 
-    var request = http.MultipartRequest('PUT', Uri.parse('https://localhost:7018/documents/save'));
+  }
+
+  Future<void> updateDocument(String documentType) async{
+
+    var request = http.MultipartRequest('PUT', Uri.parse('https://10.0.2.2:7018/documents/upload?NIC=1&documentType=CV'));
     request.files.add(await http.MultipartFile.fromPath('file', vPath));
 
     http.StreamedResponse response = await request.send();
@@ -253,6 +268,7 @@ class _DocumentsState extends State<Documents> {
     else {
       print(response.reasonPhrase);
     }
+
   }
 
 }

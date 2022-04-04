@@ -32,7 +32,11 @@ class MyApp extends StatelessWidget {
       theme: ThemeData(
         primarySwatch: Colors.blue,
       ),
+<<<<<<< Updated upstream
       home: BottomNavigation(0),
+=======
+      home: BottomNavigation(),
+>>>>>>> Stashed changes
     );
   }
 }
