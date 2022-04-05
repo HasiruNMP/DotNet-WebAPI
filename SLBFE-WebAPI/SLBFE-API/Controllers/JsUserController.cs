@@ -44,6 +44,7 @@ namespace SLBFE_API.Controllers
         public JsonResult PostUser(JsUser user)
         {
             string query = @"insert into dbo.Js_Users values(@NIC,@Email,@Password,@FirstName,@LastName,@DOB,@Address,@Latitude,@Longitude,@Profession,@Affiliation,@Gender,@Nationality,@MaritalStatus,@Validity,@PrimaryPhone)";
+            string query1 = @"insert into dbo.JS_CONTACTS values(@JS_NIC,@Personal,@Work,@Emmergency)";
             DataTable table = new DataTable();
             string sqlDataSource = _configuration.GetConnectionString("SLBFEDB");
             SqlDataReader myReader;
@@ -72,6 +73,22 @@ namespace SLBFE_API.Controllers
                     myReader = myCommand.ExecuteReader();
                     table.Load(myReader);
                     myReader.Close();
+                 
+
+                }
+       
+                using (SqlCommand myCommand = new SqlCommand(query1, myCon))
+                {
+         
+                    myCommand.Parameters.AddWithValue("@JS_NIC",user.Nic.ToString());
+                    myCommand.Parameters.AddWithValue("@Personal", user.PrimaryPhone);
+                    myCommand.Parameters.AddWithValue("@Work",' ' );
+                    myCommand.Parameters.AddWithValue("@Emmergency", ' ');
+       
+
+                    myReader = myCommand.ExecuteReader();
+                    table.Load(myReader);
+                    myReader.Close();
                     myCon.Close();
 
                 }
@@ -81,8 +98,8 @@ namespace SLBFE_API.Controllers
 
 
 
-        [HttpPut]
-        public JsonResult PutUser(JsUser user)
+        [HttpPut, Route("UpdateUserDetails")]
+        public JsonResult userDetailsUpdate(JsUser user)
         {
             string query = @"update dbo.Js_Users set FirstName=@FirstName,LastName=@LastName,
             Address=@Address,Profession=@Profession,Affiliation=@Affiliation,Gender=@Gender,Nationality=@Nationality,
@@ -168,5 +185,94 @@ namespace SLBFE_API.Controllers
             }
             return Ok(table);
         }
+
+        [HttpGet, Route("getContacts")]
+        public JsonResult GetUserContacts(int nic)
+        {
+            string query = @"select JS_NIC,Personal,Work,Emmergency from dbo.JS_CONTACTS
+            Where JS_NIC ='" + nic + "' ";
+            DataTable table = new DataTable();
+            string sqlDataSource = _configuration.GetConnectionString("SLBFEDB");
+            SqlDataReader myReader;
+            using (SqlConnection myCon = new SqlConnection(sqlDataSource))
+            {
+                myCon.Open();
+                using (SqlCommand myCommand = new SqlCommand(query, myCon))
+                {
+                    myReader = myCommand.ExecuteReader();
+                    table.Load(myReader);
+                    myReader.Close();
+                    myCon.Close();
+
+                }
+            }
+            return new JsonResult(table);
+        }
+
+        [HttpPut, Route("UpdateUserContacts")]
+        public JsonResult updateUserContacts(JsContact contact)
+        {
+            string query = @"update dbo.JS_CONTACTS set Personal=@Personal,
+            Work=@Work,Emmergency=@Emmergency
+            where JS_NIC=@NIC";
+            string query1 = @"update dbo.JS_USERS set PrimaryPhone=@PrimaryPhone
+            where NIC=@NIC";
+            DataTable table = new DataTable();
+            string sqlDataSource = _configuration.GetConnectionString("SLBFEDB");
+            SqlDataReader myReader;
+            using (SqlConnection myCon = new SqlConnection(sqlDataSource))
+            {
+                myCon.Open();
+                using (SqlCommand myCommand = new SqlCommand(query, myCon))
+                {
+                    myCommand.Parameters.AddWithValue("@NIC", contact.JsNic);
+                    myCommand.Parameters.AddWithValue("@Personal", contact.Personal);
+                    myCommand.Parameters.AddWithValue("@Work",contact.Work);
+                    myCommand.Parameters.AddWithValue("@Emmergency", contact.Emmergency);
+   
+                    myReader = myCommand.ExecuteReader();
+                    table.Load(myReader);
+                    myReader.Close();
+                   
+
+                }
+           
+                using (SqlCommand myCommand = new SqlCommand(query1, myCon))
+                {
+                    myCommand.Parameters.AddWithValue("@NIC", contact.JsNic);
+                    myCommand.Parameters.AddWithValue("@PrimaryPhone", contact.Personal);
+              
+
+                    myReader = myCommand.ExecuteReader();
+                    table.Load(myReader);
+                    myReader.Close();
+                    myCon.Close();
+
+                }
+            }
+            return new JsonResult("Updated Successfully!");
+        }
+
+
+        [HttpPut, Route("updatelocation")]
+        public JsonResult updateLocation(int NIC, double lat, double lng)
+        {
+            string query = @"UPDATE dbo.JS_USERS SET Latitude=" + lat + ",Longitude=" + lng + " WHERE NIC=" + NIC;
+            DataTable table = new DataTable();
+            string sqlDataSource = _configuration.GetConnectionString("SLBFEDB");
+            SqlDataReader myReader;
+            using (SqlConnection myCon = new SqlConnection(sqlDataSource))
+            {
+                myCon.Open();
+                using (SqlCommand myCommand = new SqlCommand(query, myCon))
+                {
+                    myReader = myCommand.ExecuteReader();
+                    table.Load(myReader);
+                    myReader.Close();
+                }
+            }
+            return new JsonResult("Updated Successfully!");
+        }
+
     }
 }

@@ -11,6 +11,6 @@ namespace SLBFE_API.Models
         public string Work { get; set; } = null!;
         public string Emmergency { get; set; } = null!;
 
-        public virtual JsUser JsNicNavigation { get; set; } = null!;
+       // public virtual JsUser JsNicNavigation { get; set; } = null!; 
     }
 }

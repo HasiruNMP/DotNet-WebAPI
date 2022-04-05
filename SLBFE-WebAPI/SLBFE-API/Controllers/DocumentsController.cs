@@ -16,14 +16,14 @@ namespace SLBFE_API.Controllers
         }
 
         [HttpPut,Route("upload")]
-        public ActionResult SaveFile()
+        public ActionResult SaveFile(int NIC, string documentType)
         {
             try
             {
                 var httpRequest = Request.Form;
                 var postedFile = httpRequest.Files[0];
                 string filename = postedFile.FileName;
-                var physicalPath = _webHostEnvironment.ContentRootPath + "/FileStorage/" + filename;
+                var physicalPath = _webHostEnvironment.ContentRootPath + "/FileStorage/"+filename;
 
                 using(var stream = new FileStream(physicalPath, FileMode.Create))
                 {
@@ -39,7 +39,7 @@ namespace SLBFE_API.Controllers
         }
 
         [HttpGet("download")]
-        public async Task<ActionResult> DownloadFile()
+        public async Task<ActionResult> DownloadFile(int NIC, string documentType)
         {
             var filePath = $"FileStorage/pexels-cottonbro-7095500.jpg";
 

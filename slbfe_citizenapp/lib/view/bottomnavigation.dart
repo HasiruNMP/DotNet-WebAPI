@@ -4,15 +4,23 @@ import 'package:slbfe_citizenapp/view/addcomplaint.dart';
 import 'package:slbfe_citizenapp/view/home.dart';
 import 'package:slbfe_citizenapp/view/profile.dart';
 import 'package:slbfe_citizenapp/view/signin.dart';
+import 'package:slbfe_citizenapp/utilities//global.dart';
 
 class BottomNavigation extends StatefulWidget {
-  const BottomNavigation({Key? key}) : super(key: key);
+  int nic = 0;
+  BottomNavigation(this.nic);
 
   @override
   State<BottomNavigation> createState() => _BottomNavigationState();
 }
 
 class _BottomNavigationState extends State<BottomNavigation> {
+  @override
+  void initState() {
+    super.initState();
+    globals.nic = widget.nic;
+  }
+
   int _selectedIndex = 0;
   static const TextStyle optionStyle =
       TextStyle(fontSize: 30, fontWeight: FontWeight.bold);
