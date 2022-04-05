@@ -8,6 +8,7 @@ import 'bottomnavigation.dart';
 
 class SignIn extends StatefulWidget {
   const SignIn({Key? key}) : super(key: key);
+  static String id = "signin";
 
   @override
   State<SignIn> createState() => _SignInState();

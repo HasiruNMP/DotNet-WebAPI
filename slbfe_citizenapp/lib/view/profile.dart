@@ -150,7 +150,7 @@ class _ProfileState extends State<Profile> {
                     Navigator.push(
                       context,
                       MaterialPageRoute(
-                          builder: (context) => const PersonaInfo()),
+                          builder: (context) => PersonaInfo(global.nic)),
                     );
                   },
                   child: const Text('More Details'),
@@ -210,7 +210,8 @@ class _ProfileState extends State<Profile> {
                   onPressed: () {
                     Navigator.push(
                       context,
-                      MaterialPageRoute(builder: (context) => const Contacts()),
+                      MaterialPageRoute(
+                          builder: (context) => Contacts(global.nic)),
                     );
                   },
                   child: const Text('Contacts'),

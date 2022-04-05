@@ -41,6 +41,7 @@ dependencies:
   file_picker: ^4.5.1
   advance_notification: ^1.0.6
   shared_preferences: ^2.0.13
+  twilio_phone_verify: ^2.0.0
 
 
 dev_dependencies:
