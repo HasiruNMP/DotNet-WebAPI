@@ -3,6 +3,8 @@ import 'package:flutter_admin_scaffold/admin_scaffold.dart';
 import 'dart:convert';
 
 import 'package:slbfe_website/views/complaints.dart';
+import 'package:slbfe_website/views/registration.dart';
+import 'package:slbfe_website/views/signin.dart';
 
 class HomeScreen extends StatefulWidget {
   const HomeScreen({Key? key}) : super(key: key);
@@ -42,7 +44,17 @@ class _HomeScreenState extends State<HomeScreen> {
           ),
           MenuItem(
             title: 'QUALIFICATIONS',
-            route: '2',
+            route: '3',
+            icon: Icons.dashboard,
+          ),
+          MenuItem(
+            title: 'SIGN IN',
+            route: '4',
+            icon: Icons.dashboard,
+          ),
+          MenuItem(
+            title: 'REGISTRATION',
+            route: '5',
             icon: Icons.dashboard,
           ),
         ],
@@ -93,6 +105,12 @@ class _HomeScreenState extends State<HomeScreen> {
           ),
           Center(
             child: Text('Forth Page'),
+          ),
+          Center(
+            child: SignIn(),
+          ),
+          Center(
+            child: Registration(),
           )
         ],
       ),
