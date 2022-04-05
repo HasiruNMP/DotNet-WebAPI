@@ -4,7 +4,7 @@ import 'package:slbfe_citizenapp/view/documents.dart';
 import 'package:slbfe_citizenapp/view/personaldetails.dart';
 import 'package:slbfe_citizenapp/view/signin.dart';
 import 'package:slbfe_citizenapp/view/updatelocation.dart';
-
+import 'package:slbfe_citizenapp/utilities//global.dart' as global;
 import '../api/apiservice.dart';
 import 'accountSetting.dart';
 import 'contacts.dart';
@@ -32,7 +32,7 @@ class _ProfileState extends State<Profile> {
   }
 
   Future<void> CallApi() async {
-    user = await APIService.getUserDetails('a@gmail.com');
+    user = await APIService.getUserDetails(global.nic);
     updateUi(user);
   }
 

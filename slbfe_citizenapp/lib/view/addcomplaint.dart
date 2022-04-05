@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:slbfe_citizenapp/model/complaintmodel.dart';
-
+import 'package:slbfe_citizenapp/utilities//global.dart' as global;
 import '../api/apiservice.dart';
 
 class AddComplaint extends StatefulWidget {
@@ -15,27 +15,23 @@ class _AddComplaintState extends State<AddComplaint> {
   TextEditingController feedbackController = TextEditingController();
   final formkey = GlobalKey<FormState>();
 
-
-
-
   complaintModel complaint = complaintModel(
-      complaintid: 0,
-      jsnic: 1,
-      complain: '',
-      feedback: '',
-
+    complaintid: 0,
+    jsnic: 1,
+    complain: '',
+    feedback: '',
   );
 
   Future<void> addDatabase() async {
-    complaint.jsnic = 1;
+    complaint.jsnic = global.nic;
     complaint.complain = complaintController.text;
 
     print(complaint.jsnic);
     print(complaint.complain);
     var saveResponse = await APIService.addComplaint(complaint);
     saveResponse == true
-        ? showAlertDialog('Complaint added Successfully!',context)
-        : showAlertDialog('Failed to add complaint!',context);
+        ? showAlertDialog('Complaint added Successfully!', context)
+        : showAlertDialog('Failed to add complaint!', context);
   }
 
   @override
@@ -96,7 +92,6 @@ class _AddComplaintState extends State<AddComplaint> {
                     decoration: InputDecoration(
                       border: OutlineInputBorder(),
                       errorStyle: TextStyle(
-
                         color: Colors.black,
                       ),
                       filled: false,
@@ -108,21 +103,22 @@ class _AddComplaintState extends State<AddComplaint> {
                           fontWeight: FontWeight.bold),
                     ),
                     maxLines: 5,
-                    validator: (value) {
-                      if (value!.isEmpty) {
-                        return 'Enter the Complaint';
-                      } else {
-                        return null;
-                      }
-                    },
+                    // validator: (value) {
+                    //   if (value!.isEmpty) {
+                    //     return 'Enter the Complaint';
+                    //   } else {
+                    //     return null;
+                    //   }
+                    // },
                   ),
                 ),
               ),
-
               ElevatedButton(
                 onPressed: () {
-
-                  addDatabase();
+                  if (formkey.currentState!.validate()) {
+                    addDatabase();
+                  } else
+                    return null;
                 },
                 child: const Text('Send'),
               ),
@@ -133,7 +129,8 @@ class _AddComplaintState extends State<AddComplaint> {
     );
   }
 }
-showAlertDialog(message,BuildContext context) {
+
+showAlertDialog(message, BuildContext context) {
   // set up the button
   Widget okButton = FlatButton(
     child: Text("OK"),

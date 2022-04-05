@@ -4,10 +4,10 @@ import 'package:slbfe_citizenapp/view/addcomplaint.dart';
 import 'package:slbfe_citizenapp/view/home.dart';
 import 'package:slbfe_citizenapp/view/profile.dart';
 import 'package:slbfe_citizenapp/view/signin.dart';
-import 'package:slbfe_citizenapp/utilities//global.dart';
+import 'package:slbfe_citizenapp/utilities//global.dart' as global;
 
 class BottomNavigation extends StatefulWidget {
-  int nic = 0;
+  int nic;
   BottomNavigation(this.nic);
 
   @override
@@ -18,7 +18,8 @@ class _BottomNavigationState extends State<BottomNavigation> {
   @override
   void initState() {
     super.initState();
-    globals.nic = widget.nic;
+    global.nic = widget.nic;
+    print("logged NIC:${global.nic}");
   }
 
   int _selectedIndex = 0;

@@ -1,3 +1,3 @@
-class globals {
-  static late int nic;
-}
+library my_prj.globas;
+
+int nic = 0;

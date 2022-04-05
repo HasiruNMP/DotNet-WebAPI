@@ -17,10 +17,10 @@ namespace SLBFE_API.Controllers
             _configuration = configuration;
         }
         [HttpGet]
-        public JsonResult GetUser(String email)
+        public JsonResult GetUser(String nic)
         {
             string query = @"select NIC,Email,Password,FirstName,LastName,DOB,Address,Latitude,Longitude,Profession,Affiliation,Gender,Nationality,MaritalStatus,Validity,PrimaryPhone from dbo.Js_Users
-            Where Email ='" + email + "' ";
+            Where NIC ='" + nic + "' ";
             DataTable table = new DataTable();
             string sqlDataSource = _configuration.GetConnectionString("SLBFEDB");
             SqlDataReader myReader;
@@ -162,12 +162,12 @@ namespace SLBFE_API.Controllers
 
 
         [HttpGet, Route("login")]
-        public ActionResult JsUserLogin(String email,String password)
+        public ActionResult JsUserLogin(String email, String password)
         {
-            string query = @"SELECT LastName
-                      ,FirstName
+            string query = @"SELECT Email
+                      ,Password,NIC
                   FROM dbo.JS_USERS
-                  Where Email ='" + email + "'  AND Password ='" + password + "'";
+                  Where Email ='" +email+"'  AND Password ='"+password+"'";
 
             DataTable table = new DataTable();
             string sqlDataSource = _configuration.GetConnectionString("SLBFEDB");
@@ -176,7 +176,9 @@ namespace SLBFE_API.Controllers
             {
                 myCon.Open();
                 using (SqlCommand myCommand = new SqlCommand(query, myCon))
+          
                 {
+               
                     myReader = myCommand.ExecuteReader();
                     table.Load(myReader);
                     myReader.Close();

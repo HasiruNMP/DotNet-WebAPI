@@ -3,6 +3,8 @@ import 'package:flutter/material.dart';
 import 'package:slbfe_citizenapp/api/apiservice.dart';
 import 'package:slbfe_citizenapp/model/loginmodel.dart';
 import 'package:slbfe_citizenapp/view/registration.dart';
+import 'package:slbfe_citizenapp/utilities//global.dart' as global;
+import 'bottomnavigation.dart';
 
 class SignIn extends StatefulWidget {
   const SignIn({Key? key}) : super(key: key);
@@ -69,15 +71,27 @@ class _SignInState extends State<SignIn> {
                   ),
                 ),
                 ElevatedButton(
-                  onPressed: () {
+                  onPressed: () async {
                     if (_formKey.currentState!.validate()) {
                       requestModel.email = _userEmailController.text;
                       requestModel.password = _userPassworController.text;
-                      print(requestModel.email);
+                      //  print(requestModel.toJson());
 
-                      print(requestModel.toJson());
-
-                      APIService.login(requestModel);
+                      int login = await APIService.login(requestModel);
+                      //  print("status: $login");
+                      if (login == 0) {
+                        showAlertDialog(
+                            'Wrong password or email provided', context);
+                      } else if (login == -1) {
+                        showAlertDialog('Something went Wrong', context);
+                      } else {
+                        Navigator.push(
+                          context,
+                          MaterialPageRoute(
+                            builder: (context) => BottomNavigation(login),
+                          ),
+                        );
+                      }
                     } else {
                       return null;
                     }
@@ -114,4 +128,29 @@ class _SignInState extends State<SignIn> {
       ),
     );
   }
+}
+
+showAlertDialog(message, BuildContext context) {
+  // set up the button
+  Widget okButton = FlatButton(
+    child: Text("OK"),
+    onPressed: () {
+      Navigator.pop(context);
+    },
+  );
+  // set up the AlertDialog
+  AlertDialog alert = AlertDialog(
+    title: Text("Alert Box"),
+    content: Text(message),
+    actions: [
+      okButton,
+    ],
+  );
+  // show the dialog
+  showDialog(
+    context: context,
+    builder: (BuildContext context) {
+      return alert;
+    },
+  );
 }

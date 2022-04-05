@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:slbfe_citizenapp/model/contactsmodel.dart';
+import 'package:slbfe_citizenapp/utilities/global.dart' as global;
 
 import '../api/apiservice.dart';
 
@@ -25,7 +26,7 @@ class _ContactsState extends State<Contacts> {
   }
 
   Future<void> CallApi() async {
-    contact = await APIService.getContacts(1);
+    contact = await APIService.getContacts(global.nic);
     updateUi(contact);
   }
 
