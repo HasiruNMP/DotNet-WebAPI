@@ -3,6 +3,7 @@ import 'package:flutter_admin_scaffold/admin_scaffold.dart';
 import 'dart:convert';
 
 import 'package:slbfe_website/views/complaints.dart';
+import 'package:slbfe_website/views/profile.dart';
 import 'package:slbfe_website/views/registration.dart';
 import 'package:slbfe_website/views/signin.dart';
 
@@ -95,7 +96,7 @@ class _HomeScreenState extends State<HomeScreen> {
         controller: controller,
         children: const <Widget>[
           Center(
-            child: Text('First Page'),
+            child: Profile(),
           ),
           Center(
             child: Complaints(),
