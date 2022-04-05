@@ -5,7 +5,8 @@ import 'package:slbfe_citizenapp/utilities/global.dart' as global;
 
 class PersonaInfo extends StatefulWidget {
   static String id = 'personalinfo';
-  const PersonaInfo({Key? key}) : super(key: key);
+  int nic;
+  PersonaInfo(this.nic);
 
   @override
   _PersonaInfoState createState() => _PersonaInfoState();
@@ -36,7 +37,8 @@ class _PersonaInfoState extends State<PersonaInfo> {
   }
 
   Future<void> CallApi() async {
-    user = await APIService.getUserDetails(global.nic);
+    print(global.nic);
+    user = await APIService.getUserDetails(widget.nic);
     updateUi(user);
   }
 

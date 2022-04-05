@@ -1,5 +1,8 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:slbfe_citizenapp/utilities//global.dart' as global;
+
+import '../api/apiservice.dart';
 
 class resetPassword extends StatefulWidget {
   const resetPassword({Key? key}) : super(key: key);
@@ -9,6 +12,30 @@ class resetPassword extends StatefulWidget {
 }
 
 class _resetPasswordState extends State<resetPassword> {
+  late int nic;
+  bool loading = false;
+  var contact;
+  TextEditingController mobileController = TextEditingController();
+  @override
+  void initState() {
+    super.initState();
+    print(global.nic);
+    nic = global.nic;
+    CallApi();
+  }
+
+  Future<void> CallApi() async {
+    contact = await APIService.getContacts(nic);
+    updateUi(contact);
+  }
+
+  void updateUi(dynamic contact) {
+    setState(() {
+      mobileController.text = contact[0]["Personal"];
+      loading = true;
+    });
+  }
+
   final _formKey = GlobalKey<FormState>();
 
   @override
@@ -30,10 +57,16 @@ class _resetPasswordState extends State<resetPassword> {
                     height: 10,
                   ),
                   TextFormField(
-                    obscureText: true,
+                    controller: mobileController,
                     decoration: const InputDecoration(
                       labelText: 'Phone Number',
                     ),
+                    validator: (value) {
+                      if (value!.isEmpty) {
+                        return 'Please enter phone no';
+                      }
+                      return null;
+                    },
                   ),
                   const SizedBox(
                     height: 20,
@@ -43,7 +76,11 @@ class _resetPasswordState extends State<resetPassword> {
                     child: FlatButton(
                       color: Colors.deepPurple[200],
                       textColor: Colors.black, // foreground
-                      onPressed: () {},
+                      onPressed: () {
+                        if (_formKey.currentState!.validate()) {
+                        } else
+                          return null;
+                      },
                       child: Text('Send OTP'),
                     ),
                   ),

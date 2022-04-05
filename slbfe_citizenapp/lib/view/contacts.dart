@@ -5,7 +5,8 @@ import 'package:slbfe_citizenapp/utilities/global.dart' as global;
 import '../api/apiservice.dart';
 
 class Contacts extends StatefulWidget {
-  const Contacts({Key? key}) : super(key: key);
+  int nic;
+  Contacts(this.nic);
 
   @override
   _ContactsState createState() => _ContactsState();
@@ -26,7 +27,7 @@ class _ContactsState extends State<Contacts> {
   }
 
   Future<void> CallApi() async {
-    contact = await APIService.getContacts(global.nic);
+    contact = await APIService.getContacts(widget.nic);
     updateUi(contact);
   }
 
