@@ -49,7 +49,7 @@ class _accountSettingState extends State<accountSetting> {
                       Navigator.push(
                         context,
                         MaterialPageRoute(
-                            builder: (context) => const resetPassword()),
+                            builder: (context) => resetPassword(nic)),
                       );
                     },
                     child: Text('Reset Password'),

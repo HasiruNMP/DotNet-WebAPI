@@ -256,4 +256,30 @@ class APIService {
       return -1;
     }
   }
+
+  static Future updatePassword(int nic, String password) async {
+    var headers = {'Content-Type': 'application/json'};
+    var request = http.Request(
+      'PUT',
+      Uri.parse(
+          'https://10.0.2.2:7018/api/JsUser/updatePassword?nic=102&password=$password'),
+    );
+    request.body = json.encode({
+      "NIC": nic,
+      "Password": password,
+    });
+    request.headers.addAll(headers);
+
+    http.StreamedResponse response = await request.send();
+
+    if (response.statusCode == 200) {
+      print(response.statusCode);
+      print(await response.stream.bytesToString());
+      return true;
+    } else {
+      print(response.statusCode);
+      print(response.reasonPhrase);
+      return false;
+    }
+  }
 }

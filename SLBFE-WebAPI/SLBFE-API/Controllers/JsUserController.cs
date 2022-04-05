@@ -330,5 +330,30 @@ namespace SLBFE_API.Controllers
             return Ok(table);
         }
 
+        [HttpPut, Route("updatePassword")]
+        public JsonResult updatePassword(int nic, String password)
+        {
+            string query = @"update dbo.Js_Users set Password='"+password + "' where NIC='"+nic+"'";
+
+            DataTable table = new DataTable();
+            string sqlDataSource = _configuration.GetConnectionString("SLBFEDB");
+            SqlDataReader myReader;
+            using (SqlConnection myCon = new SqlConnection(sqlDataSource))
+            {
+                myCon.Open();
+                using (SqlCommand myCommand = new SqlCommand(query, myCon))
+                {
+              
+                    myReader = myCommand.ExecuteReader();
+                    table.Load(myReader);
+                    myReader.Close();
+                    myCon.Close();
+
+                }
+            }
+            return new JsonResult("Password Updated Successfully!");
+        }
+
+
     }
 }

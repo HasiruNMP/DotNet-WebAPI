@@ -42,7 +42,7 @@ class _ContactsState extends State<Contacts> {
 
   Future<void> updateUserDetails() async {
     contactModel userContact = contactModel(
-      js_nic: 1,
+      js_nic: widget.nic,
       emmergency: EmergencyNumberController.text,
       personal: primaryNumberController.text,
       work: workNumberController.text,
