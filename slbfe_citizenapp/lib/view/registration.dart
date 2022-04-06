@@ -3,6 +3,8 @@ import 'package:flutter/services.dart';
 import 'package:intl/intl.dart';
 import 'package:slbfe_citizenapp/api/apiservice.dart';
 import 'package:slbfe_citizenapp/model/jsusermodel.dart';
+import 'package:slbfe_citizenapp/utilities//global.dart' as global;
+import 'bottomnavigation.dart';
 
 class Registration extends StatefulWidget {
   const Registration({Key? key}) : super(key: key);
@@ -34,7 +36,7 @@ class _RegistrationState extends State<Registration> {
   }
 
   jsUserModel user = jsUserModel(
-      nic: 11,
+      nic: 0,
       email: '',
       password: '',
       firstname: '',
@@ -66,12 +68,12 @@ class _RegistrationState extends State<Registration> {
     user.primaryphone = primaryPhoneController.text;
     print(user.email);
     print(user.firstname);
-    var saveResponse = await APIService.adduser(user);
+    bool saveResponse = await APIService.adduser(user);
     saveResponse == true
         ? Navigator.push(
             context,
             MaterialPageRoute(
-              builder: (context) => Registration(),
+              builder: (context) => BottomNavigation(user.nic),
             ),
           )
         : showAlertDialog(context);

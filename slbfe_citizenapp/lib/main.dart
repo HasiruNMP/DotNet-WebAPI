@@ -32,7 +32,10 @@ class MyApp extends StatelessWidget {
       theme: ThemeData(
         primarySwatch: Colors.blue,
       ),
-      home: AddComplaint(),
+      routes: {
+        SignIn.id: (context) => SignIn(),
+      },
+      home: SignIn(),
     );
   }
 }

@@ -133,11 +133,11 @@ namespace SLBFE_API.Context
                     .HasMaxLength(200)
                     .IsUnicode(false);
 
-                entity.HasOne(d => d.JsNicNavigation)
-                    .WithMany(p => p.JsContacts)
-                    .HasForeignKey(d => d.JsNic)
-                    .OnDelete(DeleteBehavior.ClientSetNull)
-                    .HasConstraintName("FK__JS_CONTAC__JS_NI__0C85DE4D");
+               /// entity.HasOne(d => d.JsNicNavigation)
+                //    .WithMany(p => p.JsContacts)
+                 //   .HasForeignKey(d => d.JsNic)
+                  //  .OnDelete(DeleteBehavior.ClientSetNull)
+                  //  .HasConstraintName("FK__JS_CONTAC__JS_NI__0C85DE4D");
             });
 
             modelBuilder.Entity<JsDocument>(entity =>

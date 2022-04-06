@@ -1,11 +1,11 @@
-class LoginRequestModel {
-  String email;
+class PasswordModel {
+  int nic;
   String password;
-  LoginRequestModel({required this.email, required this.password});
+  PasswordModel({required this.nic, required this.password});
 
   Map<String, dynamic> toJson() {
     Map<String, dynamic> map = {
-      'Email': email.trim(),
+      'NIC': nic,
       'Password': password.trim(),
     };
     return map;
