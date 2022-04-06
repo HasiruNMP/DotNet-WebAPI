@@ -5,7 +5,9 @@ import 'dart:convert';
 import 'package:slbfe_website/views/complaints.dart';
 import 'package:slbfe_website/views/profile.dart';
 import 'package:slbfe_website/views/registration.dart';
+import 'package:slbfe_website/views/search.dart';
 import 'package:slbfe_website/views/signin.dart';
+import 'package:slbfe_website/views/validate.dart';
 
 class HomeScreen extends StatefulWidget {
   const HomeScreen({Key? key}) : super(key: key);
@@ -44,7 +46,7 @@ class _HomeScreenState extends State<HomeScreen> {
             icon: Icons.dashboard,
           ),
           MenuItem(
-            title: 'QUALIFICATIONS',
+            title: 'SEARCH',
             route: '3',
             icon: Icons.dashboard,
           ),
@@ -102,10 +104,10 @@ class _HomeScreenState extends State<HomeScreen> {
             child: Complaints(),
           ),
           Center(
-            child: Text('Third Page'),
+            child: Validate(),
           ),
           Center(
-            child: Text('Forth Page'),
+            child: Search(),
           ),
           Center(
             child: SignIn(),

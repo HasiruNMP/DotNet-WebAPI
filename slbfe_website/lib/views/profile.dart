@@ -4,6 +4,7 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:google_maps_flutter_web/google_maps_flutter_web.dart';
 import 'package:slbfe_website/views/map.dart';
+import 'package:http/http.dart' as http;
 
 class Profile extends StatefulWidget {
   const Profile({Key? key}) : super(key: key);
@@ -320,7 +321,9 @@ class _DocumentsState extends State<Documents> {
                 Text("Ordinary Level Exam Certificate"),
                 OutlinedButton(
                   child: Text("Download"),
-                  onPressed: (){},
+                  onPressed: (){
+                    downloadFile();
+                  },
                 ),
               ],
             ),
@@ -333,7 +336,9 @@ class _DocumentsState extends State<Documents> {
                 Text("Ordinary Level Exam Certificate"),
                 OutlinedButton(
                   child: Text("Download"),
-                  onPressed: (){},
+                  onPressed: (){
+                    downloadFile();
+                  },
                 ),
               ],
             ),
@@ -341,6 +346,16 @@ class _DocumentsState extends State<Documents> {
         ],
       ),
     );
+  }
+  Future<void> downloadFile() async {
+    var request = http.Request('GET', Uri.parse('https://localhost:7018/documents/download?NIC=1&documentType=CV'));
+    http.StreamedResponse response = await request.send();
+    if (response.statusCode == 200) {
+      print(await response.stream.bytesToString());
+    }
+    else {
+      print(response.reasonPhrase);
+    }
   }
 }
 
