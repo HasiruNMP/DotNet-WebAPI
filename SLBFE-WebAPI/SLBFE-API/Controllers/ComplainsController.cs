@@ -20,10 +20,31 @@ namespace SLBFE_API.Controllers
             _configuration = configuration;
         }
 
-        [HttpGet,Route("getcomplaintlist")]
-        public JsonResult GetComplaintList()
+        [HttpGet,Route("getnewcomplaintlist")]
+        public JsonResult GetNewComplaintList()
         {
-            string query = @"SELECT * FROM [dbo].[JS_COMPLAINS]";
+            string query = @"SELECT * FROM [dbo].[JS_COMPLAINS] WHERE Feedback = 'No Feedback'";
+            DataTable table = new DataTable();
+            string sqlDataSource = _configuration.GetConnectionString("SLBFEDB");
+            SqlDataReader myReader;
+            using (SqlConnection myCon = new SqlConnection(sqlDataSource))
+            {
+                myCon.Open();
+                using (SqlCommand myCommand = new SqlCommand(query, myCon))
+                {
+                    myReader = myCommand.ExecuteReader();
+                    table.Load(myReader);
+                    myReader.Close();
+                    myCon.Close();
+                }
+            }
+            return new JsonResult(table);
+        }
+
+        [HttpGet, Route("getoldcomplaintlist")]
+        public JsonResult GetOldComplaintList()
+        {
+            string query = @"SELECT * FROM [dbo].[JS_COMPLAINS] WHERE Feedback != 'No Feedback'";
             DataTable table = new DataTable();
             string sqlDataSource = _configuration.GetConnectionString("SLBFEDB");
             SqlDataReader myReader;
@@ -42,9 +63,9 @@ namespace SLBFE_API.Controllers
         }
 
         [HttpPut,Route("sendfeedback")]
-        public JsonResult PutFeedback(JsComplain comp)
+        public JsonResult PutFeedback(int complaintId, String feedback)
         {
-            string query = @"UPDATE [dbo].[JS_COMPLAINS] SET Feedback = @Feedback WHERE ComplaintID = @ComplaintID";
+            string query = @"UPDATE [dbo].[JS_COMPLAINS] SET Feedback = '" + feedback + "' WHERE ComplaintID =" + complaintId;
             DataTable table = new DataTable();
             string sqlDataSource = _configuration.GetConnectionString("SLBFEDB");
             SqlDataReader myReader;
@@ -53,9 +74,6 @@ namespace SLBFE_API.Controllers
                 myCon.Open();
                 using (SqlCommand myCommand = new SqlCommand(query, myCon))
                 {
-                    //myCommand.Parameters.AddWithValue("@NIC", comp.JsNicNavigation);
-                    myCommand.Parameters.AddWithValue("@ComplaintID", comp.ComplaintId);
-                    myCommand.Parameters.AddWithValue("@Feedback", comp.Feedback);
                     myReader = myCommand.ExecuteReader();
                     table.Load(myReader);
                     myReader.Close();
