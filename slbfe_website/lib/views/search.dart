@@ -1,5 +1,7 @@
+import 'dart:convert';
 import 'package:flutter/material.dart';
 import 'package:group_button/group_button.dart';
+import 'package:http/http.dart' as http;
 
 class Search extends StatefulWidget {
   const Search({Key? key}) : super(key: key);
@@ -16,8 +18,25 @@ class _SearchState extends State<Search>{
   List<String> hEduList = ["Any", "Certificate", "Diploma", "Baccalaureat","Masterate","Doctorate"];
   List<String> hEduFieldList = ["Any", "Science", "Engineering", "Computer Science",];
 
-
   String _selectedStream = "Any";
+
+  var jobSeekers = [];
+  bool searched = false;
+
+  Future fetchUsers() async {
+    final response = await http.get(Uri.parse('https://localhost:7018/searchbyqualifications?hEdu=Bachelor&filterOn=true'));
+    var resJson = json.decode(response.body);
+
+    if (response.statusCode == 200) {
+      var a = resJson as List;
+      jobSeekers = a.toList();
+      setState(() => searched = true);
+    }
+    else {
+      print(response.reasonPhrase);
+    }
+
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -170,7 +189,9 @@ class _SearchState extends State<Search>{
                   child: Padding(
                     padding: const EdgeInsets.symmetric(horizontal: 10.0,vertical: 8),
                     child: ElevatedButton(
-                      onPressed: (){},
+                      onPressed: (){
+                        fetchUsers();
+                      },
                       child: Text("SEARCH"),
                     ),
                   ),
@@ -180,50 +201,61 @@ class _SearchState extends State<Search>{
           ),
           Expanded(
             flex: 3,
-            child: ListView(
+            child: (searched)?
+            ListView(
+                children: List.generate(jobSeekers.length, (index) => JobSeekerCard())
+            ):
+            Center(child: Text("Press Search"),)
+          ),
+        ],
+      ),
+    );
+  }
+}
+
+class JobSeekerCard extends StatelessWidget {
+  const JobSeekerCard({
+    Key? key,
+  }) : super(key: key);
+
+  @override
+  Widget build(BuildContext context) {
+    return Padding(
+      padding: const EdgeInsets.symmetric(vertical: 1, horizontal: 8),
+      child: Card(
+        color: Colors.teal.shade100,
+        child: InkWell(
+          onTap: () {},
+          child: Container(
+            child: Row(
               children: [
                 Padding(
-                  padding: const EdgeInsets.symmetric(vertical: 1, horizontal: 8),
-                  child: Card(
-                    color: Colors.teal.shade100,
-                    child: InkWell(
-                      onTap: () {},
-                      child: Container(
-                        child: Row(
-                          children: [
-                            Padding(
-                              padding: const EdgeInsets.all(8.0),
-                              child: CircleAvatar(
-                                radius: 40,
-                                backgroundColor: Colors.teal,
-                              ),
-                            ),
-                            Column(
-                              crossAxisAlignment: CrossAxisAlignment.start,
-                              children: [
-                                Text("Name, Age, Gender, Profession,"),
-                                Text("Email: hasirunmp@gmail.com, Phone: 0712345678"),
-                              ],
-                            ),
-                            Expanded(child: Container()),
-                            Padding(
-                              padding: const EdgeInsets.all(8.0),
-                              child: OutlinedButton(onPressed: (){}, child: Text("Email"),),
-                            ),
-                            Padding(
-                              padding: const EdgeInsets.all(8.0),
-                              child: OutlinedButton(onPressed: (){}, child: Text("View CV"),),
-                            ),
-                          ],
-                        ),
-                      ),
-                    ),
+                  padding: const EdgeInsets.all(8.0),
+                  child: CircleAvatar(
+                    radius: 40,
+                    backgroundColor: Colors.teal,
                   ),
+                ),
+                Column(
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  children: [
+                    Text("Name, Age, Gender, Profession,"),
+                    Text("Email: hasirunmp@gmail.com, Phone: 0712345678"),
+                  ],
+                ),
+                Expanded(child: Container()),
+                Padding(
+                  padding: const EdgeInsets.all(8.0),
+                  child: OutlinedButton(onPressed: (){}, child: Text("Email"),),
+                ),
+                Padding(
+                  padding: const EdgeInsets.all(8.0),
+                  child: OutlinedButton(onPressed: (){}, child: Text("View CV"),),
                 ),
               ],
             ),
           ),
-        ],
+        ),
       ),
     );
   }
