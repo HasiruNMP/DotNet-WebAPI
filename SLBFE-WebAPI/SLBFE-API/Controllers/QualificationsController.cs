@@ -16,7 +16,7 @@ namespace SLBFE_API.Controllers
         }
 
         [HttpGet, Route("searchbyqualifications")]
-        public ActionResult SearchByQualifications(bool o, bool a, bool h, string f)
+        public ActionResult SearchByQualifications(string? olEnglish, string? olScience, string? olMaths, string? alStream, string? alResults, string? hEdu, string? hEduField, bool filterOn)
         {
             string query = @"SELECT [NIC]
                       ,[Email]
@@ -31,14 +31,28 @@ namespace SLBFE_API.Controllers
                       ,[MaritalStatus]
                       ,[Validity]
                       ,[PrimaryPhone]
-                      ,[QualificationID]
-                      ,[JS_NIC]
-                      ,[OLStatus]
-                      ,[ALStatus]
-                      ,[DegreeStatus]
-                      ,[DegreeField]
-                  FROM [dbo].[JS_USERS JS_QUALIFICATIONS]
-                  Where OLStatus = 1 AND ALStatus = 1 AND DegreeStatus = 1 AND DegreeField =" +"'" + f + "'";
+                      ,[OLScience]
+                      ,[OLMaths]
+                      ,[OLEnglish]
+                      ,[ALStream]
+                      ,[ALResults]
+                      ,[ALEnglish]
+                      ,[HigherEducation]
+                      ,[HigherEducationField]
+                  FROM [dbo].[JSUserQualifications]";
+
+            if (filterOn) {
+
+                query = query + " WHERE 1=1";
+
+                if (olEnglish != null) { query = query + $" AND [OLEnglish] = '{olEnglish}'"; }
+                if (olScience != null) { query = query + $" AND [OLScience] = '{olScience}'"; }
+                if (olMaths != null) { query = query + $" AND [OLMaths] = '{olMaths}'"; }
+                if (alStream != null) { query = query + $" AND [ALStream] = '{alStream}'"; }
+                if (alResults != null) { query = query + $" AND [ALResults] = '{alResults}'"; }
+                if (hEdu != null) { query = query + $" AND [HigherEducation] = '{hEdu}'"; }
+                if (hEduField != null) { query = query + $" AND [HigherEducationField] = '{hEduField}'"; }
+            }
 
             DataTable table = new DataTable();
             string sqlDataSource = _configuration.GetConnectionString("SLBFEDB");
