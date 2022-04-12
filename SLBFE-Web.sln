@@ -3,7 +3,7 @@ Microsoft Visual Studio Solution File, Format Version 12.00
 # Visual Studio Version 17
 VisualStudioVersion = 17.0.32126.317
 MinimumVisualStudioVersion = 10.0.40219.1
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "SLBFE-API", "SLBFE-API/SLBFE-API.csproj", "{5641E524-2FFF-43AF-96B3-562A555161EA}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "SLBFE-API", "SLBFE-API\SLBFE-API.csproj", "{565D226B-E7BF-412B-A037-687595998ADA}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -11,15 +11,15 @@ Global
 		Release|Any CPU = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(ProjectConfigurationPlatforms) = postSolution
-		{5641E524-2FFF-43AF-96B3-562A555161EA}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{5641E524-2FFF-43AF-96B3-562A555161EA}.Debug|Any CPU.Build.0 = Debug|Any CPU
-		{5641E524-2FFF-43AF-96B3-562A555161EA}.Release|Any CPU.ActiveCfg = Release|Any CPU
-		{5641E524-2FFF-43AF-96B3-562A555161EA}.Release|Any CPU.Build.0 = Release|Any CPU
+		{565D226B-E7BF-412B-A037-687595998ADA}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{565D226B-E7BF-412B-A037-687595998ADA}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{565D226B-E7BF-412B-A037-687595998ADA}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{565D226B-E7BF-412B-A037-687595998ADA}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
 	EndGlobalSection
 	GlobalSection(ExtensibilityGlobals) = postSolution
-		SolutionGuid = {D0FDD6F6-9706-4F70-9868-79886396F3F6}
+		SolutionGuid = {9B23F4AA-2B7C-423A-9A75-290F1F2BA8AF}
 	EndGlobalSection
 EndGlobal

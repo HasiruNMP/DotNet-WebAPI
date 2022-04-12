@@ -15,7 +15,7 @@ namespace SLBFE_API.Controllers
             _configuration = configuration;
         }
 
-        [HttpGet, Route("searchbyqualifications")]
+        [HttpGet, Route("search")]
         public ActionResult SearchByQualifications(string? olEnglish, string? olScience, string? olMaths, string? alStream, string? alResults, string? hEdu, string? hEduField, bool filterOn)
         {
             string query = @"SELECT [NIC]
