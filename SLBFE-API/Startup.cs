@@ -67,11 +67,7 @@ namespace SLBFE_API
             }*/
 
             app.UseSwagger();
-            app.UseSwaggerUI(options =>
-            {
-                options.SwaggerEndpoint("/swagger/v1/swagger.json", "API V1");
-                options.RoutePrefix = string.Empty;
-            });
+            app.UseSwaggerUI();
 
             /*if (env.IsDevelopment())
             {
