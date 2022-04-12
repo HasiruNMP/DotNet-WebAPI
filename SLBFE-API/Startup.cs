@@ -69,6 +69,7 @@ namespace SLBFE_API
 
             app.UseSwagger();
             app.UseSwaggerUI();
+
             var option = new RewriteOptions();
             option.AddRedirect("^$", "swagger");
             app.UseRewriter(option);
