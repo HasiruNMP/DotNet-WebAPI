@@ -5,7 +5,7 @@ using System.Data.SqlClient;
 
 namespace SLBFE_API.Controllers
 {
-    //[Route("api/[controller]")]
+    [Route("jobseekers/")]
     [ApiController]
     public class QualificationsController : ControllerBase
     {

@@ -66,15 +66,15 @@ namespace SLBFE_API
                 app.UseSwaggerUI();
             }*/
 
-            //app.UseSwagger();
-            //app.UseSwaggerUI();
+            app.UseSwagger();
+            app.UseSwaggerUI();
 
-            if (env.IsDevelopment())
+            /*if (env.IsDevelopment())
             {
                 //app.UseDeveloperExceptionPage();
                 app.UseSwagger();
                 app.UseSwaggerUI();
-            }
+            }*/
 
             app.UseRouting();
 
