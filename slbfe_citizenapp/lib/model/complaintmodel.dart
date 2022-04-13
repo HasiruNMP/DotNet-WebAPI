@@ -1,10 +1,22 @@
 
-class complaintModel{
-  late int complaintid;
-  late int jsnic;
-  late String complain;
-  late String feedback;
+class complaintModel {
+   int complainId;
+   int jsNic;
+   String complain;
+   String feedback;
 
+  complaintModel(
+      {required this.complainId,
+        required this.jsNic,
+        required this.complain,
+        required this.feedback});
 
-  complaintModel({required this.complaintid,required this.jsnic,required this.complain,required this.feedback});
+  factory complaintModel.fromJson(Map<String, dynamic> json) {
+    return complaintModel(
+      complainId: json['ComplaintID'],
+      jsNic: json['JS_NIC'],
+      complain: json['Complain'],
+      feedback: json['Feedback'],
+    );
+  }
 }

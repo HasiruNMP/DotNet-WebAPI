@@ -16,17 +16,17 @@ class _AddComplaintState extends State<AddComplaint> {
   final formkey = GlobalKey<FormState>();
 
   complaintModel complaint = complaintModel(
-    complaintid: 0,
-    jsnic: 1,
+    complainId: 0,
+    jsNic: 1,
     complain: '',
     feedback: '',
   );
 
   Future<void> addDatabase() async {
-    complaint.jsnic = global.nic;
+    complaint.jsNic = global.nic;
     complaint.complain = complaintController.text;
 
-    print(complaint.jsnic);
+    print(complaint.jsNic);
     print(complaint.complain);
     var saveResponse = await APIService.addComplaint(complaint);
     saveResponse == true

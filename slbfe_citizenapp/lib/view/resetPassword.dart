@@ -1,12 +1,12 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
-import 'package:slbfe_citizenapp/utilities//global.dart' as global;
 import 'package:twilio_phone_verify/twilio_phone_verify.dart';
 
 import '../api/apiservice.dart';
 
 class resetPassword extends StatefulWidget {
   late int nic;
+
   resetPassword(this.nic);
 
   @override
@@ -22,6 +22,7 @@ class _resetPasswordState extends State<resetPassword> {
   TextEditingController mobileController = TextEditingController();
   TextEditingController smsCodeController = TextEditingController();
   TextEditingController newPasswordController = TextEditingController();
+
   @override
   void initState() {
     super.initState();

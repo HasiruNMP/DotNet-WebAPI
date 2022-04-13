@@ -141,7 +141,7 @@ class APIService {
     var request = http.Request(
         'POST', Uri.parse('https://10.0.2.2:7018/complaints/addcomplaint'));
     request.body = json.encode({
-      "jsNic": complain.jsnic,
+      "jsNic": complain.jsNic,
       "complain": complain.complain,
       "feedback": '',
     });
@@ -282,4 +282,18 @@ class APIService {
       return false;
     }
   }
+
+
+  static Future<List<complaintModel>> getComplaintsOfUser(int nic) async {
+    final response = await http
+        .get(Uri.parse('https://10.0.2.2:7018/complaints/getcomplaintlistapp?NIC=2'));
+    if (response.statusCode == 200) {
+      List jsonResponse = json.decode(response.body);
+      return jsonResponse.map((data) => new complaintModel.fromJson(data)).toList();
+    } else {
+      throw Exception('Unexpected error occured!');
+    }
+  }
+
 }
+
