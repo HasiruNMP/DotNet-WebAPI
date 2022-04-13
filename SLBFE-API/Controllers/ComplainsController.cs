@@ -111,6 +111,26 @@ namespace SLBFE_API.Controllers
             }
             return new JsonResult("Added Successfully");
         }
+        [HttpGet, Route("getcomplaintlistapp")]
+        public JsonResult GetComplaintListapp(int NIC)
+        {
+            string query = @"SELECT * FROM [dbo].[JS_COMPLAINS] WHERE JS_NIC =" + NIC;
+            DataTable table = new DataTable();
+            string sqlDataSource = _configuration.GetConnectionString("SLBFEDB");
+            SqlDataReader myReader;
+            using (SqlConnection myCon = new SqlConnection(sqlDataSource))
+            {
+                myCon.Open();
+                using (SqlCommand myCommand = new SqlCommand(query, myCon))
+                {
+                    myReader = myCommand.ExecuteReader();
+                    table.Load(myReader);
+                    myReader.Close();
+                    myCon.Close();
+                }
+            }
+            return new JsonResult(table);
+        }
 
     }
 
