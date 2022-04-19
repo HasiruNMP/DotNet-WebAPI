@@ -295,5 +295,17 @@ class APIService {
     }
   }
 
+  static Future<void> updateLocation(int nic, double lat, double lng,) async {
+    var request = http.Request('PUT', Uri.parse('https://10.0.2.2:7018/api/JsUser/updatelocation?NIC=2000&lat=$lat&lng=$lng'));
+    http.StreamedResponse response = await request.send();
+    if (response.statusCode == 200) {
+      print(await response.stream.bytesToString());
+    }
+    else {
+      print(response.reasonPhrase);
+    }
+
+  }
+
 }
 

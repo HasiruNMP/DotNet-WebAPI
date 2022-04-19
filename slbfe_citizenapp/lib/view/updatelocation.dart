@@ -3,6 +3,8 @@ import 'dart:async';
 import 'package:flutter/material.dart';
 import 'package:google_maps_flutter/google_maps_flutter.dart';
 import 'package:geolocator/geolocator.dart';
+import 'package:slbfe_citizenapp/api/apiservice.dart';
+import 'package:slbfe_citizenapp/utilities/global.dart' as global;
 
 
 class UpdateLocation extends StatefulWidget {
@@ -46,8 +48,7 @@ class _UpdateLocationState extends State<UpdateLocation> {
       }
     }
     if (permission == LocationPermission.deniedForever) {
-      return Future.error(
-          'Location permissions are permanently denied, we cannot request permissions.');
+      return Future.error('Location permissions are permanently denied, we cannot request permissions.');
     }
     Position _position = await Geolocator.getCurrentPosition();
     setState(() {
@@ -97,7 +98,9 @@ class _UpdateLocationState extends State<UpdateLocation> {
                   padding: EdgeInsets.all(8.0),
                   child: ElevatedButton(
                     onPressed: (){
-
+                      print(_selectedLocation.latitude);
+                      print(_selectedLocation.longitude);
+                      APIService.updateLocation(global.nic, _selectedLocation.latitude, _selectedLocation.longitude);
                     },
                     child: Text("Update Location"),
                   ),
