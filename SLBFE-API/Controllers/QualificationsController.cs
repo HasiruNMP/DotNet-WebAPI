@@ -16,7 +16,7 @@ namespace SLBFE_API.Controllers
         }
 
         [HttpGet, Route("search")]
-        public ActionResult SearchByQualifications(string? olEnglish, string? olScience, string? olMaths, string? alStream, string? alResults, string? hEdu, string? hEduField, bool filterOn)
+        public ActionResult SearchByQualifications(bool filterOn, string? olEnglish, string? olScience, string? olMaths, string? alStream, string? alResults, string? hEdu, string? hEduField)
         {
             string query = @"SELECT [NIC]
                       ,[Email]
@@ -45,13 +45,13 @@ namespace SLBFE_API.Controllers
 
                 query = query + " WHERE 1=1";
 
-                if (olEnglish != null) { query = query + $" AND [OLEnglish] = '{olEnglish}'"; }
-                if (olScience != null) { query = query + $" AND [OLScience] = '{olScience}'"; }
-                if (olMaths != null) { query = query + $" AND [OLMaths] = '{olMaths}'"; }
-                if (alStream != null) { query = query + $" AND [ALStream] = '{alStream}'"; }
-                if (alResults != null) { query = query + $" AND [ALResults] = '{alResults}'"; }
-                if (hEdu != null) { query = query + $" AND [HigherEducation] = '{hEdu}'"; }
-                if (hEduField != null) { query = query + $" AND [HigherEducationField] = '{hEduField}'"; }
+                if (olEnglish != "Any") { query = query + $" AND [OLEnglish] = '{olEnglish}'"; }
+                if (olScience != "Any") { query = query + $" AND [OLScience] = '{olScience}'"; }
+                if (olMaths != "Any") { query = query + $" AND [OLMaths] = '{olMaths}'"; }
+                if (alStream != "Any") { query = query + $" AND [ALStream] = '{alStream}'"; }
+                if (alResults != "Any") { query = query + $" AND [ALResults] = '{alResults}'"; }
+                if (hEdu != "Any") { query = query + $" AND [HigherEducation] = '{hEdu}'"; }
+                if (hEduField != "Any") { query = query + $" AND [HigherEducationField] = '{hEduField}'"; }
             }
 
             DataTable table = new DataTable();

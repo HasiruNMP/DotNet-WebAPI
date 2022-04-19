@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:slbfe_website/views/complaints.dart';
+import 'package:slbfe_website/views/search.dart';
 
 void main() {
   runApp(const MyApp());
@@ -16,7 +17,7 @@ class MyApp extends StatelessWidget {
       theme: ThemeData(
         primarySwatch: Colors.blue,
       ),
-      home: const Complaints(),
+      home: Search(),
     );
   }
 }
