@@ -1,3 +1,4 @@
+import 'package:flutter/cupertino.dart';
 import 'package:http/http.dart' as http;
 import 'package:slbfe_citizenapp/model/contactsmodel.dart';
 import 'package:slbfe_citizenapp/model/jsusermodel.dart';
@@ -9,7 +10,8 @@ import 'package:slbfe_citizenapp/view/resetPassword.dart';
 
 import '../model/complaintmodel.dart';
 
-class APIService {
+class APIService with ChangeNotifier {
+
   static Future login(LoginRequestModel requestModel) async {
     String email = '';
     String password = '';
