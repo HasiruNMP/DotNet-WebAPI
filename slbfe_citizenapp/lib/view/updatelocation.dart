@@ -4,7 +4,7 @@ import 'package:flutter/material.dart';
 import 'package:google_maps_flutter/google_maps_flutter.dart';
 import 'package:geolocator/geolocator.dart';
 import 'package:slbfe_citizenapp/api/apiservice.dart';
-import 'package:slbfe_citizenapp/utilities/global.dart' as global;
+import 'package:slbfe_citizenapp/utilities/global.dart';
 
 
 class UpdateLocation extends StatefulWidget {
@@ -100,7 +100,7 @@ class _UpdateLocationState extends State<UpdateLocation> {
                     onPressed: (){
                       print(_selectedLocation.latitude);
                       print(_selectedLocation.longitude);
-                      APIService.updateLocation(global.nic, _selectedLocation.latitude, _selectedLocation.longitude);
+                      APIService.updateLocation(Globals.nic, _selectedLocation.latitude, _selectedLocation.longitude);
                     },
                     child: Text("Update Location"),
                   ),

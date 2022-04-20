@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:slbfe_citizenapp/api/apiservice.dart';
 import 'package:slbfe_citizenapp/model/jsusermodel.dart';
-import 'package:slbfe_citizenapp/utilities/global.dart' as global;
+import 'package:slbfe_citizenapp/utilities/global.dart';
 
 class PersonaInfo extends StatefulWidget {
   static String id = 'personalinfo';
@@ -37,7 +37,7 @@ class _PersonaInfoState extends State<PersonaInfo> {
   }
 
   Future<void> CallApi() async {
-    print(global.nic);
+    print(Globals.nic);
     user = await APIService.getUserDetails(widget.nic);
     updateUi(user);
   }

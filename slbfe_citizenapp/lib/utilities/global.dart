@@ -1,3 +1,5 @@
-library my_prj.globas;
 
-int nic = 0;
+class Globals {
+  static int nic = 1001;
+  static bool isLoggedIn = false;
+}

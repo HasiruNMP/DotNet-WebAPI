@@ -42,6 +42,7 @@ dependencies:
   advance_notification: ^1.0.6
   shared_preferences: ^2.0.13
   twilio_phone_verify: ^2.0.0
+  provider: ^6.0.2
 
 
 dev_dependencies:

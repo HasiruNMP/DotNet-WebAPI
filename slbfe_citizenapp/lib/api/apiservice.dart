@@ -1,5 +1,6 @@
 import 'package:flutter/cupertino.dart';
 import 'package:http/http.dart' as http;
+import 'package:shared_preferences/shared_preferences.dart';
 import 'package:slbfe_citizenapp/model/contactsmodel.dart';
 import 'package:slbfe_citizenapp/model/jsusermodel.dart';
 import 'dart:convert';
@@ -7,12 +8,13 @@ import 'dart:async';
 import 'package:slbfe_citizenapp/model/loginmodel.dart';
 import 'package:slbfe_citizenapp/utilities/global.dart' as global;
 import 'package:slbfe_citizenapp/view/resetPassword.dart';
+import 'package:provider/provider.dart';
 
 import '../model/complaintmodel.dart';
 
-class APIService with ChangeNotifier {
+class APIService{
 
-  static Future login(LoginRequestModel requestModel) async {
+  Future login(LoginRequestModel requestModel) async {
     String email = '';
     String password = '';
     int nic;
@@ -39,6 +41,11 @@ class APIService with ChangeNotifier {
         // global.nic = nic;
         print('Login Successfull!');
         print('Nic: $nic');
+
+        SharedPreferences prefs = await SharedPreferences.getInstance();
+        prefs.setBool('isLoggedIn', true);
+        prefs.setString('userEmail', email);
+
         return nic;
       }
     } else {
@@ -287,8 +294,7 @@ class APIService with ChangeNotifier {
 
 
   static Future<List<complaintModel>> getComplaintsOfUser(int nic) async {
-    final response = await http
-        .get(Uri.parse('https://10.0.2.2:7018/complaints/getcomplaintlistapp?NIC=2'));
+    final response = await http.get(Uri.parse('https://10.0.2.2:7018/complaints/getcomplaintlistapp?NIC=$nic'));
     if (response.statusCode == 200) {
       List jsonResponse = json.decode(response.body);
       return jsonResponse.map((data) => new complaintModel.fromJson(data)).toList();

@@ -1,6 +1,9 @@
 import 'dart:io';
 
 import 'package:flutter/material.dart';
+import 'package:provider/provider.dart';
+import 'package:slbfe_citizenapp/api/userAuth.dart';
+import 'package:slbfe_citizenapp/utilities/global.dart';
 import 'package:slbfe_citizenapp/view/addcomplaint.dart';
 import 'package:slbfe_citizenapp/view/bottomnavigation.dart';
 import 'package:slbfe_citizenapp/view/complain_list.dart';
@@ -8,6 +11,7 @@ import 'package:slbfe_citizenapp/view/home.dart';
 import 'package:slbfe_citizenapp/view/personaldetails.dart';
 import 'package:slbfe_citizenapp/view/registration.dart';
 import 'package:slbfe_citizenapp/view/signin.dart';
+import 'package:slbfe_citizenapp/view/statecontroller.dart';
 
 class MyHttpOverrides extends HttpOverrides {
   @override
@@ -20,7 +24,14 @@ class MyHttpOverrides extends HttpOverrides {
 
 void main() {
   HttpOverrides.global = new MyHttpOverrides();
-  runApp(const MyApp());
+  runApp(
+    MultiProvider(
+      providers: [
+        ChangeNotifierProvider(create: (context) => UserAuth()),
+      ],
+      child: const MyApp(),
+    ),
+  );
 }
 
 class MyApp extends StatelessWidget {
@@ -36,7 +47,7 @@ class MyApp extends StatelessWidget {
       routes: {
         SignIn.id: (context) => SignIn(),
       },
-      home: SignIn(),
+      home: BottomNavigation(Globals.nic),
     );
   }
 }

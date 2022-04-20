@@ -1,10 +1,11 @@
 import 'package:flutter/material.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:slbfe_citizenapp/view/addcomplaint.dart';
+import 'package:slbfe_citizenapp/view/complain_list.dart';
 import 'package:slbfe_citizenapp/view/home.dart';
 import 'package:slbfe_citizenapp/view/profile.dart';
 import 'package:slbfe_citizenapp/view/signin.dart';
-import 'package:slbfe_citizenapp/utilities//global.dart' as global;
+import 'package:slbfe_citizenapp/utilities/global.dart';
 
 class BottomNavigation extends StatefulWidget {
   int nic;
@@ -18,8 +19,8 @@ class _BottomNavigationState extends State<BottomNavigation> {
   @override
   void initState() {
     super.initState();
-    global.nic = widget.nic;
-    print("logged NIC:${global.nic}");
+    Globals.nic = widget.nic;
+    print("logged NIC:${Globals.nic}");
   }
 
   int _selectedIndex = 0;
@@ -27,7 +28,7 @@ class _BottomNavigationState extends State<BottomNavigation> {
       TextStyle(fontSize: 30, fontWeight: FontWeight.bold);
   static const List<Widget> _widgetOptions = <Widget>[
     Home(),
-    AddComplaint(),
+    ComplainList(),
     Profile(),
   ];
 

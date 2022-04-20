@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:slbfe_citizenapp/model/complaintmodel.dart';
-import 'package:slbfe_citizenapp/utilities//global.dart' as global;
+import 'package:slbfe_citizenapp/utilities/global.dart';
 import '../api/apiservice.dart';
 
 class AddComplaint extends StatefulWidget {
@@ -20,10 +20,11 @@ class _AddComplaintState extends State<AddComplaint> {
     jsNic: 1,
     complain: '',
     feedback: '',
+    addedDate: '',
   );
 
   Future<void> addDatabase() async {
-    complaint.jsNic = global.nic;
+    complaint.jsNic = Globals.nic;
     complaint.complain = complaintController.text;
 
     print(complaint.jsNic);

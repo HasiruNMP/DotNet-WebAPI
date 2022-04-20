@@ -78,7 +78,7 @@ class _SignInState extends State<SignIn> {
                       requestModel.password = _userPassworController.text;
                       //  print(requestModel.toJson());
 
-                      int login = await APIService.login(requestModel);
+                      int login = await APIService().login(requestModel);
                       //  print("status: $login");
                       if (login == 0) {
                         showAlertDialog(
@@ -86,7 +86,7 @@ class _SignInState extends State<SignIn> {
                       } else if (login == -1) {
                         showAlertDialog('Something went Wrong', context);
                       } else {
-                        Navigator.push(
+                        Navigator.pushReplacement(
                           context,
                           MaterialPageRoute(
                             builder: (context) => BottomNavigation(login),
