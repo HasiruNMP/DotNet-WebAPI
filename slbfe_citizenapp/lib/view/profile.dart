@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:slbfe_citizenapp/view/documents.dart';
 import 'package:slbfe_citizenapp/view/personaldetails.dart';
+import 'package:slbfe_citizenapp/view/qualifications.dart';
 import 'package:slbfe_citizenapp/view/signin.dart';
 import 'package:slbfe_citizenapp/view/updatelocation.dart';
 import 'package:slbfe_citizenapp/utilities/global.dart';
@@ -175,6 +176,26 @@ class _ProfileState extends State<Profile> {
                       );
                     },
                     child: const Text('Documents'),
+                    style: ButtonStyle(
+                        shape: MaterialStateProperty.all<RoundedRectangleBorder>(
+                            RoundedRectangleBorder(
+                                borderRadius: BorderRadius.circular(18.0),
+                                side: BorderSide(color: Colors.blue))))),
+              ),
+              const SizedBox(
+                height: 9,
+              ),
+              SizedBox(
+                width: 360,
+                child: ElevatedButton(
+                    onPressed: () {
+                      Navigator.push(
+                        context,
+                        MaterialPageRoute(
+                            builder: (context) => const Qualifications()),
+                      );
+                    },
+                    child: const Text('Qualifications'),
                     style: ButtonStyle(
                         shape: MaterialStateProperty.all<RoundedRectangleBorder>(
                             RoundedRectangleBorder(

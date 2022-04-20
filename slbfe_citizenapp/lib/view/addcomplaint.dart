@@ -39,81 +39,78 @@ class _AddComplaintState extends State<AddComplaint> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        centerTitle: true,
-        title: const Text('Complaint'),
+        title: const Text('Add New Complaint'),
       ),
       body: SafeArea(
         child: Form(
           key: formkey,
           child: Column(
             children: [
-              Center(
-                child: Text('New Complaint'),
-              ),
-              const SizedBox(
-                height: 30,
-              ),
-              Container(
-                child: Padding(
-                  padding: const EdgeInsets.all(8.0),
-                  child: TextFormField(
-                    controller: complaintController,
-                    cursorColor: Colors.black,
-                    decoration: InputDecoration(
-                      border: OutlineInputBorder(),
-                      errorStyle: TextStyle(
-                        color: Colors.black,
-                      ),
-                      filled: true,
-                      fillColor: Colors.white,
-                      labelText: "Enter your complaint",
-                      labelStyle: TextStyle(
-                          fontSize: 15,
+              Expanded(
+                child: Container(
+                  child: Padding(
+                    padding: const EdgeInsets.all(8.0),
+                    child: TextFormField(
+                      controller: complaintController,
+                      cursorColor: Colors.black,
+                      decoration: InputDecoration(
+                        border: OutlineInputBorder(),
+                        errorStyle: TextStyle(
                           color: Colors.black,
-                          fontWeight: FontWeight.bold),
+                        ),
+                        filled: true,
+                        fillColor: Colors.white,
+                        labelText: "Type your complaint here",
+                        labelStyle: TextStyle(
+                            fontSize: 15,
+                            color: Colors.black,
+                            fontWeight: FontWeight.bold),
+                      ),
+                      maxLines: 50,
+                      validator: (value) {
+                        if (value!.isEmpty) {
+                          return 'Enter the Complaint';
+                        } else {
+                          return null;
+                        }
+                      },
                     ),
-                    maxLines: 5,
-                    validator: (value) {
-                      if (value!.isEmpty) {
-                        return 'Enter the Complaint';
-                      } else {
-                        return null;
-                      }
-                    },
                   ),
                 ),
               ),
-              Container(
-                child: Padding(
-                  padding: const EdgeInsets.all(8.0),
-                  child: TextFormField(
-                    enabled: false,
-                    controller: feedbackController,
-                    cursorColor: Colors.black,
-                    decoration: InputDecoration(
-                      border: OutlineInputBorder(),
-                      errorStyle: TextStyle(
-                        color: Colors.black,
-                      ),
-                      filled: false,
-                      fillColor: Colors.white,
-                      labelText: "Feedback",
-                      labelStyle: TextStyle(
-                          fontSize: 15,
+/*              Expanded(
+                child: Container(
+                  child: Padding(
+                    padding: const EdgeInsets.all(8.0),
+                    child: TextFormField(
+                      enabled: false,
+                      controller: feedbackController,
+                      cursorColor: Colors.black,
+                      decoration: InputDecoration(
+                        border: OutlineInputBorder(),
+                        errorStyle: TextStyle(
                           color: Colors.black,
-                          fontWeight: FontWeight.bold),
+                        ),
+                        filled: false,
+                        fillColor: Colors.white,
+                        labelText: "Feedback",
+                        labelStyle: TextStyle(
+                            fontSize: 15,
+                            color: Colors.black,
+                            fontWeight: FontWeight.bold),
+                      ),
+                      maxLines: 50,
+                      // validator: (value) {
+                      //   if (value!.isEmpty) {
+                      //     return 'Enter the Complaint';
+                      //   } else {
+                      //     return null;
+                      //   }
+                      // },
                     ),
-                    maxLines: 5,
-                    // validator: (value) {
-                    //   if (value!.isEmpty) {
-                    //     return 'Enter the Complaint';
-                    //   } else {
-                    //     return null;
-                    //   }
-                    // },
                   ),
                 ),
-              ),
+              ),*/
               ElevatedButton(
                 onPressed: () {
                   if (formkey.currentState!.validate()) {
@@ -121,8 +118,9 @@ class _AddComplaintState extends State<AddComplaint> {
                   } else
                     return null;
                 },
-                child: const Text('Send'),
+                child: const Text('Submit'),
               ),
+              SizedBox(height: 50,),
             ],
           ),
         ),

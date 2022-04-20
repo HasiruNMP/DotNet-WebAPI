@@ -3,6 +3,8 @@ import 'dart:io';
 import 'package:file_picker/file_picker.dart';
 import 'package:flutter/material.dart';
 import 'package:http/http.dart' as http;
+import 'package:slbfe_citizenapp/utilities/global.dart';
+import 'package:url_launcher/url_launcher.dart';
 
 class Documents extends StatefulWidget {
   const Documents({Key? key}) : super(key: key);
@@ -13,8 +15,6 @@ class Documents extends StatefulWidget {
 
 class _DocumentsState extends State<Documents> {
 
-  late String vPath;
-
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -23,252 +23,108 @@ class _DocumentsState extends State<Documents> {
         title: Text('Documents'),
       ),
       body: SafeArea(
-        child: ListView(
-          children: [
-            Container(
-              margin: EdgeInsets.only(top: 10, left: 10),
-              child: const Text(
-                'Vaccine Card',
-                style: TextStyle(
-                  fontWeight: FontWeight.bold,
-                ),
-              ),
-            ),
-            Card(
-              elevation: 3,
-              child: Container(
-                margin: EdgeInsets.only(left: 10),
-                width: double.maxFinite,
-                height: MediaQuery.of(context).size.height / 7,
-                child: Column(
-                  crossAxisAlignment: CrossAxisAlignment.start,
-                  mainAxisAlignment: MainAxisAlignment.center,
-                  children: [
-                    Row(
-                      children: [
-                        Expanded(
-                          child: Text('vaccine.jpg'),
-                        ),
-                        SizedBox(
-                          width: 10,
-                        ),
-                        Expanded(
-                          child: Container(
-                            margin: EdgeInsets.only(left: 30, right: 30),
-                            height: 20,
-                            width: MediaQuery.of(context).size.width / 3,
-                            child: ElevatedButton(
-                              style: ElevatedButton.styleFrom(
-                                primary: Colors.grey,
-                              ),
-                              onPressed: () {
-                              },
-                              child: Text('Choose a file'),
-                            ),
-                          ),
-                        )
-                      ],
-                    ),
-                    SizedBox(
-                      height: 20,
-                    ),
-                    ElevatedButton(onPressed: () {}, child: Text('Update'))
-                  ],
-                ),
-              ),
-            ),
-            Container(
-              margin: EdgeInsets.only(top: 10, left: 10),
-              child: const Text(
-                'Licensce',
-                style: TextStyle(
-                  fontWeight: FontWeight.bold,
-                ),
-              ),
-            ),
-            Card(
-              elevation: 3,
-              child: Container(
-                margin: EdgeInsets.only(left: 10),
-                width: double.maxFinite,
-                height: MediaQuery.of(context).size.height / 7,
-                child: Column(
-                  crossAxisAlignment: CrossAxisAlignment.start,
-                  mainAxisAlignment: MainAxisAlignment.center,
-                  children: [
-                    Row(
-                      children: [
-                        Expanded(
-                          child: Text('drivinglicensce.jpg'),
-                        ),
-                        SizedBox(
-                          width: 10,
-                        ),
-                        Expanded(
-                          child: Container(
-                            margin: EdgeInsets.only(left: 30, right: 30),
-                            height: 20,
-                            width: MediaQuery.of(context).size.width / 3,
-                            child: ElevatedButton(
-                              style: ElevatedButton.styleFrom(
-                                primary: Colors.grey,
-                              ),
-                              onPressed: () {},
-                              child: Text('Choose a file'),
-                            ),
-                          ),
-                        )
-                      ],
-                    ),
-                    const SizedBox(
-                      height: 20,
-                    ),
-                    ElevatedButton(
-                      onPressed: () {},
-                      child: const Text('Update'),
-                    )
-                  ],
-                ),
-              ),
-            ),
-            Container(
-              margin: EdgeInsets.only(top: 10, left: 10),
-              child: const Text(
-                'CV',
-                style: TextStyle(
-                  fontWeight: FontWeight.bold,
-                ),
-              ),
-            ),
-            Card(
-              elevation: 3,
-              child: Container(
-                margin: EdgeInsets.only(left: 10),
-                width: double.maxFinite,
-                height: MediaQuery.of(context).size.height / 7,
-                child: Column(
-                  crossAxisAlignment: CrossAxisAlignment.start,
-                  mainAxisAlignment: MainAxisAlignment.center,
-                  children: [
-                    Row(
-                      children: [
-                        Expanded(
-                          child: Text('NAR Dilshan.docs'),
-                        ),
-                        SizedBox(
-                          width: 10,
-                        ),
-                        Expanded(
-                          child: Container(
-                            margin: EdgeInsets.only(left: 30, right: 30),
-                            height: 20,
-                            width: MediaQuery.of(context).size.width / 3,
-                            child: ElevatedButton(
-                              style: ElevatedButton.styleFrom(
-                                primary: Colors.grey,
-                              ),
-                              onPressed: () {
-                                selectDocument('CV');
-                              },
-                              child: Text('Choose a file'),
-                            ),
-                          ),
-                        )
-                      ],
-                    ),
-                    const SizedBox(
-                      height: 20,
-                    ),
-                    ElevatedButton(
-                        onPressed: () {
-                          updateDocument("CV");
-                        },
-                        child: Text('Update')
-                    )
-                  ],
-                ),
-              ),
-            ),
-            Container(
-              margin: EdgeInsets.only(top: 10, left: 10),
-              child: const Text(
-                'Passport',
-                style: TextStyle(
-                  fontWeight: FontWeight.bold,
-                ),
-              ),
-            ),
-            Card(
-              elevation: 3,
-              child: Container(
-                margin: EdgeInsets.only(left: 10),
-                width: double.maxFinite,
-                height: MediaQuery.of(context).size.height / 7,
-                child: Column(
-                  crossAxisAlignment: CrossAxisAlignment.start,
-                  mainAxisAlignment: MainAxisAlignment.center,
-                  children: [
-                    Row(
-                      children: [
-                        Expanded(
-                          child: Text('Mahinda Hora'),
-                        ),
-                        SizedBox(
-                          width: 10,
-                        ),
-                        Expanded(
-                          child: Container(
-                            margin: EdgeInsets.only(left: 30, right: 30),
-                            height: 20,
-                            width: MediaQuery.of(context).size.width / 3,
-                            child: ElevatedButton(
-                              style: ElevatedButton.styleFrom(
-                                primary: Colors.grey,
-                              ),
-                              onPressed: () {},
-                              child: Text('Choose a file'),
-                            ),
-                          ),
-                        )
-                      ],
-                    ),
-                    const SizedBox(
-                      height: 20,
-                    ),
-                    ElevatedButton(onPressed: () {}, child: Text('Update'))
-                  ],
-                ),
-              ),
-            ),
-          ],
+        child: Padding(
+          padding: const EdgeInsets.all(5.0),
+          child: ListView(
+            children: [
+              DocCard(docType: "CV", icon: Icons.vaccines, lastUpdated: ""),
+              DocCard(docType: "OL Certificate", icon: Icons.vaccines, lastUpdated: ""),
+              DocCard(docType: "AL Certificate", icon: Icons.vaccines, lastUpdated: ""),
+              DocCard(docType: "Degree Certificate", icon: Icons.vaccines, lastUpdated: ""),
+              DocCard(docType: "Vaccination Card", icon: Icons.vaccines, lastUpdated: ""),
+              DocCard(docType: "Passport", icon: Icons.vaccines, lastUpdated: ""),
+              DocCard(docType: "License", icon: Icons.vaccines, lastUpdated: ""),
+            ],
+          ),
         ),
+      ),
+    );
+  }
+}
+
+class DocCard extends StatelessWidget {
+
+  String docType;
+  IconData icon;
+  String lastUpdated;
+
+  DocCard({required this.docType, required this.icon, required this.lastUpdated});
+
+  @override
+  Widget build(BuildContext context) {
+    
+    String docType2 = docType.replaceAll(RegExp(' +'), '');
+    print(docType2);
+    
+    return Card(
+      child: Column(
+        children: [
+          ListTile(
+            title: Text(docType),
+            subtitle: Text('Last Updated: 2022.02.13'),
+            leading: CircleAvatar(
+              child: Icon(icon),
+            ),
+          ),
+          Row(
+            children: [
+              Expanded(
+                child: Padding(
+                  padding: const EdgeInsets.symmetric(horizontal: 5),
+                  child: OutlinedButton(
+                    onPressed: (){
+                      _launchURL('https://10.0.2.2:7018/documents/download?NIC=${Globals.nic}&documentType=$docType2');
+                    },
+                    child: Text('View'),
+                  ),
+                ),
+              ),
+              Expanded(
+                child: Padding(
+                  padding: const EdgeInsets.symmetric(horizontal: 5),
+                  child: OutlinedButton(onPressed: (){selectDocument(docType2);}, child: Text('Update'),),
+                ),
+              ),
+            ],
+          ),
+        ],
       ),
     );
   }
 
   Future<void> selectDocument(String documentType) async{
     final result = await FilePicker.platform.pickFiles(allowMultiple: false);
-    if (result == null) return;
-    setState(() {
-      vPath = result.files.single.path!;
-    });
-
+    if (result != null){
+      String path = result.files.single.path!;
+      updateDocument(documentType,path);
+    }
   }
 
-  Future<void> updateDocument(String documentType) async{
-
-    var request = http.MultipartRequest('PUT', Uri.parse('https://10.0.2.2:7018/documents/upload?NIC=1&documentType=CV'));
-    request.files.add(await http.MultipartFile.fromPath('file', vPath));
-
+  Future<void> updateDocument(String documentType,String path) async{
+    var request = http.MultipartRequest('PUT', Uri.parse('https://10.0.2.2:7018/documents/upload?NIC=${Globals.nic}&documentType=$documentType'));
+    request.files.add(await http.MultipartFile.fromPath('file', path));
     http.StreamedResponse response = await request.send();
-
     if (response.statusCode == 200) {
       print(await response.stream.bytesToString());
     }
     else {
       print(response.reasonPhrase);
     }
+  }
 
+  Future<void> downloadDoc() async {
+    var request = http.Request('GET', Uri.parse('https://10.0.2.2:7018/documents/download?NIC=1&documentType=CV'),);
+    http.StreamedResponse response = await request.send();
+    if (response.statusCode == 200) {
+      print(await response.stream.bytesToString());
+    }
+    else {
+      print(response.reasonPhrase);
+    }
+  }
+
+  void _launchURL(String _url) async {
+    if (!await launch(_url)) throw 'Could not launch $_url';
   }
 
 }
