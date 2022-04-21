@@ -29,109 +29,103 @@ class _accountSettingState extends State<accountSetting> {
     return Scaffold(
       appBar: AppBar(
         centerTitle: true,
-        title: const Text('Account Setting'),
+        title: const Text('Account Settings'),
       ),
       body: SafeArea(
         child: Container(
           child: Padding(
-            padding: EdgeInsets.fromLTRB(20, 50, 20, 0),
-            child: Column(
+            padding: const EdgeInsets.all(15.0),
+            child: ListView(
               children: <Widget>[
                 const SizedBox(
                   height: 10,
                 ),
-                SizedBox(
-                  width: 200,
-                  child: ElevatedButton(
-                    // color: Colors.deepPurple[200],
-                    // textColor: Colors.black, // foreground
-                    onPressed: () {
-                      Navigator.push(
-                        context,
-                        MaterialPageRoute(
-                            builder: (context) => resetPassword(nic)),
-                      );
-                    },
-                    child: Text('Reset Password'),
-                  ),
+                ElevatedButton(
+                  // color: Colors.deepPurple[200],
+                  // textColor: Colors.black, // foreground
+                  onPressed: () {
+                    Navigator.push(
+                      context,
+                      MaterialPageRoute(
+                          builder: (context) => resetPassword(nic)),
+                    );
+                  },
+                  child: Text('Reset Password'),
                 ),
                 const SizedBox(
                   height: 10,
                 ),
-                SizedBox(
-                  width: 200,
-                  child: ElevatedButton(
-                    // color: Colors.deepPurple[200],
-                    // textColor: Colors.black, // foreground
-                    child: Text("Delete Account"),
-                    onPressed: () {
-                      showDialog(
-                          context: context,
-                          builder: (BuildContext context) {
-                            return AlertDialog(
-                              scrollable: true,
-                              title: Text('Sure?'),
-                              content: Padding(
-                                padding: const EdgeInsets.all(8.0),
-                                child: Form(
-                                  key: _formKey,
-                                  child: Column(
-                                    children: <Widget>[
-                                      TextFormField(
-                                        controller: passwordController,
-                                        obscureText: true,
-                                        decoration: const InputDecoration(
-                                          labelText: 'Confirm Password',
-                                        ),
-                                        validator: (value) {
-                                          if (value!.isEmpty) {
-                                            return 'Please enter your current password';
-                                          }
-                                          return null;
-                                        },
+                ElevatedButton(
+                  // color: Colors.deepPurple[200],
+                  // textColor: Colors.black, // foreground
+                  child: Text("Delete Account"),
+                  onPressed: () {
+                    showDialog(
+                        context: context,
+                        builder: (BuildContext context) {
+                          return AlertDialog(
+                            scrollable: true,
+                            title: Text('Sure?'),
+                            content: Padding(
+                              padding: const EdgeInsets.all(8.0),
+                              child: Form(
+                                key: _formKey,
+                                child: Column(
+                                  children: <Widget>[
+                                    TextFormField(
+                                      controller: passwordController,
+                                      obscureText: true,
+                                      decoration: const InputDecoration(
+                                        labelText: 'Confirm Password',
                                       ),
-                                    ],
-                                  ),
+                                      validator: (value) {
+                                        if (value!.isEmpty) {
+                                          return 'Please enter your current password';
+                                        }
+                                        return null;
+                                      },
+                                    ),
+                                  ],
                                 ),
                               ),
-                              actions: [
-                                RaisedButton(
-                                  child: Text("Yes"),
-                                  onPressed: () async {
-                                    if (_formKey.currentState!.validate()) {
-                                      print(nic);
-                                      print(passwordController.text);
-                                      int login =
-                                          await APIService.checkPassword(
-                                              nic, passwordController.text);
-                                      //  print("status: $login");
-                                      if (login == 0) {
-                                        showAlertDialog(
-                                            'Wrong password provided', context);
-                                      } else if (login == -1) {
-                                        showAlertDialog(
-                                            'Something went Wrong', context);
-                                      } else {
-                                        showAlertDialogTwo(
-                                            'Account Deleted Succesfully',
-                                            context);
-                                      }
+                            ),
+                            actions: [
+                              RaisedButton(
+                                child: Text("Yes"),
+                                onPressed: () async {
+                                  if (_formKey.currentState!.validate()) {
+                                    print(nic);
+                                    print(passwordController.text);
+                                    int login =
+                                        await APIService.checkPassword(
+                                            nic, passwordController.text);
+                                    //  print("status: $login");
+                                    if (login == 0) {
+                                      showAlertDialog(
+                                          'Wrong password provided', context);
+                                    } else if (login == -1) {
+                                      showAlertDialog(
+                                          'Something went Wrong', context);
                                     } else {
-                                      return null;
+                                      showAlertDialogTwo(
+                                          'Account Deleted Succesfully',
+                                          context);
                                     }
-                                  },
-                                ),
-                                RaisedButton(
-                                  child: Text("No"),
-                                  onPressed: () {
-                                    Navigator.pop(context);
-                                  },
-                                ),
-                              ],
-                            );
-                          });
-                    },
-                  ),
+                                  } else {
+                                    return null;
+                                  }
+                                },
+                              ),
+                              RaisedButton(
+                                child: Text("No"),
+                                onPressed: () {
+                                  Navigator.pop(context);
+                                },
+                              ),
+                            ],
+                          );
+                        });
+                  },
                 ),
               ],
             ),

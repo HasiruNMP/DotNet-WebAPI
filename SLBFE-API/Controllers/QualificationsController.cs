@@ -71,5 +71,62 @@ namespace SLBFE_API.Controllers
             return Ok(table);
         }
 
+
+        [HttpGet, Route("qualifications/ofuser")]
+        public JsonResult GetComplaintListapp(int NIC)
+        {
+            string query = @"SELECT * FROM [dbo].[JS_QUALIFICATIONS] WHERE JS_NIC =" + NIC;
+            DataTable table = new DataTable();
+            string sqlDataSource = _configuration.GetConnectionString("SLBFEDB");
+            SqlDataReader myReader;
+            using (SqlConnection myCon = new SqlConnection(sqlDataSource))
+            {
+                myCon.Open();
+                using (SqlCommand myCommand = new SqlCommand(query, myCon))
+                {
+                    myReader = myCommand.ExecuteReader();
+                    table.Load(myReader);
+                    myReader.Close();
+                    myCon.Close();
+                }
+            }
+            return new JsonResult(table);
+        }
+
+
+        [HttpPut, Route("qualifications/update")]
+        public ActionResult updateQualifications(int nic, string olEnglish, string olScience, string olMaths, string alStream, string alResults, string alEnglish, string hEdu, string hEduField)
+        {
+            string query = $@"
+                UPDATE [dbo].[JS_QUALIFICATIONS] 
+                SET 
+                OLScience = '{olScience}',
+                OLEnglish = '{olEnglish}',
+                OLMaths = '{olMaths}',
+                ALStream = '{alStream}',
+                ALResults = '{alResults}',
+                ALEnglish = '{alEnglish}',
+                HigherEducation = '{hEdu}',
+                HigherEducationField = '{hEduField}'
+                WHERE JS_NIC = {nic};
+                ";
+
+            DataTable table = new DataTable();
+            string sqlDataSource = _configuration.GetConnectionString("SLBFEDB");
+            SqlDataReader myReader;
+            using (SqlConnection myCon = new SqlConnection(sqlDataSource))
+            {
+                myCon.Open();
+                using (SqlCommand myCommand = new SqlCommand(query, myCon))
+                {
+                    myReader = myCommand.ExecuteReader();
+                    table.Load(myReader);
+                    myReader.Close();
+                    myCon.Close();
+                }
+            }
+            return Ok("Qualification Update Succesful!");
+        }
+
     }
 }

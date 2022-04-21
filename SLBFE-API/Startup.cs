@@ -42,7 +42,7 @@ namespace SLBFE_API
                 .AddNewtonsoftJson(options => options.SerializerSettings.ContractResolver
                 = new DefaultContractResolver());
 
-            services.AddControllers();
+            services.AddControllers().AddXmlDataContractSerializerFormatters();
 
             services.AddSwaggerGen(c => { //<-- NOTE 'Add' instead of 'Configure'
                 c.SwaggerDoc("v1", new OpenApiInfo
