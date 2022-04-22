@@ -37,7 +37,7 @@ class _SearchState extends State<Search>{
   bool searched = false;
 
   Future fetchUsers() async {
-    String url = "https://localhost:7014/jobseekers/search?filterOn=true&olEnglish=$selOLEnglish&olScience=$selOLScience&olMaths=$selOLMaths&alStream=$selAlStream&alResults=$selAlResults&hEdu=$selHighEdStage&hEduField=$selHighEdField";
+    String url = "https://localhost:7018/jobseekers/search?filterOn=true&olEnglish=$selOLEnglish&olScience=$selOLScience&olMaths=$selOLMaths&alStream=$selAlStream&alResults=$selAlResults&hEdu=$selHighEdStage&hEduField=$selHighEdField";
     //print(url);
     String urlF = url.replaceAll(RegExp(' +'), '%20');
     print(urlF);
@@ -289,7 +289,7 @@ class JobSeekerCard extends StatelessWidget {
                   child: CircleAvatar(
                     radius: 40,
                     backgroundColor: Colors.teal,
-                    backgroundImage: NetworkImage('https://localhost:7014/documents/profilepic?NIC=1'),
+                    backgroundImage: NetworkImage('https://localhost:7018/documents/profilepic?NIC=1'),
                   ),
                 ),
                 Column(

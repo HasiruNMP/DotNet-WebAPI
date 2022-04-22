@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:slbfe_website/views/complaints.dart';
+import 'package:slbfe_website/views/home_screen.dart';
 import 'package:slbfe_website/views/search.dart';
 
 void main() {
@@ -17,7 +18,7 @@ class MyApp extends StatelessWidget {
       theme: ThemeData(
         primarySwatch: Colors.blue,
       ),
-      home: Search(),
+      home: HomeScreen(),
     );
   }
 }
