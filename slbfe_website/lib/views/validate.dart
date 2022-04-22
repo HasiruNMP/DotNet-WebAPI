@@ -35,7 +35,11 @@ class _ValidateState extends State<Validate> {
             VerticalDivider(),
             Expanded(
               flex: 4,
-              child: Profile()
+              child: Column(
+                children: [
+                  Expanded(child: ProfileWidget(1001),),
+                ],
+              ),
             ),
           ],
         ),

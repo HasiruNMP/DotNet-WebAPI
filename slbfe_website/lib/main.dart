@@ -1,7 +1,9 @@
 import 'package:flutter/material.dart';
 import 'package:slbfe_website/views/complaints.dart';
 import 'package:slbfe_website/views/home_screen.dart';
+import 'package:slbfe_website/views/map.dart';
 import 'package:slbfe_website/views/search.dart';
+import 'package:slbfe_website/views/test.dart';
 
 void main() {
   runApp(const MyApp());
@@ -16,7 +18,7 @@ class MyApp extends StatelessWidget {
     return MaterialApp(
       title: 'Flutter Demo',
       theme: ThemeData(
-        primarySwatch: Colors.blue,
+        primarySwatch: Colors.indigo
       ),
       home: HomeScreen(),
     );

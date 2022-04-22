@@ -1,15 +1,48 @@
+import 'dart:convert';
+
 import 'package:flutter/gestures.dart';
 import 'package:flutter/material.dart';
 import 'package:map/map.dart';
 import 'package:latlng/latlng.dart';
 import 'package:cached_network_image/cached_network_image.dart';
+import 'package:http/http.dart' as http;
 
-class MyHomePage extends StatefulWidget {
+class Location extends StatefulWidget {
+  int nic;
+  Location(this.nic);
   @override
-  _MyHomePageState createState() => _MyHomePageState();
+  _LocationState createState() => _LocationState();
 }
 
-class _MyHomePageState extends State<MyHomePage> {
+class _LocationState extends State<Location> {
+
+  List coordinates = [];
+  bool isLoaded = false;
+  double lat = 0.0;
+  double lng = 0.0;
+
+  Future<void> getLocation() async {
+    String url = "https://localhost:7018/api/JsUser/location?NIC=2000";
+    final response = await http.get(Uri.parse(url));
+    var resJson = json.decode(response.body);
+    if (response.statusCode == 200) {
+      var a = resJson as List;
+      coordinates = a.toList();
+      lat = coordinates[0]['Latitude'] as double;
+      lng = coordinates[0]['Longitude'] as double;
+      _gotoDefault();
+      //setState(() => isLoaded = true);
+    }
+    else {
+      print(response.reasonPhrase);
+    }
+  }
+
+  @override
+  void initState() {
+    getLocation();
+  }
+
   final controller = MapController(
     location: LatLng(6.9271, 79.8612),
   );
@@ -27,8 +60,10 @@ class _MyHomePageState extends State<MyHomePage> {
   ];
 
   void _gotoDefault() {
-    controller.center = LatLng(80.80, 80.80);
-    setState(() {});
+    setState(() {
+      controller.center = LatLng(lat,lng);
+      markers.add(LatLng(lat,lng));
+    });
   }
 
   void _onDoubleTap() {
@@ -75,97 +110,86 @@ class _MyHomePageState extends State<MyHomePage> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-/*      appBar: AppBar(
-        title: Text('Map Demo'),
-        actions: [
-          IconButton(
-            tooltip: 'Toggle Dark Mode',
-            onPressed: () {
-              setState(() {
-                _darkMode = !_darkMode;
-              });
-            },
-            icon: Icon(Icons.wb_sunny),
-          ),
-        ],
-      ),*/
-      body: MapLayoutBuilder(
-        controller: controller,
-        builder: (context, transformer) {
-          final markerPositions =
-          markers.map(transformer.fromLatLngToXYCoords).toList();
+      body: ClipRRect(
+        borderRadius: BorderRadius.circular(10),
+        child: MapLayoutBuilder(
+          controller: controller,
+          builder: (context, transformer) {
+            final markerPositions =
+            markers.map(transformer.fromLatLngToXYCoords).toList();
 
-          final markerWidgets = markerPositions.map(
-                (pos) => _buildMarkerWidget(pos, Colors.red),
-          );
+            final markerWidgets = markerPositions.map(
+                  (pos) => _buildMarkerWidget(pos, Colors.red),
+            );
 
-          //final homeLocation = transformer.fromLatLngToXYCoords(LatLng(35.68, 51.412));
+            //final homeLocation = transformer.fromLatLngToXYCoords(LatLng(35.68, 51.412));
 
-          //final homeMarkerWidget = _buildMarkerWidget(homeLocation, Colors.black);
+            //final homeMarkerWidget = _buildMarkerWidget(homeLocation, Colors.black);
 
-          final centerLocation = Offset(
-              transformer.constraints.biggest.width / 2,
-              transformer.constraints.biggest.height / 2);
+            final centerLocation = Offset(
+                transformer.constraints.biggest.width / 2,
+                transformer.constraints.biggest.height / 2);
 
-          final centerMarkerWidget =
-          _buildMarkerWidget(centerLocation, Colors.purple);
+            final centerMarkerWidget =
+            _buildMarkerWidget(centerLocation, Colors.purple);
 
-          return GestureDetector(
-            behavior: HitTestBehavior.opaque,
-            onDoubleTap: _onDoubleTap,
-            onScaleStart: _onScaleStart,
-            onScaleUpdate: _onScaleUpdate,
-            onTapUp: (details) {
-              final location =
-              transformer.fromXYCoordsToLatLng(details.localPosition);
-
-              final clicked = transformer.fromLatLngToXYCoords(location);
-
-              print('${location.longitude}, ${location.latitude}');
-              print('${clicked.dx}, ${clicked.dy}');
-              print('${details.localPosition.dx}, ${details.localPosition.dy}');
-            },
-            child: Listener(
+            return GestureDetector(
               behavior: HitTestBehavior.opaque,
-              onPointerSignal: (event) {
-                if (event is PointerScrollEvent) {
-                  final delta = event.scrollDelta;
+              onDoubleTap: _onDoubleTap,
+              onScaleStart: _onScaleStart,
+              onScaleUpdate: _onScaleUpdate,
+              onTapUp: (details) {
+                final location =
+                transformer.fromXYCoordsToLatLng(details.localPosition);
 
-                  controller.zoom -= delta.dy / 1000.0;
-                  setState(() {});
-                }
+                final clicked = transformer.fromLatLngToXYCoords(location);
+
+                print('${location.longitude}, ${location.latitude}');
+                print('${clicked.dx}, ${clicked.dy}');
+                print('${details.localPosition.dx}, ${details.localPosition.dy}');
               },
-              child: Stack(
-                children: [
-                  Map(
-                    controller: controller,
-                    builder: (context, x, y, z) {
-                      //Legal notice: This url is only used for demo and educational purposes. You need a license key for production use.
+              child: Listener(
+                behavior: HitTestBehavior.opaque,
+                onPointerSignal: (event) {
+                  if (event is PointerScrollEvent) {
+                    final delta = event.scrollDelta;
 
-                      //Google Maps
-                      final url =
-                          'https://www.google.com/maps/vt/pb=!1m4!1m3!1i$z!2i$x!3i$y!2m3!1e0!2sm!3i420120488!3m7!2sen!5e1105!12m4!1e68!2m2!1sset!2sRoadmap!4e0!5m1!1e0!23i4111425';
+                    controller.zoom -= delta.dy / 1000.0;
+                    setState(() {});
+                  }
+                },
+                child: Stack(
+                  children: [
+                    Map(
+                      controller: controller,
+                      builder: (context, x, y, z) {
+                        //Legal notice: This url is only used for demo and educational purposes. You need a license key for production use.
 
-                      final darkUrl =
-                          'https://maps.googleapis.com/maps/vt?pb=!1m5!1m4!1i$z!2i$x!3i$y!4i256!2m3!1e0!2sm!3i556279080!3m17!2sen-US!3sUS!5e18!12m4!1e68!2m2!1sset!2sRoadmap!12m3!1e37!2m1!1ssmartmaps!12m4!1e26!2m2!1sstyles!2zcC52Om9uLHMuZTpsfHAudjpvZmZ8cC5zOi0xMDAscy5lOmwudC5mfHAuczozNnxwLmM6I2ZmMDAwMDAwfHAubDo0MHxwLnY6b2ZmLHMuZTpsLnQuc3xwLnY6b2ZmfHAuYzojZmYwMDAwMDB8cC5sOjE2LHMuZTpsLml8cC52Om9mZixzLnQ6MXxzLmU6Zy5mfHAuYzojZmYwMDAwMDB8cC5sOjIwLHMudDoxfHMuZTpnLnN8cC5jOiNmZjAwMDAwMHxwLmw6MTd8cC53OjEuMixzLnQ6NXxzLmU6Z3xwLmM6I2ZmMDAwMDAwfHAubDoyMCxzLnQ6NXxzLmU6Zy5mfHAuYzojZmY0ZDYwNTkscy50OjV8cy5lOmcuc3xwLmM6I2ZmNGQ2MDU5LHMudDo4MnxzLmU6Zy5mfHAuYzojZmY0ZDYwNTkscy50OjJ8cy5lOmd8cC5sOjIxLHMudDoyfHMuZTpnLmZ8cC5jOiNmZjRkNjA1OSxzLnQ6MnxzLmU6Zy5zfHAuYzojZmY0ZDYwNTkscy50OjN8cy5lOmd8cC52Om9ufHAuYzojZmY3ZjhkODkscy50OjN8cy5lOmcuZnxwLmM6I2ZmN2Y4ZDg5LHMudDo0OXxzLmU6Zy5mfHAuYzojZmY3ZjhkODl8cC5sOjE3LHMudDo0OXxzLmU6Zy5zfHAuYzojZmY3ZjhkODl8cC5sOjI5fHAudzowLjIscy50OjUwfHMuZTpnfHAuYzojZmYwMDAwMDB8cC5sOjE4LHMudDo1MHxzLmU6Zy5mfHAuYzojZmY3ZjhkODkscy50OjUwfHMuZTpnLnN8cC5jOiNmZjdmOGQ4OSxzLnQ6NTF8cy5lOmd8cC5jOiNmZjAwMDAwMHxwLmw6MTYscy50OjUxfHMuZTpnLmZ8cC5jOiNmZjdmOGQ4OSxzLnQ6NTF8cy5lOmcuc3xwLmM6I2ZmN2Y4ZDg5LHMudDo0fHMuZTpnfHAuYzojZmYwMDAwMDB8cC5sOjE5LHMudDo2fHAuYzojZmYyYjM2Mzh8cC52Om9uLHMudDo2fHMuZTpnfHAuYzojZmYyYjM2Mzh8cC5sOjE3LHMudDo2fHMuZTpnLmZ8cC5jOiNmZjI0MjgyYixzLnQ6NnxzLmU6Zy5zfHAuYzojZmYyNDI4MmIscy50OjZ8cy5lOmx8cC52Om9mZixzLnQ6NnxzLmU6bC50fHAudjpvZmYscy50OjZ8cy5lOmwudC5mfHAudjpvZmYscy50OjZ8cy5lOmwudC5zfHAudjpvZmYscy50OjZ8cy5lOmwuaXxwLnY6b2Zm!4e0&key=AIzaSyAOqYYyBbtXQEtcHG7hwAwyCPQSYidG8yU&token=31440';
-                      //Mapbox Streets
-                      // final url =
-                      //     'https://api.mapbox.com/styles/v1/mapbox/streets-v11/tiles/$z/$x/$y?access_token=YOUR_MAPBOX_ACCESS_TOKEN';
+                        //Google Maps
+                        final url =
+                            'https://www.google.com/maps/vt/pb=!1m4!1m3!1i$z!2i$x!3i$y!2m3!1e0!2sm!3i420120488!3m7!2sen!5e1105!12m4!1e68!2m2!1sset!2sRoadmap!4e0!5m1!1e0!23i4111425';
 
-                      return CachedNetworkImage(
-                        imageUrl: _darkMode ? darkUrl : url,
-                        fit: BoxFit.cover,
-                      );
-                    },
-                  ),
-                  //homeMarkerWidget,
-                  ...markerWidgets,
-                  //centerMarkerWidget,
-                ],
+                        final darkUrl =
+                            'https://maps.googleapis.com/maps/vt?pb=!1m5!1m4!1i$z!2i$x!3i$y!4i256!2m3!1e0!2sm!3i556279080!3m17!2sen-US!3sUS!5e18!12m4!1e68!2m2!1sset!2sRoadmap!12m3!1e37!2m1!1ssmartmaps!12m4!1e26!2m2!1sstyles!2zcC52Om9uLHMuZTpsfHAudjpvZmZ8cC5zOi0xMDAscy5lOmwudC5mfHAuczozNnxwLmM6I2ZmMDAwMDAwfHAubDo0MHxwLnY6b2ZmLHMuZTpsLnQuc3xwLnY6b2ZmfHAuYzojZmYwMDAwMDB8cC5sOjE2LHMuZTpsLml8cC52Om9mZixzLnQ6MXxzLmU6Zy5mfHAuYzojZmYwMDAwMDB8cC5sOjIwLHMudDoxfHMuZTpnLnN8cC5jOiNmZjAwMDAwMHxwLmw6MTd8cC53OjEuMixzLnQ6NXxzLmU6Z3xwLmM6I2ZmMDAwMDAwfHAubDoyMCxzLnQ6NXxzLmU6Zy5mfHAuYzojZmY0ZDYwNTkscy50OjV8cy5lOmcuc3xwLmM6I2ZmNGQ2MDU5LHMudDo4MnxzLmU6Zy5mfHAuYzojZmY0ZDYwNTkscy50OjJ8cy5lOmd8cC5sOjIxLHMudDoyfHMuZTpnLmZ8cC5jOiNmZjRkNjA1OSxzLnQ6MnxzLmU6Zy5zfHAuYzojZmY0ZDYwNTkscy50OjN8cy5lOmd8cC52Om9ufHAuYzojZmY3ZjhkODkscy50OjN8cy5lOmcuZnxwLmM6I2ZmN2Y4ZDg5LHMudDo0OXxzLmU6Zy5mfHAuYzojZmY3ZjhkODl8cC5sOjE3LHMudDo0OXxzLmU6Zy5zfHAuYzojZmY3ZjhkODl8cC5sOjI5fHAudzowLjIscy50OjUwfHMuZTpnfHAuYzojZmYwMDAwMDB8cC5sOjE4LHMudDo1MHxzLmU6Zy5mfHAuYzojZmY3ZjhkODkscy50OjUwfHMuZTpnLnN8cC5jOiNmZjdmOGQ4OSxzLnQ6NTF8cy5lOmd8cC5jOiNmZjAwMDAwMHxwLmw6MTYscy50OjUxfHMuZTpnLmZ8cC5jOiNmZjdmOGQ4OSxzLnQ6NTF8cy5lOmcuc3xwLmM6I2ZmN2Y4ZDg5LHMudDo0fHMuZTpnfHAuYzojZmYwMDAwMDB8cC5sOjE5LHMudDo2fHAuYzojZmYyYjM2Mzh8cC52Om9uLHMudDo2fHMuZTpnfHAuYzojZmYyYjM2Mzh8cC5sOjE3LHMudDo2fHMuZTpnLmZ8cC5jOiNmZjI0MjgyYixzLnQ6NnxzLmU6Zy5zfHAuYzojZmYyNDI4MmIscy50OjZ8cy5lOmx8cC52Om9mZixzLnQ6NnxzLmU6bC50fHAudjpvZmYscy50OjZ8cy5lOmwudC5mfHAudjpvZmYscy50OjZ8cy5lOmwudC5zfHAudjpvZmYscy50OjZ8cy5lOmwuaXxwLnY6b2Zm!4e0&key=AIzaSyAOqYYyBbtXQEtcHG7hwAwyCPQSYidG8yU&token=31440';
+                        //Mapbox Streets
+                        // final url =
+                        //     'https://api.mapbox.com/styles/v1/mapbox/streets-v11/tiles/$z/$x/$y?access_token=YOUR_MAPBOX_ACCESS_TOKEN';
+
+                        return CachedNetworkImage(
+                          imageUrl: _darkMode ? darkUrl : url,
+                          fit: BoxFit.cover,
+                        );
+                      },
+                    ),
+                    //homeMarkerWidget,
+                    ...markerWidgets,
+                    //centerMarkerWidget,
+                  ],
+                ),
               ),
-            ),
-          );
-        },
+            );
+          },
+        ),
       ),
 /*      floatingActionButton: FloatingActionButton(
         onPressed: _gotoDefault,
