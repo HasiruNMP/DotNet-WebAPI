@@ -187,6 +187,56 @@ namespace SLBFE_API.Controllers
             return new JsonResult("Delteted Successfully!");
         }
 
+        [HttpDelete, Route("DeactivateUser")]
+        public JsonResult DeactivateUser(int nic)
+        {
+            string queryDeleteUser = @"delete from dbo.Js_Users where NIC=@NIC";
+            string queryDeleteContacts = @"delete from dbo.JS_Contacts where JS_NIC=@NIC";
+            string queryDeleteQualifications = @"delete from dbo.JS_QUALIFICATIONS where JS_NIC=@NIC";
+            string queryDeleteComplains = @"delete from dbo.JS_COMPLAINS where JS_NIC=@NIC";
+            DataTable table = new DataTable();
+            string sqlDataSource = _configuration.GetConnectionString("SLBFEDB");
+            SqlDataReader myReader;
+            using (SqlConnection myCon = new SqlConnection(sqlDataSource))
+            {
+                myCon.Open();
+                using (SqlCommand myCommand = new SqlCommand(queryDeleteContacts, myCon))
+                {
+                    myCommand.Parameters.AddWithValue("@NIC", nic);
+                    myReader = myCommand.ExecuteReader();
+                    table.Load(myReader);
+                    myReader.Close();
+
+                }
+                using (SqlCommand myCommand = new SqlCommand(queryDeleteQualifications, myCon))
+                {
+                    myCommand.Parameters.AddWithValue("@NIC", nic);
+                    myReader = myCommand.ExecuteReader();
+                    table.Load(myReader);
+                    myReader.Close();
+
+                }
+                using (SqlCommand myCommand = new SqlCommand(queryDeleteComplains, myCon))
+                {
+                    myCommand.Parameters.AddWithValue("@NIC", nic);
+                    myReader = myCommand.ExecuteReader();
+                    table.Load(myReader);
+                    myReader.Close();
+
+                }
+
+                using (SqlCommand myCommand = new SqlCommand(queryDeleteUser, myCon))
+                {
+                    myCommand.Parameters.AddWithValue("@NIC", nic);
+                    myReader = myCommand.ExecuteReader();
+                    table.Load(myReader);
+                    myReader.Close();
+                    myCon.Close();
+                }
+            }
+            return new JsonResult("Delteted Successfully!");
+        }
+
 
         [HttpGet, Route("login")]
         public ActionResult JsUserLogin(String email, String password)
