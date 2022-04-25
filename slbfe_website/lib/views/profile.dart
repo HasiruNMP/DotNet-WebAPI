@@ -204,33 +204,29 @@ class _PersonalInfoState extends State<PersonalInfo> {
           height: 5,
         ),
         Padding(
-            padding: const EdgeInsets.symmetric(horizontal: 20),
-            child: Row(
-              mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-              children: [
-                OutlinedButton(
-                  onPressed: () {},
-                  child: Text('Mark As Validated'),
-                ),
-                OutlinedButton(
-                  onPressed: () async {
-                    var request = http.Request(
-                        'DELETE',
-                        Uri.parse(
-                            'https://localhost:7018/api/JsUser/DeactivateUser?nic=983274938'));
-
-                    http.StreamedResponse response = await request.send();
-
-                    if (response.statusCode == 200) {
-                      print(await response.stream.bytesToString());
-                    } else {
-                      print(response.reasonPhrase);
-                    }
-                  },
-                  child: Text('Deactivate Accoount'),
-                ),
-              ],
-            )),
+          padding: const EdgeInsets.symmetric(horizontal: 20),
+          child: Row(
+            mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+            children: [
+              OutlinedButton(
+                onPressed: () {},
+                child: Text('Mark As Validated'),
+              ),
+              OutlinedButton(
+                onPressed: () async {
+                  var request = http.Request('DELETE', Uri.parse('https://localhost:7018/api/JsUser/DeactivateUser?nic=76'));
+                  http.StreamedResponse response = await request.send();
+                  if (response.statusCode == 200) {
+                    print(await response.stream.bytesToString());
+                  } else {
+                    print(response.reasonPhrase);
+                  }
+                },
+                child: Text('Deactivate Accoount'),
+              ),
+            ],
+          ),
+        ),
         SizedBox(
           height: 5,
         ),
