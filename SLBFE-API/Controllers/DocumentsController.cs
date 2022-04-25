@@ -41,7 +41,7 @@ namespace SLBFE_API.Controllers
         [HttpGet("download")]
         public async Task<ActionResult> DownloadFile(int NIC, string documentType)
         {
-            var filePath = $"FileStorage/JobSeekers/1000/Documents/CV.png";
+            var filePath = $"FileStorage/JobSeekers/{NIC}/Documents/{NIC}SampleDoc.pdf";
 
             var bytes = await System.IO.File.ReadAllBytesAsync(filePath);
             return File(bytes, "text/plain", Path.GetFileName(filePath));
@@ -50,7 +50,7 @@ namespace SLBFE_API.Controllers
         [HttpGet("profilepic")]
         public async Task<ActionResult> DownloadProfilePicture(int NIC)
         {
-            var filePath = $"FileStorage/JobSeekers/1000/ProfilePicture/propic1000.jpg";
+            var filePath = $"FileStorage/JobSeekers/{NIC}/ProfilePicture/propic.jpg";
 
             var bytes = await System.IO.File.ReadAllBytesAsync(filePath);
             return File(bytes, "text/plain", Path.GetFileName(filePath));

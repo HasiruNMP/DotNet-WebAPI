@@ -255,7 +255,6 @@ namespace SLBFE_API.Controllers
                 using (SqlCommand myCommand = new SqlCommand(query, myCon))
           
                 {
-               
                     myReader = myCommand.ExecuteReader();
                     table.Load(myReader);
                     myReader.Close();
@@ -446,6 +445,46 @@ namespace SLBFE_API.Controllers
                   ,[PrimaryPhone]
               FROM [dbo].[JS_USERS]
               WHERE NIC =" + nic + ";";
+            DataTable table = new DataTable();
+            string sqlDataSource = _configuration.GetConnectionString("SLBFEDB");
+            SqlDataReader myReader;
+            using (SqlConnection myCon = new SqlConnection(sqlDataSource))
+            {
+                myCon.Open();
+                using (SqlCommand myCommand = new SqlCommand(query, myCon))
+                {
+                    myReader = myCommand.ExecuteReader();
+                    table.Load(myReader);
+                    myReader.Close();
+                    myCon.Close();
+
+                }
+            }
+            return new JsonResult(table);
+        }
+
+
+        [HttpGet, Route("tobevalidated")]
+        public JsonResult GetUsersToValidate()
+        {
+            string query = @"SELECT [NIC]
+                  ,[Email]
+                  ,[Password]
+                  ,[FirstName]
+                  ,[LastName]
+                  ,[DOB]
+                  ,[Address]
+                  ,[Latitude]
+                  ,[Longitude]
+                  ,[Profession]
+                  ,[Affiliation]
+                  ,[Gender]
+                  ,[Nationality]
+                  ,[MaritalStatus]
+                  ,[Validity]
+                  ,[PrimaryPhone]
+              FROM [dbo].[JS_USERS]
+              WHERE Validity = 'False';";
             DataTable table = new DataTable();
             string sqlDataSource = _configuration.GetConnectionString("SLBFEDB");
             SqlDataReader myReader;

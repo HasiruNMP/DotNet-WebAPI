@@ -1,6 +1,9 @@
+import 'dart:convert';
+
 import 'package:buttons_tabbar/buttons_tabbar.dart';
 import 'package:flutter/material.dart';
 import 'package:slbfe_website/views/profile.dart';
+import 'package:http/http.dart' as http;
 
 class Validate extends StatefulWidget {
   const Validate({Key? key}) : super(key: key);
@@ -10,7 +13,30 @@ class Validate extends StatefulWidget {
 }
 
 class _ValidateState extends State<Validate> {
-  //late TabController _controller;
+
+  int selected = 0;
+  List users = [];
+  bool loaded = false;
+
+  Future fetchUsers() async {
+    String url = "https://localhost:7018/api/JsUser/tobevalidated";
+    final response = await http.get(Uri.parse(url));
+    var resJson = json.decode(response.body);
+
+    if (response.statusCode == 200) {
+      var a = resJson as List;
+      users = a.toList();
+      setState(() => loaded = true);
+    }
+    else {
+      print(response.reasonPhrase);
+    }
+  }
+
+  @override
+  void initState() {
+    fetchUsers();
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -23,13 +49,26 @@ class _ValidateState extends State<Validate> {
           children: [
             Expanded(
               flex: 1,
-              child: Container(
-                //color: Colors.deepPurple,
-                child: ListView(
-                  children: [
-                    ValidateCard(),
-                  ],
-                )
+              child: Column(
+                children: [
+                  Text("Users to Validate"),
+                  Expanded(
+                    child: (loaded)? Container(
+                      //color: Colors.deepPurple,
+                      child: (users.length != 0)? Container(
+                        child: ListView(
+                          children: List.generate(users.length, (i) {
+                            return ValidateCard(
+                              nic: users[i]['NIC'],
+                              email: users[i]['Email'],
+                              name: users[i]['FirstName'] + ' ' + users[i]['LastName'],
+                            );
+                          },),
+                        ),
+                      ): Center(child: Text("No Users To Validate")),
+                    ): Center(child: CircularProgressIndicator()),
+                  ),
+                ],
               ),
             ),
             VerticalDivider(),
@@ -37,7 +76,7 @@ class _ValidateState extends State<Validate> {
               flex: 4,
               child: Column(
                 children: [
-                  Expanded(child: ProfileWidget(1001),),
+                  Expanded(child: ProfileWidget(selected),),
                 ],
               ),
             ),
@@ -46,27 +85,50 @@ class _ValidateState extends State<Validate> {
       ),
     );
   }
+
+  Widget ValidateCard({required nic,required name,required email}) {
+    return Padding(
+      padding: const EdgeInsets.symmetric(vertical: 1,horizontal: 8),
+      child: Card(
+        color: (nic != selected)? Colors.blueGrey.shade50 : Colors.blueGrey.shade200,
+        child: InkWell(
+          onTap: (){
+            setState(() {
+              selected = nic;
+              print(nic);
+            });
+          },
+          child: ListTile(
+            title: Text("${nic} - ${name}"),
+            subtitle: Text(email),
+          ),
+        ),
+      ),
+    );
+  }
+
 }
 
-class ValidateCard extends StatelessWidget {
-  const ValidateCard({
-    Key? key,
-  }) : super(key: key);
+/*class ValidateCard extends StatelessWidget {
+
+  String nic, name, email;
+
+  ValidateCard({required this.nic,required this.name,required this.email});
 
   @override
   Widget build(BuildContext context) {
     return Padding(
       padding: const EdgeInsets.symmetric(vertical: 1,horizontal: 8),
       child: Card(
-        color: Colors.teal.shade100,
+        color: Colors.blueGrey.shade200,
         child: InkWell(
           onTap: (){},
           child: ListTile(
-            title: Text("NIC, Date Time"),
-            subtitle: Text("preview"),
+            title: Text("${nic} - ${name}"),
+            subtitle: Text(email),
           ),
         ),
       ),
     );
   }
-}
+}*/

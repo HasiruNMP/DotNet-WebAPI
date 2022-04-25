@@ -313,7 +313,7 @@ class JobSeekerCard extends StatelessWidget {
                   padding: const EdgeInsets.all(8.0),
                   child: OutlinedButton(
                     onPressed: (){
-                      js.context.callMethod('open', ['https://localhost:7014/documents/download?NIC=1000&documentType=CV']);
+                      js.context.callMethod('open', ['https://localhost:7018/documents/download?NIC=1000&documentType=CV']);
                     },
                     child: Text("Download CV"),
                   ),

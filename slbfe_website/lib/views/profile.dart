@@ -6,6 +6,9 @@ import 'package:flutter/material.dart';
 import 'package:google_maps_flutter_web/google_maps_flutter_web.dart';
 import 'package:slbfe_website/views/map.dart';
 import 'package:http/http.dart' as http;
+import 'dart:js' as js;
+
+int lastNic = 0;
 
 class Profile extends StatefulWidget {
   const Profile({Key? key}) : super(key: key);
@@ -20,7 +23,7 @@ class _ProfileState extends State<Profile> {
     return Container(
       child: Column(
         children: [
-          Container(
+          /*Container(
             child: Padding(
               padding: const EdgeInsets.all(8.0),
               child: Row(
@@ -45,7 +48,7 @@ class _ProfileState extends State<Profile> {
                 ],
               ),
             ),
-          ),
+          ),*/
           Expanded(
             child: ProfileWidget(1001),
           ),
@@ -55,9 +58,20 @@ class _ProfileState extends State<Profile> {
   }
 }
 
-class ProfileWidget extends StatelessWidget {
+class ProfileWidget extends StatefulWidget {
   int nic;
   ProfileWidget(this.nic);
+
+  @override
+  State<ProfileWidget> createState() => _ProfileWidgetState();
+}
+
+class _ProfileWidgetState extends State<ProfileWidget> {
+
+  @override
+  void initState() {
+    print('**********###################');
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -74,7 +88,7 @@ class ProfileWidget extends StatelessWidget {
               children: [
                 Expanded(
                   flex: 2,
-                  child: PersonalInfo(),
+                  child: PersonalInfo(widget.nic),
                 ),
                 VerticalDivider(),
                 Expanded(
@@ -112,10 +126,10 @@ class ProfileWidget extends StatelessWidget {
                         Expanded(
                           child: TabBarView(
                             children: <Widget>[
-                              Qualifications(nic),
-                              Documents(nic),
-                              Location(nic),
-                              Contacts(nic),
+                              Qualifications(widget.nic),
+                              Documents(widget.nic),
+                              Location(widget.nic),
+                              Contacts(widget.nic),
                             ],
                           ),
                         ),
@@ -133,105 +147,146 @@ class ProfileWidget extends StatelessWidget {
 }
 
 class PersonalInfo extends StatefulWidget {
-  const PersonalInfo({Key? key}) : super(key: key);
+  int nic;
+  PersonalInfo(this.nic);
 
   @override
   State<PersonalInfo> createState() => _PersonalInfoState();
 }
 
 class _PersonalInfoState extends State<PersonalInfo> {
-  Future<void> getProfileInfo() async {}
+
+  List userInfo = [];
+  bool isLoaded = false;
+
+  Future<List> getUserInfo() async {
+    String url = "https://localhost:7018/api/JsUser?nic=${widget.nic}";
+    final response = await http.get(Uri.parse(url));
+    var resJson = json.decode(response.body);
+    if (response.statusCode == 200) {
+      var a = resJson as List;
+      userInfo = a.toList();
+      print(userInfo);
+      return userInfo;
+      //setState(() => isLoaded = true);
+    }
+    else {
+      return userInfo;
+      print(response.reasonPhrase);
+    }
+  }
+
+  @override
+  void initState() {
+    //getUserInfo();
+  }
+
+  TextStyle style1 = TextStyle(
+    color: Colors.black,
+    fontSize: 16,
+    fontWeight: FontWeight.bold,
+  );
 
   @override
   Widget build(BuildContext context) {
-    return Column(
-      children: [
-        SizedBox(
-          height: 12,
-        ),
-        CircleAvatar(
-          radius: 70,
-          backgroundColor: Colors.indigo,
-          backgroundImage: NetworkImage(
-              'https://10.0.2.2:7018/documents/profilepic?NIC=1001'),
-        ),
-        Expanded(
-            child: ListView(
+
+    /*if(widget.nic != lastNic){
+      lastNic = widget.nic;
+      setState(() {
+        isLoaded = false;
+        getUserInfo();
+      });
+    }*/
+    return Container(
+        child: Column(
           children: [
-            ListTile(
-              title: Text("Name"),
-              subtitle: Text("Hasiru Navodya"),
+            SizedBox(
+              height: 12,
             ),
-            ListTile(
-              title: Text("NIC"),
-              subtitle: Text("983274938"),
+            CircleAvatar(
+              radius: 70,
+              backgroundColor: Colors.indigo,
+              backgroundImage: NetworkImage('https://localhost:7018/documents/profilepic?NIC=${widget.nic}'),
             ),
-            ListTile(
-              title: Text("Email"),
-              subtitle: Text("hasirunmp@gmail.com"),
+            Expanded(
+              child: (isLoaded)? ListView(
+                children: [
+                  ListTile(
+                    title: Text("Name"),
+                    subtitle: Text("${userInfo[0]['FirstName']} ${userInfo[0]['LastName']}",style: style1,),
+                  ),
+                  ListTile(
+                    title: Text("NIC"),
+                    subtitle: Text(userInfo[0]['NIC'].toString(),style: style1,),
+                  ),
+                  ListTile(
+                    title: Text("Email"),
+                    subtitle: Text(userInfo[0]['Email'],style: style1,),
+                  ),
+                  ListTile(
+                    title: Text("Phone"),
+                    subtitle: Text(userInfo[0]['PrimaryPhone'],style: style1,),
+                  ),
+                  ListTile(
+                    title: Text("Date of Birth"),
+                    subtitle: Text(userInfo[0]['DOB'],style: style1,),
+                  ),
+                  ListTile(
+                    title: Text("Address"),
+                    subtitle: Text(userInfo[0]['Address'],style: style1,),
+                  ),
+                  ListTile(
+                    title: Text("Proffesion"),
+                    subtitle: Text(userInfo[0]['Profession'],style: style1,),
+                  ),
+                  ListTile(
+                    title: Text("Gender"),
+                    subtitle: Text(userInfo[0]['Gender'],style: style1,),
+                  ),
+                  ListTile(
+                    title: Text("Nationality"),
+                    subtitle: Text(userInfo[0]['Nationality'],style: style1,),
+                  ),
+                  ListTile(
+                    title: Text("Marital Status"),
+                    subtitle: Text(userInfo[0]['MaritalStatus'],style: style1,),
+                  ),
+                ],
+              ): Center(child: CircularProgressIndicator(),),
             ),
-            ListTile(
-              title: Text("Phone"),
-              subtitle: Text("0702435206"),
+            SizedBox(
+              height: 5,
             ),
-            ListTile(
-              title: Text("Date of Birth"),
-              subtitle: Text("1998.11.09"),
+            Padding(
+              padding: const EdgeInsets.symmetric(horizontal: 20),
+              child: Row(
+                mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                children: [
+                  OutlinedButton(
+                    onPressed: () {},
+                    child: Text('Mark As Validated'),
+                  ),
+                  OutlinedButton(
+                    onPressed: () async {
+                      var request = http.Request('DELETE', Uri.parse('https://localhost:7018/api/JsUser/DeactivateUser?nic=${widget.nic}'));
+                      http.StreamedResponse response = await request.send();
+                      if (response.statusCode == 200) {
+                        print(await response.stream.bytesToString());
+                      } else {
+                        print(response.reasonPhrase);
+                      }
+                    },
+                    child: Text('Deactivate Accoount'),
+                  ),
+                ],
+              ),
             ),
-            ListTile(
-              title: Text("Address"),
-              subtitle: Text("Ratnapura"),
-            ),
-            ListTile(
-              title: Text("Proffesion"),
-              subtitle: Text("Student"),
-            ),
-            ListTile(
-              title: Text("Gender"),
-              subtitle: Text("Male"),
-            ),
-            ListTile(
-              title: Text("Nationality"),
-              subtitle: Text("Sri Lankan"),
-            ),
-            ListTile(
-              title: Text("Marital Status"),
-              subtitle: Text("Single"),
+            SizedBox(
+              height: 5,
             ),
           ],
-        )),
-        SizedBox(
-          height: 5,
         ),
-        Padding(
-          padding: const EdgeInsets.symmetric(horizontal: 20),
-          child: Row(
-            mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-            children: [
-              OutlinedButton(
-                onPressed: () {},
-                child: Text('Mark As Validated'),
-              ),
-              OutlinedButton(
-                onPressed: () async {
-                  var request = http.Request('DELETE', Uri.parse('https://localhost:7018/api/JsUser/DeactivateUser?nic=76'));
-                  http.StreamedResponse response = await request.send();
-                  if (response.statusCode == 200) {
-                    print(await response.stream.bytesToString());
-                  } else {
-                    print(response.reasonPhrase);
-                  }
-                },
-                child: Text('Deactivate Accoount'),
-              ),
-            ],
-          ),
-        ),
-        SizedBox(
-          height: 5,
-        ),
-      ],
-    );
+      );
   }
 }
 
@@ -248,8 +303,7 @@ class _QualificationsState extends State<Qualifications> {
   bool isLoaded = false;
 
   Future<void> getQualifications() async {
-    String url =
-        "https://localhost:7018/jobseekers/qualifications/ofuser?NIC=${widget.nic}";
+    String url = "https://localhost:7018/jobseekers/qualifications/ofuser?NIC=${widget.nic}";
     final response = await http.get(Uri.parse(url));
     var resJson = json.decode(response.body);
     if (response.statusCode == 200) {
@@ -269,142 +323,143 @@ class _QualificationsState extends State<Qualifications> {
 
   @override
   Widget build(BuildContext context) {
-    return (isLoaded)
-        ? ListView(
-            children: [
-              ListTile(
-                title: Text(
-                  "OL Science",
-                  style: TextStyle(
-                      //fontSize: 16,
+    return (isLoaded)? Container(
+          child: (qualifications.length != 0)? Container(
+            child: ListView(
+                children: [
+                  ListTile(
+                    title: Text(
+                      "OL Science",
+                      style: TextStyle(
+                          //fontSize: 16,
+                          ),
+                    ),
+                    subtitle: Text(
+                      qualifications[0]['OLScience'],
+                      style: TextStyle(
+                        color: Colors.black,
+                        fontSize: 16,
+                        fontWeight: FontWeight.bold,
                       ),
-                ),
-                subtitle: Text(
-                  qualifications[0]['OLScience'],
-                  style: TextStyle(
-                    color: Colors.black,
-                    fontSize: 16,
-                    fontWeight: FontWeight.bold,
+                    ),
                   ),
-                ),
-              ),
-              ListTile(
-                title: Text(
-                  "OL Maths",
-                  style: TextStyle(
-                      //fontSize: 16,
+                  ListTile(
+                    title: Text(
+                      "OL Maths",
+                      style: TextStyle(
+                          //fontSize: 16,
+                          ),
+                    ),
+                    subtitle: Text(
+                      qualifications[0]['OLMaths'],
+                      style: TextStyle(
+                        color: Colors.black,
+                        fontSize: 16,
+                        fontWeight: FontWeight.bold,
                       ),
-                ),
-                subtitle: Text(
-                  qualifications[0]['OLMaths'],
-                  style: TextStyle(
-                    color: Colors.black,
-                    fontSize: 16,
-                    fontWeight: FontWeight.bold,
+                    ),
                   ),
-                ),
-              ),
-              ListTile(
-                title: Text(
-                  "OL English",
-                  style: TextStyle(
-                      //fontSize: 16,
+                  ListTile(
+                    title: Text(
+                      "OL English",
+                      style: TextStyle(
+                          //fontSize: 16,
+                          ),
+                    ),
+                    subtitle: Text(
+                      qualifications[0]['OLEnglish'],
+                      style: TextStyle(
+                        color: Colors.black,
+                        fontSize: 16,
+                        fontWeight: FontWeight.bold,
                       ),
-                ),
-                subtitle: Text(
-                  qualifications[0]['OLEnglish'],
-                  style: TextStyle(
-                    color: Colors.black,
-                    fontSize: 16,
-                    fontWeight: FontWeight.bold,
+                    ),
                   ),
-                ),
-              ),
-              ListTile(
-                title: Text(
-                  "AL Stream",
-                  style: TextStyle(
-                      //fontSize: 16,
+                  ListTile(
+                    title: Text(
+                      "AL Stream",
+                      style: TextStyle(
+                          //fontSize: 16,
+                          ),
+                    ),
+                    subtitle: Text(
+                      qualifications[0]['ALStream'],
+                      style: TextStyle(
+                        color: Colors.black,
+                        fontSize: 16,
+                        fontWeight: FontWeight.bold,
                       ),
-                ),
-                subtitle: Text(
-                  qualifications[0]['ALStream'],
-                  style: TextStyle(
-                    color: Colors.black,
-                    fontSize: 16,
-                    fontWeight: FontWeight.bold,
+                    ),
                   ),
-                ),
-              ),
-              ListTile(
-                title: Text(
-                  qualifications[0]['ALResults'],
-                  style: TextStyle(
-                      //fontSize: 16,
+                  ListTile(
+                    title: Text(
+                      qualifications[0]['ALResults'],
+                      style: TextStyle(
+                          //fontSize: 16,
+                          ),
+                    ),
+                    subtitle: Text(
+                      "3 Passes",
+                      style: TextStyle(
+                        color: Colors.black,
+                        fontSize: 16,
+                        fontWeight: FontWeight.bold,
                       ),
-                ),
-                subtitle: Text(
-                  "3 Passes",
-                  style: TextStyle(
-                    color: Colors.black,
-                    fontSize: 16,
-                    fontWeight: FontWeight.bold,
+                    ),
                   ),
-                ),
-              ),
-              ListTile(
-                title: Text(
-                  "AL English",
-                  style: TextStyle(
-                      //fontSize: 16,
+                  ListTile(
+                    title: Text(
+                      "AL English",
+                      style: TextStyle(
+                          //fontSize: 16,
+                          ),
+                    ),
+                    subtitle: Text(
+                      qualifications[0]['ALEnglish'],
+                      style: TextStyle(
+                        color: Colors.black,
+                        fontSize: 16,
+                        fontWeight: FontWeight.bold,
                       ),
-                ),
-                subtitle: Text(
-                  qualifications[0]['ALEnglish'],
-                  style: TextStyle(
-                    color: Colors.black,
-                    fontSize: 16,
-                    fontWeight: FontWeight.bold,
+                    ),
                   ),
-                ),
-              ),
-              ListTile(
-                title: Text(
-                  "Higher Education Level",
-                  style: TextStyle(
-                      //fontSize: 16,
+                  ListTile(
+                    title: Text(
+                      "Higher Education Level",
+                      style: TextStyle(
+                          //fontSize: 16,
+                          ),
+                    ),
+                    subtitle: Text(
+                      qualifications[0]['HigherEducation'],
+                      style: TextStyle(
+                        color: Colors.black,
+                        fontSize: 16,
+                        fontWeight: FontWeight.bold,
                       ),
-                ),
-                subtitle: Text(
-                  qualifications[0]['HigherEducation'],
-                  style: TextStyle(
-                    color: Colors.black,
-                    fontSize: 16,
-                    fontWeight: FontWeight.bold,
+                    ),
                   ),
-                ),
-              ),
-              ListTile(
-                title: Text(
-                  "Higher Education Field",
-                  style: TextStyle(
-                      //fontSize: 16,
+                  ListTile(
+                    title: Text(
+                      "Higher Education Field",
+                      style: TextStyle(
+                          //fontSize: 16,
+                          ),
+                    ),
+                    subtitle: Text(
+                      qualifications[0]['HigherEducationField'],
+                      style: TextStyle(
+                        color: Colors.black,
+                        fontSize: 16,
+                        fontWeight: FontWeight.bold,
                       ),
-                ),
-                subtitle: Text(
-                  qualifications[0]['HigherEducationField'],
-                  style: TextStyle(
-                    color: Colors.black,
-                    fontSize: 16,
-                    fontWeight: FontWeight.bold,
+                    ),
                   ),
-                ),
+                ],
               ),
-            ],
-          )
-        : Center(
-            child: CircularProgressIndicator(),
-          );
+          ): Center(child: Text("The user have not updated the qualifications."),),
+        )
+        : Center(child: CircularProgressIndicator(),);
   }
 }
 
@@ -432,7 +487,7 @@ class _DocumentsState extends State<Documents> {
                   OutlinedButton(
                     child: Text("Download"),
                     onPressed: () {
-                      downloadFile();
+                      downloadFile(docType: 'CV');
                     },
                   ),
                 ],
@@ -448,7 +503,7 @@ class _DocumentsState extends State<Documents> {
                 OutlinedButton(
                   child: Text("Download"),
                   onPressed: () {
-                    downloadFile();
+                    downloadFile(docType: 'OLCertificate');
                   },
                 ),
               ],
@@ -463,7 +518,7 @@ class _DocumentsState extends State<Documents> {
                 OutlinedButton(
                   child: Text("Download"),
                   onPressed: () {
-                    downloadFile();
+                    downloadFile(docType: 'ALCertificate');
                   },
                 ),
               ],
@@ -478,7 +533,7 @@ class _DocumentsState extends State<Documents> {
                 OutlinedButton(
                   child: Text("Download"),
                   onPressed: () {
-                    downloadFile();
+                    downloadFile(docType: 'DegreeCertificate');
                   },
                 ),
               ],
@@ -493,7 +548,7 @@ class _DocumentsState extends State<Documents> {
                 OutlinedButton(
                   child: Text("Download"),
                   onPressed: () {
-                    downloadFile();
+                    downloadFile(docType: 'Vaccination');
                   },
                 ),
               ],
@@ -508,7 +563,7 @@ class _DocumentsState extends State<Documents> {
                 OutlinedButton(
                   child: Text("Download"),
                   onPressed: () {
-                    downloadFile();
+                    downloadFile(docType: 'Passport');
                   },
                 ),
               ],
@@ -523,7 +578,7 @@ class _DocumentsState extends State<Documents> {
                 OutlinedButton(
                   child: Text("Download"),
                   onPressed: () {
-                    downloadFile();
+                    downloadFile(docType: 'License');
                   },
                 ),
               ],
@@ -534,17 +589,8 @@ class _DocumentsState extends State<Documents> {
     );
   }
 
-  Future<void> downloadFile() async {
-    var request = http.Request(
-        'GET',
-        Uri.parse(
-            'https://localhost:7018/documents/download?NIC=1&documentType=CV'));
-    http.StreamedResponse response = await request.send();
-    if (response.statusCode == 200) {
-      print(await response.stream.bytesToString());
-    } else {
-      print(response.reasonPhrase);
-    }
+  Future<void> downloadFile({required String docType}) async {
+    js.context.callMethod('open', ['https://localhost:7018/documents/download?NIC=${widget.nic}&documentType=$docType']);
   }
 }
 
