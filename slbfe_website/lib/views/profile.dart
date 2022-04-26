@@ -4,6 +4,7 @@ import 'package:buttons_tabbar/buttons_tabbar.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:google_maps_flutter_web/google_maps_flutter_web.dart';
+import 'package:slbfe_website/views/location.dart';
 import 'package:slbfe_website/views/map.dart';
 import 'package:http/http.dart' as http;
 import 'dart:js' as js;
@@ -18,41 +19,46 @@ class Profile extends StatefulWidget {
 }
 
 class _ProfileState extends State<Profile> {
+
+  //bool searched = false;
+  int nic = 0;
+  final tecNIC = TextEditingController();
+
+  void setNIC() {
+    setState(() {
+      var nicInt = int.parse(tecNIC.text);
+      assert(nicInt is int);
+      nic = nicInt;
+    });
+  }
+
   @override
   Widget build(BuildContext context) {
     return Container(
-      child: Column(
-        children: [
-          /*Container(
-            child: Padding(
-              padding: const EdgeInsets.all(8.0),
-              child: Row(
-                mainAxisAlignment: MainAxisAlignment.center,
-                children: [
-                  Container(
-                    width: 300,
-                    child: TextField(
-                      decoration: InputDecoration(
-                        border: OutlineInputBorder(),
-                        labelText: 'NIC',
-                      ),
-                    ),
-                  ),
-                  SizedBox(
-                    width: 10,
-                  ),
-                  ElevatedButton(
-                    onPressed: () {},
-                    child: Text("SEARCH"),
-                  ),
-                ],
+      child: (nic != 0)? ProfileWidget(nic) : Center(
+        child: Column(
+          mainAxisAlignment: MainAxisAlignment.center,
+          children: [
+            Container(
+              width: 300,
+              child: TextField(
+                decoration: InputDecoration(
+                  border: OutlineInputBorder(),
+                  labelText: 'NIC',
+                ),
               ),
             ),
-          ),*/
-          Expanded(
-            child: ProfileWidget(1001),
-          ),
-        ],
+            SizedBox(
+              width: 10,
+            ),
+            ElevatedButton(
+              onPressed: () {
+                setNIC();
+              },
+              child: Text("SEARCH"),
+            ),
+          ],
+        ),
       ),
     );
   }
@@ -67,7 +73,6 @@ class ProfileWidget extends StatefulWidget {
 }
 
 class _ProfileWidgetState extends State<ProfileWidget> {
-
   @override
   void initState() {
     print('**********###################');
@@ -155,11 +160,10 @@ class PersonalInfo extends StatefulWidget {
 }
 
 class _PersonalInfoState extends State<PersonalInfo> {
-
-  List userInfo = [];
   bool isLoaded = false;
 
   Future<List> getUserInfo() async {
+    List userInfo = [];
     String url = "https://localhost:7018/api/JsUser?nic=${widget.nic}";
     final response = await http.get(Uri.parse(url));
     var resJson = json.decode(response.body);
@@ -169,8 +173,7 @@ class _PersonalInfoState extends State<PersonalInfo> {
       print(userInfo);
       return userInfo;
       //setState(() => isLoaded = true);
-    }
-    else {
+    } else {
       return userInfo;
       print(response.reasonPhrase);
     }
@@ -189,104 +192,146 @@ class _PersonalInfoState extends State<PersonalInfo> {
 
   @override
   Widget build(BuildContext context) {
-
-    /*if(widget.nic != lastNic){
-      lastNic = widget.nic;
-      setState(() {
-        isLoaded = false;
-        getUserInfo();
-      });
-    }*/
     return Container(
-        child: Column(
-          children: [
-            SizedBox(
-              height: 12,
+      child: Column(
+        children: [
+          SizedBox(
+            height: 12,
+          ),
+          CircleAvatar(
+            radius: 70,
+            backgroundColor: Colors.indigo,
+            backgroundImage: NetworkImage(
+                'https://localhost:7018/documents/profilepic?NIC=${widget.nic}'),
+          ),
+          Expanded(
+              child: FutureBuilder(
+            future: getUserInfo(),
+            builder: (BuildContext context, AsyncSnapshot<List> snapshot) {
+              if (snapshot.hasData) {
+                List? list = snapshot.data;
+                return ListView(
+                  children: [
+                    ListTile(
+                      title: Text("Name"),
+                      subtitle: Text(
+                        "${list![0]['FirstName']} ${list[0]['LastName']}",
+                        style: style1,
+                      ),
+                    ),
+                    ListTile(
+                      title: Text("NIC"),
+                      subtitle: Text(
+                        list[0]['NIC'].toString(),
+                        style: style1,
+                      ),
+                    ),
+                    ListTile(
+                      title: Text("Email"),
+                      subtitle: Text(
+                        list[0]['Email'],
+                        style: style1,
+                      ),
+                    ),
+                    ListTile(
+                      title: Text("Phone"),
+                      subtitle: Text(
+                        list[0]['PrimaryPhone'],
+                        style: style1,
+                      ),
+                    ),
+                    ListTile(
+                      title: Text("Date of Birth"),
+                      subtitle: Text(
+                        list[0]['DOB'],
+                        style: style1,
+                      ),
+                    ),
+                    ListTile(
+                      title: Text("Address"),
+                      subtitle: Text(
+                        list[0]['Address'],
+                        style: style1,
+                      ),
+                    ),
+                    ListTile(
+                      title: Text("Proffesion"),
+                      subtitle: Text(
+                        list[0]['Profession'],
+                        style: style1,
+                      ),
+                    ),
+                    ListTile(
+                      title: Text("Gender"),
+                      subtitle: Text(
+                        list[0]['Gender'],
+                        style: style1,
+                      ),
+                    ),
+                    ListTile(
+                      title: Text("Nationality"),
+                      subtitle: Text(
+                        list[0]['Nationality'],
+                        style: style1,
+                      ),
+                    ),
+                    ListTile(
+                      title: Text("Marital Status"),
+                      subtitle: Text(
+                        list[0]['MaritalStatus'],
+                        style: style1,
+                      ),
+                    ),
+                  ],
+                );
+              }
+              if (snapshot.hasError) {
+                return Text("No Data");
+              } else {
+                return Center(child: CircularProgressIndicator());
+              }
+            },
+          )),
+          SizedBox(
+            height: 5,
+          ),
+          Padding(
+            padding: const EdgeInsets.symmetric(horizontal: 20),
+            child: Row(
+              mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+              children: [
+                OutlinedButton(
+                  onPressed: () {
+                    setState(() {
+                      print(123);
+                    });
+                  },
+                  child: Text('Mark As Validated'),
+                ),
+                OutlinedButton(
+                  onPressed: () async {
+                    var request = http.Request(
+                        'DELETE',
+                        Uri.parse(
+                            'https://localhost:7018/api/JsUser/DeactivateUser?nic=${widget.nic}'));
+                    http.StreamedResponse response = await request.send();
+                    if (response.statusCode == 200) {
+                      print(await response.stream.bytesToString());
+                    } else {
+                      print(response.reasonPhrase);
+                    }
+                  },
+                  child: Text('Deactivate Accoount'),
+                ),
+              ],
             ),
-            CircleAvatar(
-              radius: 70,
-              backgroundColor: Colors.indigo,
-              backgroundImage: NetworkImage('https://localhost:7018/documents/profilepic?NIC=${widget.nic}'),
-            ),
-            Expanded(
-              child: (isLoaded)? ListView(
-                children: [
-                  ListTile(
-                    title: Text("Name"),
-                    subtitle: Text("${userInfo[0]['FirstName']} ${userInfo[0]['LastName']}",style: style1,),
-                  ),
-                  ListTile(
-                    title: Text("NIC"),
-                    subtitle: Text(userInfo[0]['NIC'].toString(),style: style1,),
-                  ),
-                  ListTile(
-                    title: Text("Email"),
-                    subtitle: Text(userInfo[0]['Email'],style: style1,),
-                  ),
-                  ListTile(
-                    title: Text("Phone"),
-                    subtitle: Text(userInfo[0]['PrimaryPhone'],style: style1,),
-                  ),
-                  ListTile(
-                    title: Text("Date of Birth"),
-                    subtitle: Text(userInfo[0]['DOB'],style: style1,),
-                  ),
-                  ListTile(
-                    title: Text("Address"),
-                    subtitle: Text(userInfo[0]['Address'],style: style1,),
-                  ),
-                  ListTile(
-                    title: Text("Proffesion"),
-                    subtitle: Text(userInfo[0]['Profession'],style: style1,),
-                  ),
-                  ListTile(
-                    title: Text("Gender"),
-                    subtitle: Text(userInfo[0]['Gender'],style: style1,),
-                  ),
-                  ListTile(
-                    title: Text("Nationality"),
-                    subtitle: Text(userInfo[0]['Nationality'],style: style1,),
-                  ),
-                  ListTile(
-                    title: Text("Marital Status"),
-                    subtitle: Text(userInfo[0]['MaritalStatus'],style: style1,),
-                  ),
-                ],
-              ): Center(child: CircularProgressIndicator(),),
-            ),
-            SizedBox(
-              height: 5,
-            ),
-            Padding(
-              padding: const EdgeInsets.symmetric(horizontal: 20),
-              child: Row(
-                mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-                children: [
-                  OutlinedButton(
-                    onPressed: () {},
-                    child: Text('Mark As Validated'),
-                  ),
-                  OutlinedButton(
-                    onPressed: () async {
-                      var request = http.Request('DELETE', Uri.parse('https://localhost:7018/api/JsUser/DeactivateUser?nic=${widget.nic}'));
-                      http.StreamedResponse response = await request.send();
-                      if (response.statusCode == 200) {
-                        print(await response.stream.bytesToString());
-                      } else {
-                        print(response.reasonPhrase);
-                      }
-                    },
-                    child: Text('Deactivate Accoount'),
-                  ),
-                ],
-              ),
-            ),
-            SizedBox(
-              height: 5,
-            ),
-          ],
-        ),
-      );
+          ),
+          SizedBox(
+            height: 5,
+          ),
+        ],
+      ),
+    );
   }
 }
 
@@ -302,7 +347,7 @@ class _QualificationsState extends State<Qualifications> {
   List qualifications = [];
   bool isLoaded = false;
 
-  Future<void> getQualifications() async {
+  Future<List> getQualifications() async {
     String url = "https://localhost:7018/jobseekers/qualifications/ofuser?NIC=${widget.nic}";
     final response = await http.get(Uri.parse(url));
     var resJson = json.decode(response.body);
@@ -310,156 +355,165 @@ class _QualificationsState extends State<Qualifications> {
       var a = resJson as List;
       qualifications = a.toList();
       print(qualifications);
-      setState(() => isLoaded = true);
+      return qualifications;
+      //setState(() => isLoaded = true);
     } else {
+      return qualifications;
       print(response.reasonPhrase);
     }
   }
 
   @override
   void initState() {
-    getQualifications();
+    //getQualifications();
   }
 
   @override
   Widget build(BuildContext context) {
-    return (isLoaded)? Container(
-          child: (qualifications.length != 0)? Container(
-            child: ListView(
-                children: [
-                  ListTile(
-                    title: Text(
-                      "OL Science",
-                      style: TextStyle(
-                          //fontSize: 16,
-                          ),
-                    ),
-                    subtitle: Text(
-                      qualifications[0]['OLScience'],
-                      style: TextStyle(
-                        color: Colors.black,
-                        fontSize: 16,
-                        fontWeight: FontWeight.bold,
-                      ),
+    return FutureBuilder<List>(
+        future: getQualifications(),
+        builder: (context, snapshot) {
+
+          if(snapshot.hasData){
+            List? qs = snapshot.data;
+
+            return ListView(
+              children: [
+                ListTile(
+                  title: Text(
+                    "OL Science",
+                    style: TextStyle(
+                      //fontSize: 16,
                     ),
                   ),
-                  ListTile(
-                    title: Text(
-                      "OL Maths",
-                      style: TextStyle(
-                          //fontSize: 16,
-                          ),
-                    ),
-                    subtitle: Text(
-                      qualifications[0]['OLMaths'],
-                      style: TextStyle(
-                        color: Colors.black,
-                        fontSize: 16,
-                        fontWeight: FontWeight.bold,
-                      ),
+                  subtitle: Text(
+                    qs![0]['OLScience'],
+                    style: TextStyle(
+                      color: Colors.black,
+                      fontSize: 16,
+                      fontWeight: FontWeight.bold,
                     ),
                   ),
-                  ListTile(
-                    title: Text(
-                      "OL English",
-                      style: TextStyle(
-                          //fontSize: 16,
-                          ),
-                    ),
-                    subtitle: Text(
-                      qualifications[0]['OLEnglish'],
-                      style: TextStyle(
-                        color: Colors.black,
-                        fontSize: 16,
-                        fontWeight: FontWeight.bold,
-                      ),
+                ),
+                ListTile(
+                  title: Text(
+                    "OL Maths",
+                    style: TextStyle(
+                      //fontSize: 16,
                     ),
                   ),
-                  ListTile(
-                    title: Text(
-                      "AL Stream",
-                      style: TextStyle(
-                          //fontSize: 16,
-                          ),
-                    ),
-                    subtitle: Text(
-                      qualifications[0]['ALStream'],
-                      style: TextStyle(
-                        color: Colors.black,
-                        fontSize: 16,
-                        fontWeight: FontWeight.bold,
-                      ),
+                  subtitle: Text(
+                    qs[0]['OLMaths'],
+                    style: TextStyle(
+                      color: Colors.black,
+                      fontSize: 16,
+                      fontWeight: FontWeight.bold,
                     ),
                   ),
-                  ListTile(
-                    title: Text(
-                      qualifications[0]['ALResults'],
-                      style: TextStyle(
-                          //fontSize: 16,
-                          ),
-                    ),
-                    subtitle: Text(
-                      "3 Passes",
-                      style: TextStyle(
-                        color: Colors.black,
-                        fontSize: 16,
-                        fontWeight: FontWeight.bold,
-                      ),
+                ),
+                ListTile(
+                  title: Text(
+                    "OL English",
+                    style: TextStyle(
+                      //fontSize: 16,
                     ),
                   ),
-                  ListTile(
-                    title: Text(
-                      "AL English",
-                      style: TextStyle(
-                          //fontSize: 16,
-                          ),
-                    ),
-                    subtitle: Text(
-                      qualifications[0]['ALEnglish'],
-                      style: TextStyle(
-                        color: Colors.black,
-                        fontSize: 16,
-                        fontWeight: FontWeight.bold,
-                      ),
+                  subtitle: Text(
+                    qs[0]['OLEnglish'],
+                    style: TextStyle(
+                      color: Colors.black,
+                      fontSize: 16,
+                      fontWeight: FontWeight.bold,
                     ),
                   ),
-                  ListTile(
-                    title: Text(
-                      "Higher Education Level",
-                      style: TextStyle(
-                          //fontSize: 16,
-                          ),
-                    ),
-                    subtitle: Text(
-                      qualifications[0]['HigherEducation'],
-                      style: TextStyle(
-                        color: Colors.black,
-                        fontSize: 16,
-                        fontWeight: FontWeight.bold,
-                      ),
+                ),
+                ListTile(
+                  title: Text(
+                    "AL Stream",
+                    style: TextStyle(
+                      //fontSize: 16,
                     ),
                   ),
-                  ListTile(
-                    title: Text(
-                      "Higher Education Field",
-                      style: TextStyle(
-                          //fontSize: 16,
-                          ),
-                    ),
-                    subtitle: Text(
-                      qualifications[0]['HigherEducationField'],
-                      style: TextStyle(
-                        color: Colors.black,
-                        fontSize: 16,
-                        fontWeight: FontWeight.bold,
-                      ),
+                  subtitle: Text(
+                    qs[0]['ALStream'],
+                    style: TextStyle(
+                      color: Colors.black,
+                      fontSize: 16,
+                      fontWeight: FontWeight.bold,
                     ),
                   ),
-                ],
-              ),
-          ): Center(child: Text("The user have not updated the qualifications."),),
-        )
-        : Center(child: CircularProgressIndicator(),);
+                ),
+                ListTile(
+                  title: Text(
+                    qs[0]['ALResults'],
+                    style: TextStyle(
+                      //fontSize: 16,
+                    ),
+                  ),
+                  subtitle: Text(
+                    "3 Passes",
+                    style: TextStyle(
+                      color: Colors.black,
+                      fontSize: 16,
+                      fontWeight: FontWeight.bold,
+                    ),
+                  ),
+                ),
+                ListTile(
+                  title: Text(
+                    "AL English",
+                    style: TextStyle(
+                      //fontSize: 16,
+                    ),
+                  ),
+                  subtitle: Text(
+                    qs[0]['ALEnglish'],
+                    style: TextStyle(
+                      color: Colors.black,
+                      fontSize: 16,
+                      fontWeight: FontWeight.bold,
+                    ),
+                  ),
+                ),
+                ListTile(
+                  title: Text(
+                    "Higher Education Level",
+                    style: TextStyle(
+                      //fontSize: 16,
+                    ),
+                  ),
+                  subtitle: Text(
+                    qs[0]['HigherEducation'],
+                    style: TextStyle(
+                      color: Colors.black,
+                      fontSize: 16,
+                      fontWeight: FontWeight.bold,
+                    ),
+                  ),
+                ),
+                ListTile(
+                  title: Text(
+                    "Higher Education Field",
+                    style: TextStyle(
+                      //fontSize: 16,
+                    ),
+                  ),
+                  subtitle: Text(
+                    qs[0]['HigherEducationField'],
+                    style: TextStyle(
+                      color: Colors.black,
+                      fontSize: 16,
+                      fontWeight: FontWeight.bold,
+                    ),
+                  ),
+                ),
+              ],
+            );
+          }
+          return Center(child: CircularProgressIndicator());
+
+        }
+    );
   }
 }
 
@@ -590,7 +644,9 @@ class _DocumentsState extends State<Documents> {
   }
 
   Future<void> downloadFile({required String docType}) async {
-    js.context.callMethod('open', ['https://localhost:7018/documents/download?NIC=${widget.nic}&documentType=$docType']);
+    js.context.callMethod('open', [
+      'https://localhost:7018/documents/download?NIC=${widget.nic}&documentType=$docType'
+    ]);
   }
 }
 
@@ -603,43 +659,50 @@ class Contacts extends StatefulWidget {
 }
 
 class _ContactsState extends State<Contacts> {
-  List contacts = [];
+  List res = [];
   bool isLoaded = false;
 
-  Future<void> getContacts() async {
-    String url = "https://localhost:7018/api/JsUser/getContacts?nic=1001";
+  Future<List> getContacts() async {
+    String url = "https://localhost:7018/api/JsUser/getContacts?nic=${widget.nic}";
     final response = await http.get(Uri.parse(url));
     var resJson = json.decode(response.body);
     if (response.statusCode == 200) {
       var a = resJson as List;
-      contacts = a.toList();
-      print(contacts);
-      setState(() => isLoaded = true);
+      res = a.toList();
+      print(res);
+      return res;
+      //setState(() => isLoaded = true);
     } else {
       print(response.reasonPhrase);
+      return res;
     }
   }
 
   @override
   void initState() {
-    getContacts();
+    //getContacts();
   }
 
   @override
   Widget build(BuildContext context) {
-    return Container(
-      child: (isLoaded)
-          ? ListView(
+    return FutureBuilder<List>(
+        future: getContacts(),
+        builder: (context, snapshot) {
+
+          if(snapshot.hasData){
+            List? contacts = snapshot.data;
+
+            return ListView(
               children: [
                 ListTile(
                   title: Text(
                     "Primary Contact",
                     style: TextStyle(
-                        //fontSize: 16,
-                        ),
+                      //fontSize: 16,
+                    ),
                   ),
                   subtitle: Text(
-                    contacts[0]['Personal'],
+                    contacts![0]['Personal'],
                     style: TextStyle(
                       color: Colors.black,
                       fontSize: 16,
@@ -651,8 +714,8 @@ class _ContactsState extends State<Contacts> {
                   title: Text(
                     "Work Contact",
                     style: TextStyle(
-                        //fontSize: 16,
-                        ),
+                      //fontSize: 16,
+                    ),
                   ),
                   subtitle: Text(
                     contacts[0]['Work'],
@@ -667,8 +730,8 @@ class _ContactsState extends State<Contacts> {
                   title: Text(
                     "Emergency Contact",
                     style: TextStyle(
-                        //fontSize: 16,
-                        ),
+                      //fontSize: 16,
+                    ),
                   ),
                   subtitle: Text(
                     contacts[0]['Emmergency'],
@@ -680,10 +743,11 @@ class _ContactsState extends State<Contacts> {
                   ),
                 ),
               ],
-            )
-          : Center(
-              child: CircularProgressIndicator(),
-            ),
+            );
+          }
+          return Center(child: CircularProgressIndicator());
+
+        }
     );
   }
 }

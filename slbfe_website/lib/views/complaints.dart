@@ -105,6 +105,7 @@ class _ComplaintsState extends State<Complaints> {
   Widget build(BuildContext context) {
     return Material(
       child: Scaffold(
+        backgroundColor: Colors.white,
         body: SafeArea(
           child: Container(
             //color: Colors.blueGrey.shade50,
@@ -169,14 +170,10 @@ class _ComplaintsState extends State<Complaints> {
                                                         );
                                                       },
                                                       child: Card(
+                                                        color: Colors.blueGrey.shade50,
                                                           child: ListTile(
-                                                        title: Text(data[index]
-                                                            .complainId
-                                                            .toString()),
-                                                        subtitle: Text(
-                                                            data[index]
-                                                                .jsNic
-                                                                .toString()),
+                                                        title: Text("ID: ${data[index].complainId.toString()} | NIC: ${data[index].jsNic.toString()}"),
+                                                        subtitle: Text(data[index].complain,overflow: TextOverflow.ellipsis,),
                                                       )),
                                                     );
                                                   });
@@ -184,7 +181,7 @@ class _ComplaintsState extends State<Complaints> {
                                               return Text("${snapshot.error}");
                                             }
                                             // By default show a loading spinner.
-                                            return CircularProgressIndicator();
+                                            return Center(child: CircularProgressIndicator());
                                           },
                                         ),
                                       ),
@@ -260,7 +257,7 @@ class _ComplaintsState extends State<Complaints> {
                                                           padding:
                                                               const EdgeInsets
                                                                   .all(8.0),
-                                                          child: Text("SEND"),
+                                                          child: Text("SUBMIT"),
                                                         ),
                                                       ),
                                                     ),
@@ -320,7 +317,7 @@ class _ComplaintsState extends State<Complaints> {
                                               return Text("${snapshot.error}");
                                             }
                                             // By default show a loading spinner.
-                                            return CircularProgressIndicator();
+                                            return Center(child: CircularProgressIndicator());
                                           },
                                         ),
                                       ),

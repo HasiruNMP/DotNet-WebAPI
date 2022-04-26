@@ -7,14 +7,14 @@ import 'package:latlng/latlng.dart';
 import 'package:cached_network_image/cached_network_image.dart';
 import 'package:http/http.dart' as http;
 
-class Location extends StatefulWidget {
+class Location2 extends StatefulWidget {
   int nic;
-  Location(this.nic);
+  Location2(this.nic);
   @override
-  _LocationState createState() => _LocationState();
+  _Location2State createState() => _Location2State();
 }
 
-class _LocationState extends State<Location> {
+class _Location2State extends State<Location2> {
 
   List coordinates = [];
   bool isLoaded = false;

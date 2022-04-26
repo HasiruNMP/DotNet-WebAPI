@@ -74,11 +74,11 @@ class _ValidateState extends State<Validate> {
             VerticalDivider(),
             Expanded(
               flex: 4,
-              child: Column(
+              child: (selected != 0)? Column(
                 children: [
                   Expanded(child: ProfileWidget(selected),),
                 ],
-              ),
+              ): Center(child: Text("Select A User")),
             ),
           ],
         ),

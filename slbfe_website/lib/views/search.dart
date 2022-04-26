@@ -68,6 +68,8 @@ class _SearchState extends State<Search>{
                 padding: const EdgeInsets.all(8.0),
                 child: ListView(
                   children: [
+                    Container(child: Text("Filter",style: TextStyle(fontWeight: FontWeight.bold),),alignment: Alignment.center,),
+                    Divider(),
                     SizedBox(height: 10,),
                     Container(child: Text("Ordinary Level"),alignment: Alignment.center,),
                     SizedBox(height: 10,),
@@ -232,6 +234,7 @@ class _SearchState extends State<Search>{
                 ),
               ),
             ),
+            VerticalDivider(),
             Expanded(
               flex: 3,
               child: (searched)?
@@ -240,6 +243,7 @@ class _SearchState extends State<Search>{
                 ListView(
                     children: List.generate(jobSeekers.length, (index) {
                       return JobSeekerCard(
+                        nic: jobSeekers[index]['NIC'].toString(),
                         name: jobSeekers[index]['FirstName']+ ' ' +jobSeekers[index]['LastName'],
                         dob: jobSeekers[index]['DOB'],
                         gender: jobSeekers[index]['Gender'],
@@ -263,9 +267,9 @@ class _SearchState extends State<Search>{
 
 class JobSeekerCard extends StatelessWidget {
 
-  String name, dob, gender, profession, email, phone, cvUrl;
+  String nic, name, dob, gender, profession, email, phone, cvUrl;
 
-  JobSeekerCard({required this.name,required this.dob,required this.gender,required this.profession,required this.email,required this.phone,required this.cvUrl});
+  JobSeekerCard({required this.nic,required this.name,required this.dob,required this.gender,required this.profession,required this.email,required this.phone,required this.cvUrl});
 
   int calAge(String dob){
     DateTime d1 = DateTime.parse(dob);
@@ -278,24 +282,31 @@ class JobSeekerCard extends StatelessWidget {
     return Padding(
       padding: const EdgeInsets.symmetric(vertical: 1, horizontal: 8),
       child: Card(
-        color: Colors.teal.shade100,
+        color: Colors.indigo.shade50,
         child: InkWell(
           onTap: () {},
           child: Container(
             child: Row(
               children: [
                 Padding(
-                  padding: const EdgeInsets.all(8.0),
+                  padding: const EdgeInsets.all(10.0),
                   child: CircleAvatar(
-                    radius: 40,
-                    backgroundColor: Colors.teal,
-                    backgroundImage: NetworkImage('https://localhost:7018/documents/profilepic?NIC=1'),
+                    radius: 42,
+                    backgroundColor: Colors.blueGrey.shade50,
+                    backgroundImage: NetworkImage('https://localhost:7018/documents/profilepic?NIC=${nic}'),
                   ),
                 ),
                 Column(
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
-                    Text("$name, ${calAge(dob)}, $gender, $profession,"),
+                    Text(
+                      "$name, ${calAge(dob)}, $gender, $profession,",
+                      style: TextStyle(
+                        fontSize: 16,
+                        fontWeight: FontWeight.bold,
+                      ),
+                    ),
+                    SizedBox(height: 10,),
                     Text("Email: $email, Phone: $phone"),
                   ],
                 ),
@@ -313,7 +324,7 @@ class JobSeekerCard extends StatelessWidget {
                   padding: const EdgeInsets.all(8.0),
                   child: OutlinedButton(
                     onPressed: (){
-                      js.context.callMethod('open', ['https://localhost:7018/documents/download?NIC=1000&documentType=CV']);
+                      js.context.callMethod('open', ['https://localhost:7018/documents/download?NIC=$nic&documentType=CV']);
                     },
                     child: Text("Download CV"),
                   ),
