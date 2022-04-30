@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:slbfe_citizenapp/model/contactsmodel.dart';
-import 'package:slbfe_citizenapp/utilities/global.dart' as global;
+import 'package:slbfe_citizenapp/global.dart' as global;
 
 import '../api/apiservice.dart';
 
