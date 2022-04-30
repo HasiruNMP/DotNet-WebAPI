@@ -1,8 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:slbfe_citizenapp/model/complaintmodel.dart';
-import 'package:slbfe_citizenapp/utilities/global.dart';
 import 'package:slbfe_citizenapp/global.dart' as global;
->>>>>>> Stashed changes
 import '../api/apiservice.dart';
 
 class AddComplaint extends StatefulWidget {
@@ -26,7 +24,7 @@ class _AddComplaintState extends State<AddComplaint> {
   );
 
   Future<void> addDatabase() async {
-    complaint.jsNic = Globals.nic;
+    complaint.jsNic = global.nic;
     complaint.complain = complaintController.text;
 
     print(complaint.jsNic);
@@ -122,7 +120,9 @@ class _AddComplaintState extends State<AddComplaint> {
                 },
                 child: const Text('Submit'),
               ),
-              SizedBox(height: 50,),
+              SizedBox(
+                height: 50,
+              ),
             ],
           ),
         ),
