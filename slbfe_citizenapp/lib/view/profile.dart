@@ -5,11 +5,7 @@ import 'package:slbfe_citizenapp/view/personaldetails.dart';
 import 'package:slbfe_citizenapp/view/qualifications.dart';
 import 'package:slbfe_citizenapp/view/signin.dart';
 import 'package:slbfe_citizenapp/view/updatelocation.dart';
-<<<<<<< Updated upstream
-import 'package:slbfe_citizenapp/utilities/global.dart';
-=======
 import 'package:slbfe_citizenapp/global.dart' as global;
->>>>>>> Stashed changes
 import '../api/apiservice.dart';
 import 'accountSetting.dart';
 import 'contacts.dart';
@@ -37,7 +33,7 @@ class _ProfileState extends State<Profile> {
   }
 
   Future<void> CallApi() async {
-    user = await APIService.getUserDetails(Globals.nic);
+    user = await APIService.getUserDetails(global.nic);
     updateUi(user);
   }
 
@@ -74,11 +70,12 @@ class _ProfileState extends State<Profile> {
                         padding: const EdgeInsets.all(20),
                         child: Column(
                           children: [
-                             Center(
+                            Center(
                               child: CircleAvatar(
                                 backgroundColor: Colors.teal,
                                 radius: 60,
-                                backgroundImage: NetworkImage('https://10.0.2.2:7018/documents/profilepic?NIC=${Globals.nic}'),
+                                backgroundImage: NetworkImage(
+                                    'https://10.0.2.2:7018/documents/profilepic?NIC=${global.nic}'),
                               ),
                             ),
                             SizedBox(
@@ -156,15 +153,16 @@ class _ProfileState extends State<Profile> {
                       Navigator.push(
                         context,
                         MaterialPageRoute(
-                            builder: (context) => PersonaInfo(Globals.nic)),
+                            builder: (context) => PersonaInfo(global.nic)),
                       );
                     },
                     child: const Text('More Details'),
                     style: ButtonStyle(
-                        shape: MaterialStateProperty.all<RoundedRectangleBorder>(
-                            RoundedRectangleBorder(
-                                borderRadius: BorderRadius.circular(18.0),
-                                side: BorderSide(color: Colors.blue))))),
+                        shape:
+                            MaterialStateProperty.all<RoundedRectangleBorder>(
+                                RoundedRectangleBorder(
+                                    borderRadius: BorderRadius.circular(18.0),
+                                    side: BorderSide(color: Colors.blue))))),
               ),
               const SizedBox(
                 height: 9,
@@ -181,10 +179,11 @@ class _ProfileState extends State<Profile> {
                     },
                     child: const Text('Documents'),
                     style: ButtonStyle(
-                        shape: MaterialStateProperty.all<RoundedRectangleBorder>(
-                            RoundedRectangleBorder(
-                                borderRadius: BorderRadius.circular(18.0),
-                                side: BorderSide(color: Colors.blue))))),
+                        shape:
+                            MaterialStateProperty.all<RoundedRectangleBorder>(
+                                RoundedRectangleBorder(
+                                    borderRadius: BorderRadius.circular(18.0),
+                                    side: BorderSide(color: Colors.blue))))),
               ),
               const SizedBox(
                 height: 9,
@@ -201,10 +200,11 @@ class _ProfileState extends State<Profile> {
                     },
                     child: const Text('Qualifications'),
                     style: ButtonStyle(
-                        shape: MaterialStateProperty.all<RoundedRectangleBorder>(
-                            RoundedRectangleBorder(
-                                borderRadius: BorderRadius.circular(18.0),
-                                side: BorderSide(color: Colors.blue))))),
+                        shape:
+                            MaterialStateProperty.all<RoundedRectangleBorder>(
+                                RoundedRectangleBorder(
+                                    borderRadius: BorderRadius.circular(18.0),
+                                    side: BorderSide(color: Colors.blue))))),
               ),
               const SizedBox(
                 height: 9,
@@ -215,7 +215,8 @@ class _ProfileState extends State<Profile> {
                     onPressed: () {
                       Navigator.push(
                         context,
-                        MaterialPageRoute(builder: (context) => UpdateLocation()),
+                        MaterialPageRoute(
+                            builder: (context) => UpdateLocation()),
                       );
                     },
                     child: const Text('Location'),
@@ -237,13 +238,13 @@ class _ProfileState extends State<Profile> {
                       Navigator.push(
                         context,
                         MaterialPageRoute(
-                            builder: (context) => Contacts(Globals.nic)),
+                            builder: (context) => Contacts(global.nic)),
                       );
                     },
                     child: const Text('Contacts'),
                     style: ButtonStyle(
-                        shape: MaterialStateProperty.all<RoundedRectangleBorder>(
-                            RoundedRectangleBorder(
+                        shape: MaterialStateProperty
+                            .all<RoundedRectangleBorder>(RoundedRectangleBorder(
                                 borderRadius: BorderRadius.circular(18.0),
                                 side: const BorderSide(color: Colors.blue))))),
               ),
@@ -262,8 +263,8 @@ class _ProfileState extends State<Profile> {
                     },
                     child: const Text('Account'),
                     style: ButtonStyle(
-                        shape: MaterialStateProperty.all<RoundedRectangleBorder>(
-                            RoundedRectangleBorder(
+                        shape: MaterialStateProperty
+                            .all<RoundedRectangleBorder>(RoundedRectangleBorder(
                                 borderRadius: BorderRadius.circular(18.0),
                                 side: const BorderSide(color: Colors.blue))))),
               ),
