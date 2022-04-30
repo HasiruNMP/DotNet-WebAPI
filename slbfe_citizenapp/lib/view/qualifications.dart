@@ -1,8 +1,7 @@
 import 'dart:convert';
-
+import 'package:slbfe_citizenapp/global.dart' as global;
 import 'package:flutter/material.dart';
 import 'package:http/http.dart' as http;
-import 'package:slbfe_citizenapp/utilities/global.dart';
 
 class Qualifications extends StatefulWidget {
 
@@ -18,7 +17,7 @@ class _QualificationsState extends State<Qualifications> {
   bool isLoaded = false;
 
   Future<void> getQualifications() async {
-    String url = "https://10.0.2.2:7018/jobseekers/qualifications/ofuser?NIC=${Globals.nic}";
+    String url = "https://10.0.2.2:7018/jobseekers/qualifications/ofuser?NIC=${global.nic}";
     final response = await http.get(Uri.parse(url));
     var resJson = json.decode(response.body);
     if (response.statusCode == 200) {
@@ -216,7 +215,7 @@ class _EditQualificationsState extends State<EditQualifications> {
   String selHighEdField = "Any";
 
   Future<void> updateQualifications() async {
-    var request = http.Request('PUT', Uri.parse('https://10.0.2.2:7018/jobseekers/qualifications/update?nic=${Globals.nic}&olEnglish=$selOLEnglish&olScience=$selOLScience&olMaths=$selOLMaths&alStream=$selAlStream&alResults=$selAlResults&alEnglish=$selAlEnglish&hEdu=$selHighEdStage&hEduField=$selHighEdField'));
+    var request = http.Request('PUT', Uri.parse('https://10.0.2.2:7018/jobseekers/qualifications/update?nic=${global.nic}&olEnglish=$selOLEnglish&olScience=$selOLScience&olMaths=$selOLMaths&alStream=$selAlStream&alResults=$selAlResults&alEnglish=$selAlEnglish&hEdu=$selHighEdStage&hEduField=$selHighEdField'));
     http.StreamedResponse response = await request.send();
     if (response.statusCode == 200) {
       print(await response.stream.bytesToString());

@@ -3,7 +3,8 @@ import 'dart:io';
 import 'package:file_picker/file_picker.dart';
 import 'package:flutter/material.dart';
 import 'package:http/http.dart' as http;
-import 'package:slbfe_citizenapp/utilities/global.dart';
+
+import 'package:slbfe_citizenapp/global.dart' as global;
 import 'package:url_launcher/url_launcher.dart';
 
 class Documents extends StatefulWidget {
@@ -14,7 +15,6 @@ class Documents extends StatefulWidget {
 }
 
 class _DocumentsState extends State<Documents> {
-
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -28,12 +28,26 @@ class _DocumentsState extends State<Documents> {
           child: ListView(
             children: [
               DocCard(docType: "CV", icon: Icons.vaccines, lastUpdated: ""),
-              DocCard(docType: "OL Certificate", icon: Icons.vaccines, lastUpdated: ""),
-              DocCard(docType: "AL Certificate", icon: Icons.vaccines, lastUpdated: ""),
-              DocCard(docType: "Degree Certificate", icon: Icons.vaccines, lastUpdated: ""),
-              DocCard(docType: "Vaccination Card", icon: Icons.vaccines, lastUpdated: ""),
-              DocCard(docType: "Passport", icon: Icons.vaccines, lastUpdated: ""),
-              DocCard(docType: "License", icon: Icons.vaccines, lastUpdated: ""),
+              DocCard(
+                  docType: "OL Certificate",
+                  icon: Icons.vaccines,
+                  lastUpdated: ""),
+              DocCard(
+                  docType: "AL Certificate",
+                  icon: Icons.vaccines,
+                  lastUpdated: ""),
+              DocCard(
+                  docType: "Degree Certificate",
+                  icon: Icons.vaccines,
+                  lastUpdated: ""),
+              DocCard(
+                  docType: "Vaccination Card",
+                  icon: Icons.vaccines,
+                  lastUpdated: ""),
+              DocCard(
+                  docType: "Passport", icon: Icons.vaccines, lastUpdated: ""),
+              DocCard(
+                  docType: "License", icon: Icons.vaccines, lastUpdated: ""),
             ],
           ),
         ),
@@ -43,19 +57,18 @@ class _DocumentsState extends State<Documents> {
 }
 
 class DocCard extends StatelessWidget {
-
   String docType;
   IconData icon;
   String lastUpdated;
 
-  DocCard({required this.docType, required this.icon, required this.lastUpdated});
+  DocCard(
+      {required this.docType, required this.icon, required this.lastUpdated});
 
   @override
   Widget build(BuildContext context) {
-    
     String docType2 = docType.replaceAll(RegExp(' +'), '');
     print(docType2);
-    
+
     return Card(
       child: Column(
         children: [
@@ -72,8 +85,9 @@ class DocCard extends StatelessWidget {
                 child: Padding(
                   padding: const EdgeInsets.symmetric(horizontal: 5),
                   child: OutlinedButton(
-                    onPressed: (){
-                      _launchURL('https://10.0.2.2:7018/documents/download?NIC=${Globals.nic}&documentType=$docType2');
+                    onPressed: () {
+                      _launchURL(
+                          'https://10.0.2.2:7018/documents/download?NIC=${global.nic}&documentType=$docType2');
                     },
                     child: Text('View'),
                   ),
@@ -82,7 +96,12 @@ class DocCard extends StatelessWidget {
               Expanded(
                 child: Padding(
                   padding: const EdgeInsets.symmetric(horizontal: 5),
-                  child: OutlinedButton(onPressed: (){selectDocument(docType2);}, child: Text('Update'),),
+                  child: OutlinedButton(
+                    onPressed: () {
+                      selectDocument(docType2);
+                    },
+                    child: Text('Update'),
+                  ),
                 ),
               ),
             ],
@@ -92,33 +111,38 @@ class DocCard extends StatelessWidget {
     );
   }
 
-  Future<void> selectDocument(String documentType) async{
+  Future<void> selectDocument(String documentType) async {
     final result = await FilePicker.platform.pickFiles(allowMultiple: false);
-    if (result != null){
+    if (result != null) {
       String path = result.files.single.path!;
-      updateDocument(documentType,path);
+      updateDocument(documentType, path);
     }
   }
 
-  Future<void> updateDocument(String documentType,String path) async{
-    var request = http.MultipartRequest('PUT', Uri.parse('https://10.0.2.2:7018/documents/upload?NIC=${Globals.nic}&documentType=$documentType'));
+  Future<void> updateDocument(String documentType, String path) async {
+    var request = http.MultipartRequest(
+        'PUT',
+        Uri.parse(
+            'https://10.0.2.2:7018/documents/upload?NIC=${global.nic}&documentType=$documentType'));
     request.files.add(await http.MultipartFile.fromPath('file', path));
     http.StreamedResponse response = await request.send();
     if (response.statusCode == 200) {
       print(await response.stream.bytesToString());
-    }
-    else {
+    } else {
       print(response.reasonPhrase);
     }
   }
 
   Future<void> downloadDoc() async {
-    var request = http.Request('GET', Uri.parse('https://10.0.2.2:7018/documents/download?NIC=1&documentType=CV'),);
+    var request = http.Request(
+      'GET',
+      Uri.parse(
+          'https://10.0.2.2:7018/documents/download?NIC=1&documentType=CV'),
+    );
     http.StreamedResponse response = await request.send();
     if (response.statusCode == 200) {
       print(await response.stream.bytesToString());
-    }
-    else {
+    } else {
       print(response.reasonPhrase);
     }
   }
@@ -126,5 +150,4 @@ class DocCard extends StatelessWidget {
   void _launchURL(String _url) async {
     if (!await launch(_url)) throw 'Could not launch $_url';
   }
-
 }
