@@ -5,11 +5,7 @@ import 'package:slbfe_citizenapp/view/complain_list.dart';
 import 'package:slbfe_citizenapp/view/home.dart';
 import 'package:slbfe_citizenapp/view/profile.dart';
 import 'package:slbfe_citizenapp/view/signin.dart';
-<<<<<<< Updated upstream
-import 'package:slbfe_citizenapp/utilities/global.dart';
-=======
 import 'package:slbfe_citizenapp/global.dart' as global;
->>>>>>> Stashed changes
 
 class BottomNavigation extends StatefulWidget {
   int nic;
@@ -23,8 +19,8 @@ class _BottomNavigationState extends State<BottomNavigation> {
   @override
   void initState() {
     super.initState();
-    Globals.nic = widget.nic;
-    print("logged NIC:${Globals.nic}");
+    global.nic = widget.nic;
+    print("logged NIC:${global.nic}");
   }
 
   int _selectedIndex = 0;
