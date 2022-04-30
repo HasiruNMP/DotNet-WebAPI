@@ -1,9 +1,8 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:slbfe_citizenapp/view/resetPassword.dart';
-import 'package:slbfe_citizenapp/utilities/global.dart';
+import 'package:slbfe_citizenapp/global.dart' as global;
 import 'package:slbfe_citizenapp/view/signin.dart';
-
 import '../api/apiservice.dart';
 
 class accountSetting extends StatefulWidget {
@@ -18,8 +17,8 @@ class _accountSettingState extends State<accountSetting> {
   @override
   void initState() {
     super.initState();
-    print(Globals.nic);
-    nic = Globals.nic;
+    print(global.nic);
+    nic = global.nic;
   }
 
   final _formKey = GlobalKey<FormState>();
@@ -96,9 +95,8 @@ class _accountSettingState extends State<accountSetting> {
                                   if (_formKey.currentState!.validate()) {
                                     print(nic);
                                     print(passwordController.text);
-                                    int login =
-                                        await APIService.checkPassword(
-                                            nic, passwordController.text);
+                                    int login = await APIService.checkPassword(
+                                        nic, passwordController.text);
                                     //  print("status: $login");
                                     if (login == 0) {
                                       showAlertDialog(

@@ -6,14 +6,11 @@ import 'package:slbfe_citizenapp/model/jsusermodel.dart';
 import 'dart:convert';
 import 'dart:async';
 import 'package:slbfe_citizenapp/model/loginmodel.dart';
-import 'package:slbfe_citizenapp/utilities/global.dart' as global;
+import 'package:slbfe_citizenapp/global.dart' as global;
 import 'package:slbfe_citizenapp/view/resetPassword.dart';
-import 'package:provider/provider.dart';
-
 import '../model/complaintmodel.dart';
 
-class APIService{
-
+class APIService {
   Future login(LoginRequestModel requestModel) async {
     String email = '';
     String password = '';
@@ -271,7 +268,7 @@ class APIService{
     var request = http.Request(
       'PUT',
       Uri.parse(
-          'https://10.0.2.2:7018/api/JsUser/updatePassword?nic=102&password=$password'),
+          'https://10.0.2.2:7018/api/JsUser/updatePassword?nic=$nic&password=$password'),
     );
     request.body = json.encode({
       "NIC": nic,
@@ -292,28 +289,33 @@ class APIService{
     }
   }
 
-
   static Future<List<complaintModel>> getComplaintsOfUser(int nic) async {
-    final response = await http.get(Uri.parse('https://10.0.2.2:7018/complaints/getcomplaintlistapp?NIC=$nic'));
+    final response = await http.get(Uri.parse(
+        'https://10.0.2.2:7018/complaints/getcomplaintlistapp?NIC=$nic'));
     if (response.statusCode == 200) {
       List jsonResponse = json.decode(response.body);
-      return jsonResponse.map((data) => new complaintModel.fromJson(data)).toList();
+      return jsonResponse
+          .map((data) => new complaintModel.fromJson(data))
+          .toList();
     } else {
       throw Exception('Unexpected error occured!');
     }
   }
 
-  static Future<void> updateLocation(int nic, double lat, double lng,) async {
-    var request = http.Request('PUT', Uri.parse('https://10.0.2.2:7018/api/JsUser/updatelocation?NIC=2000&lat=$lat&lng=$lng'));
+  static Future<void> updateLocation(
+    int nic,
+    double lat,
+    double lng,
+  ) async {
+    var request = http.Request(
+        'PUT',
+        Uri.parse(
+            'https://10.0.2.2:7018/api/JsUser/updatelocation?NIC=2000&lat=$lat&lng=$lng'));
     http.StreamedResponse response = await request.send();
     if (response.statusCode == 200) {
       print(await response.stream.bytesToString());
-    }
-    else {
+    } else {
       print(response.reasonPhrase);
     }
-
   }
-
 }
-
