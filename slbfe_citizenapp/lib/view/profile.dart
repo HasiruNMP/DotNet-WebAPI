@@ -5,7 +5,11 @@ import 'package:slbfe_citizenapp/view/personaldetails.dart';
 import 'package:slbfe_citizenapp/view/qualifications.dart';
 import 'package:slbfe_citizenapp/view/signin.dart';
 import 'package:slbfe_citizenapp/view/updatelocation.dart';
+<<<<<<< Updated upstream
 import 'package:slbfe_citizenapp/utilities/global.dart';
+=======
+import 'package:slbfe_citizenapp/global.dart' as global;
+>>>>>>> Stashed changes
 import '../api/apiservice.dart';
 import 'accountSetting.dart';
 import 'contacts.dart';
