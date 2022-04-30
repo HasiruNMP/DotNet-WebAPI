@@ -1,13 +1,9 @@
 import 'package:flutter/material.dart';
 import 'package:slbfe_citizenapp/api/apiservice.dart';
 import 'package:slbfe_citizenapp/model/complaintmodel.dart';
-<<<<<<< Updated upstream
-import 'package:slbfe_citizenapp/utilities/global.dart';
 import 'package:slbfe_citizenapp/view/addcomplaint.dart';
 import 'package:slbfe_citizenapp/view/viewcomplaint.dart';
-=======
 import 'package:slbfe_citizenapp/global.dart' as global;
->>>>>>> Stashed changes
 
 class ComplainList extends StatefulWidget {
   const ComplainList({Key? key}) : super(key: key);
@@ -21,11 +17,7 @@ class _ComplainListState extends State<ComplainList> {
   @override
   void initState() {
     super.initState();
-<<<<<<< Updated upstream
-    futureData =  APIService.getComplaintsOfUser(Globals.nic);
-=======
     futureData = APIService.getComplaintsOfUser(global.nic);
->>>>>>> Stashed changes
   }
 
   @override
@@ -48,46 +40,6 @@ class _ComplainListState extends State<ComplainList> {
           children: [
             Container(
               height: MediaQuery.of(context).size.height,
-<<<<<<< Updated upstream
-              child:  FutureBuilder<List<complaintModel>>(
-              future: futureData,
-              builder: (context, snapshot) {
-                if (snapshot.hasData) {
-                  List<complaintModel>? data = snapshot.data;
-                  return ListView.builder(
-                      itemCount: data!.length,
-                      itemBuilder: (BuildContext context, int index) {
-                        return Card(
-                          child: InkWell(
-                            onTap: () {
-                              Navigator.push(
-                                context,
-                                MaterialPageRoute(builder: (context) => ViewComplaint(
-                                  complaintID: data[index].complainId.toString(),
-                                  complaint: data[index].complain.toString(),
-                                  feedback: data[index].feedback.toString(),
-                                  date: data[index].addedDate.toString(),
-                                ),),
-                              );
-                            },
-                            child: ListTile(
-                                title: Text(
-                                    data[index].complain.toString(),
-                                  overflow: TextOverflow.ellipsis,
-                                ),
-                                subtitle: Text("Complaint ID: "+data[index].complainId.toString()+" | "+data[index].addedDate.toString()),
-                              ),
-                          ),
-                        );
-                      });
-                } else if (snapshot.hasError) {
-                  return Text("${snapshot.error}");
-                }
-                // By default show a loading spinner.
-                return Center(child: CircularProgressIndicator());
-              },
-            ),),
-=======
               child: FutureBuilder<List<complaintModel>>(
                 future: futureData,
                 builder: (context, snapshot) {
@@ -96,31 +48,74 @@ class _ComplainListState extends State<ComplainList> {
                     return ListView.builder(
                         itemCount: data!.length,
                         itemBuilder: (BuildContext context, int index) {
-                          return GestureDetector(
-                            onTap: () {},
-                            child: Card(
-                                child: Column(
-                              crossAxisAlignment: CrossAxisAlignment.start,
-                              children: [
-                                Text(data[index].complainId.toString()),
-                                ListTile(
-                                  title: Text(data[index].complain.toString()),
-                                  subtitle:
-                                      Text(data[index].feedback.toString()),
+                          return Card(
+                            child: InkWell(
+                              onTap: () {
+                                Navigator.push(
+                                  context,
+                                  MaterialPageRoute(
+                                    builder: (context) => ViewComplaint(
+                                      complaintID:
+                                          data[index].complainId.toString(),
+                                      complaint:
+                                          data[index].complain.toString(),
+                                      feedback: data[index].feedback.toString(),
+                                      date: data[index].addedDate.toString(),
+                                    ),
+                                  ),
+                                );
+                              },
+                              child: ListTile(
+                                title: Text(
+                                  data[index].complain.toString(),
+                                  overflow: TextOverflow.ellipsis,
                                 ),
-                              ],
-                            )),
+                                subtitle: Text("Complaint ID: " +
+                                    data[index].complainId.toString() +
+                                    " | " +
+                                    data[index].addedDate.toString()),
+                              ),
+                            ),
                           );
                         });
                   } else if (snapshot.hasError) {
                     return Text("${snapshot.error}");
                   }
                   // By default show a loading spinner.
-                  return CircularProgressIndicator();
+                  return Center(child: CircularProgressIndicator());
                 },
               ),
             ),
->>>>>>> Stashed changes
+            FutureBuilder<List<complaintModel>>(
+              future: futureData,
+              builder: (context, snapshot) {
+                if (snapshot.hasData) {
+                  List<complaintModel>? data = snapshot.data;
+                  return ListView.builder(
+                      itemCount: data!.length,
+                      itemBuilder: (BuildContext context, int index) {
+                        return GestureDetector(
+                          onTap: () {},
+                          child: Card(
+                              child: Column(
+                            crossAxisAlignment: CrossAxisAlignment.start,
+                            children: [
+                              Text(data[index].complainId.toString()),
+                              ListTile(
+                                title: Text(data[index].complain.toString()),
+                                subtitle: Text(data[index].feedback.toString()),
+                              ),
+                            ],
+                          )),
+                        );
+                      });
+                } else if (snapshot.hasError) {
+                  return Text("${snapshot.error}");
+                }
+                // By default show a loading spinner.
+                return CircularProgressIndicator();
+              },
+            ),
           ],
         ),
       ),
