@@ -5,7 +5,11 @@ import 'package:slbfe_citizenapp/view/complain_list.dart';
 import 'package:slbfe_citizenapp/view/home.dart';
 import 'package:slbfe_citizenapp/view/profile.dart';
 import 'package:slbfe_citizenapp/view/signin.dart';
+<<<<<<< Updated upstream
 import 'package:slbfe_citizenapp/utilities/global.dart';
+=======
+import 'package:slbfe_citizenapp/global.dart' as global;
+>>>>>>> Stashed changes
 
 class BottomNavigation extends StatefulWidget {
   int nic;
