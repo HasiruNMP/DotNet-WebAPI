@@ -3,7 +3,7 @@ import 'package:flutter/services.dart';
 import 'package:intl/intl.dart';
 import 'package:slbfe_citizenapp/api/apiservice.dart';
 import 'package:slbfe_citizenapp/model/jsusermodel.dart';
-import 'package:slbfe_citizenapp/utilities//global.dart' as global;
+import 'package:slbfe_citizenapp/global.dart' as global;
 import 'bottomnavigation.dart';
 
 class Registration extends StatefulWidget {
