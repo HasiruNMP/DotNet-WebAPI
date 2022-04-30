@@ -1,6 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:slbfe_citizenapp/model/complaintmodel.dart';
 import 'package:slbfe_citizenapp/utilities/global.dart';
+import 'package:slbfe_citizenapp/global.dart' as global;
+>>>>>>> Stashed changes
 import '../api/apiservice.dart';
 
 class AddComplaint extends StatefulWidget {
