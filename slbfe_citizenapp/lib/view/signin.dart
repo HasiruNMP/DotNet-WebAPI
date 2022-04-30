@@ -3,7 +3,7 @@ import 'package:flutter/material.dart';
 import 'package:slbfe_citizenapp/api/apiservice.dart';
 import 'package:slbfe_citizenapp/model/loginmodel.dart';
 import 'package:slbfe_citizenapp/view/registration.dart';
-import 'package:slbfe_citizenapp/utilities//global.dart' as global;
+import 'package:slbfe_citizenapp/global.dart' as global;
 import 'bottomnavigation.dart';
 
 class SignIn extends StatefulWidget {
