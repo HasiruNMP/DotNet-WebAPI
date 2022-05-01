@@ -3,6 +3,7 @@ import 'package:slbfe_website/views/complaints.dart';
 import 'package:slbfe_website/views/home_screen.dart';
 import 'package:slbfe_website/views/map.dart';
 import 'package:slbfe_website/views/search.dart';
+import 'package:slbfe_website/views/signin.dart';
 import 'package:slbfe_website/views/test.dart';
 
 void main() {
@@ -17,10 +18,8 @@ class MyApp extends StatelessWidget {
   Widget build(BuildContext context) {
     return MaterialApp(
       title: 'Flutter Demo',
-      theme: ThemeData(
-        primarySwatch: Colors.indigo
-      ),
-      home: HomeScreen(),
+      theme: ThemeData(primarySwatch: Colors.indigo),
+      home: SignIn(),
     );
   }
 }

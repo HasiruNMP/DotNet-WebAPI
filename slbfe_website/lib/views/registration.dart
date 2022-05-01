@@ -1,5 +1,9 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
+import 'package:slbfe_website/model/jsusermodel.dart';
+import 'package:slbfe_website/views/home_screen.dart';
+
+import '../api/apiservice.dart';
 // import 'package:intl/intl.dart';
 // import 'package:slbfe_citizenapp/api/apiservice.dart';
 // import 'package:slbfe_citizenapp/model/jsusermodel.dart';
@@ -17,51 +21,29 @@ class _RegistrationState extends State<Registration> {
   TextEditingController CnameController = TextEditingController();
   TextEditingController emailController = TextEditingController();
   TextEditingController passController = TextEditingController();
+  TextEditingController nameController = TextEditingController();
   TextEditingController rpassController = TextEditingController();
-  String gender = 'male';
   final formKey = GlobalKey<FormState>();
-  DateTime? newDate;
 
-  @override
-  // void initState() {
-  //   dobController.text = "";
-  //   super.initState();
-  // }
+  jsUserModel user =
+      jsUserModel(email: '', password: '', name: '', companyName: '');
 
-  // jsUserModel user = jsUserModel(
-  //     companyname: '',
-  //     email: '',
-  //     password: '',
-//       retypepassword: '',
-  //     dob: '',
-  //     address: '',
-  //     latitude: 0,
-  //     longitude: 0,
-  //     profession: '',
-  //     affiliation: '',
-  //     gender: '',
-  //     nationality: '',
-  //     maritalstatus: '',
-  //     validity: false,
-  //     primaryphone: '');
-
-  // Future<void> SaveValues() async {
-  //   user.companyname = CnameController.text;
-  //   user.email = emailController.text;
-  //   user.password = passController.text;
-  //   user.retypepassword = rpassController.text;
-  //   print(user.email);
-  //   print(user.firstname);
-  //   bool saveResponse = await APIService.adduser(user);
-  //   saveResponse == true
-  //       ? Navigator.push(
-  //           context,
-  //           MaterialPageRoute(
-  //             builder: (context) => BottomNavigation(user.nic),
-  //           ),
-  //         )
-  //       : showAlertDialog(context);
-  // }
+  Future<void> SaveValues() async {
+    user.companyName = CnameController.text;
+    user.email = emailController.text;
+    user.password = rpassController.text;
+    user.name = nameController.text;
+    print(user.email);
+    bool saveResponse = await APIService.addJsUser(user);
+    saveResponse == true
+        ? Navigator.push(
+            context,
+            MaterialPageRoute(
+              builder: (context) => HomeScreen('FC'),
+            ),
+          )
+        : showAlertDialog(context);
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -71,7 +53,7 @@ class _RegistrationState extends State<Registration> {
       ),
       body: SafeArea(
         child: Form(
-          // key: formKey,
+          key: formKey,
           child: Container(
             margin: EdgeInsets.only(left: 10, right: 10),
             child: ListView(
@@ -99,7 +81,7 @@ class _RegistrationState extends State<Registration> {
                   height: 10,
                 ),
                 TextFormField(
-                  // controller: emailController,
+                  controller: emailController,
                   cursorColor: Colors.green,
                   decoration: const InputDecoration(
                     filled: true,
@@ -114,11 +96,30 @@ class _RegistrationState extends State<Registration> {
                     return null;
                   },
                 ),
-
                 const SizedBox(
                   height: 10,
                 ),
                 TextFormField(
+                  controller: nameController,
+                  cursorColor: Colors.green,
+                  decoration: const InputDecoration(
+                    filled: true,
+                    fillColor: Colors.white,
+                    labelText: 'Name',
+                    border: OutlineInputBorder(),
+                  ),
+                  validator: (value) {
+                    if (value!.isEmpty) {
+                      return 'Please enter your name';
+                    }
+                    return null;
+                  },
+                ),
+                const SizedBox(
+                  height: 10,
+                ),
+                TextFormField(
+                  obscureText: true,
                   controller: passController,
                   cursorColor: Colors.green,
                   decoration: const InputDecoration(
@@ -138,6 +139,7 @@ class _RegistrationState extends State<Registration> {
                   height: 10,
                 ),
                 TextFormField(
+                  obscureText: true,
                   controller: rpassController,
                   cursorColor: Colors.green,
                   decoration: const InputDecoration(
@@ -148,7 +150,9 @@ class _RegistrationState extends State<Registration> {
                   ),
                   validator: (value) {
                     if (value!.isEmpty) {
-                      return 'Please enter profession';
+                      return 'Please re-type the password';
+                    } else if (passController.text != value) {
+                      return 'Password not matching';
                     }
                     return null;
                   },
@@ -156,7 +160,7 @@ class _RegistrationState extends State<Registration> {
                 ElevatedButton(
                   onPressed: () {
                     if (formKey.currentState!.validate()) {
-                      // SaveValues();
+                      SaveValues();
                     } else
                       return null;
                   },

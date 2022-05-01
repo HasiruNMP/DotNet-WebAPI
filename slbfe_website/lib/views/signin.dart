@@ -1,5 +1,10 @@
 import 'dart:convert';
 import 'package:flutter/material.dart';
+import 'package:slbfe_website/views/registration.dart';
+
+import '../api/apiservice.dart';
+import '../model/loginmodel.dart';
+import 'home_screen.dart';
 // import 'package:slbfe_citizenapp/api/apiservice.dart';
 // import 'package:slbfe_citizenapp/model/loginmodel.dart';
 // import 'package:slbfe_citizenapp/view/registration.dart';
@@ -17,8 +22,10 @@ class _SignInState extends State<SignIn> {
   final _formKey = GlobalKey<FormState>();
   final TextEditingController _userEmailController = TextEditingController();
   final TextEditingController _userPassworController = TextEditingController();
-  // LoginRequestModel requestModel = LoginRequestModel(email: '', password: '');
+  LoginRequestModel requestModel = LoginRequestModel(email: '', password: '');
   bool loading = false;
+  String _selectedUserType = 'Buro Officer';
+  String loginTitle = 'Buro Officer Login';
 
   @override
   Widget build(BuildContext context) {
@@ -37,6 +44,54 @@ class _SignInState extends State<SignIn> {
               children: [
                 const SizedBox(
                   height: 100,
+                ),
+                Text(
+                  loginTitle,
+                ),
+                const SizedBox(
+                  height: 30.0,
+                ),
+                Row(
+                  children: [
+                    Expanded(
+                      child: Container(
+                        child: ListTile(
+                          leading: Radio<String>(
+                            value: 'Buro Officer',
+                            groupValue: _selectedUserType,
+                            onChanged: (value) {
+                              setState(() {
+                                _selectedUserType = value!;
+                                loginTitle = '$value Login';
+                              });
+                            },
+                          ),
+                          title: Text(
+                            'Buro Officer',
+                          ),
+                        ),
+                      ),
+                    ),
+                    Expanded(
+                      child: Container(
+                        child: ListTile(
+                          leading: Radio<String>(
+                            value: 'Company',
+                            groupValue: _selectedUserType,
+                            onChanged: (value) {
+                              setState(() {
+                                _selectedUserType = value!;
+                                loginTitle = '$value Login';
+                              });
+                            },
+                          ),
+                          title: Text(
+                            'Company',
+                          ),
+                        ),
+                      ),
+                    ),
+                  ],
                 ),
                 Padding(
                   padding: EdgeInsets.all(8.0),
@@ -70,58 +125,74 @@ class _SignInState extends State<SignIn> {
                     },
                   ),
                 ),
-                 ElevatedButton(
+                ElevatedButton(
                   onPressed: () async {
-                    //   if (_formKey.currentState!.validate()) {
-                    //     requestModel.email = _userEmailController.text;
-                    //     requestModel.password = _userPassworController.text;
-                    //     //  print(requestModel.toJson());
-                    //
-                    //     int login = await APIService.login(requestModel);
-                    //     //  print("status: $login");
-                    //     if (login == 0) {
-                    //       showAlertDialog(
-                    //           'Wrong password or email provided', context);
-                    //     } else if (login == -1) {
-                    //       showAlertDialog('Something went Wrong', context);
-                    //     } else {
-                    //       Navigator.push(
-                    //         context,
-                    //         MaterialPageRoute(
-                    //           builder: (context) => BottomNavigation(login),
-                    //         ),
-                  }, child: null,
-                        )
-                  //     }
-                  //   } else {
-                  //     return null;
-                  //   }
-                  // },
-                  // child: loading == false
-                  //     ? Text('Sign In')
-                  //     : const CircularProgressIndicator(
-                  //         backgroundColor: Colors.black38,
-                  //         valueColor:
-                  //             AlwaysStoppedAnimation<Color>(Colors.white),
-                  //       ),
-                // ),
-                // Row(
-                //   mainAxisAlignment: MainAxisAlignment.center,
-                //   children: [
-                //     Text('Don\t have an account'),
-                //     TextButton(
-                //       onPressed: () {
-                //         Navigator.push(
-                //           context,
-                //           MaterialPageRoute(
-                //             builder: (context) => Registration(),
-                //           ),
-                //         );
-                //       },
-                //       child: Text('Sign In'),
-                //     ),
-                //   ],
-                // ),
+                    if (_formKey.currentState!.validate()) {
+                      requestModel.email = _userEmailController.text;
+                      requestModel.password = _userPassworController.text;
+                      //  print(requestModel.toJson());
+                      if (_selectedUserType == 'Buro Officer') {
+                        int login = await APIService().boLogin(requestModel);
+                        //  print("status: $login");
+                        if (login == 0) {
+                          showAlertDialog(
+                              'Wrong password or email provided', context);
+                        } else if (login == -1) {
+                          showAlertDialog('Something went Wrong', context);
+                        } else {
+                          Navigator.pushReplacement(
+                            context,
+                            MaterialPageRoute(
+                              builder: (context) => HomeScreen('BO'),
+                            ),
+                          );
+                        }
+                      } else {
+                        int login = await APIService().fcLogin(requestModel);
+                        //  print("status: $login");
+                        if (login == 0) {
+                          showAlertDialog(
+                              'Wrong password or email provided', context);
+                        } else if (login == -1) {
+                          showAlertDialog('Something went Wrong', context);
+                        } else {
+                          Navigator.pushReplacement(
+                            context,
+                            MaterialPageRoute(
+                              builder: (context) => HomeScreen('FC'),
+                            ),
+                          );
+                        }
+                      }
+                    } else {
+                      return null;
+                    }
+                  },
+                  child: loading == false
+                      ? Text('Sign In')
+                      : const CircularProgressIndicator(
+                          backgroundColor: Colors.black38,
+                          valueColor:
+                              AlwaysStoppedAnimation<Color>(Colors.white),
+                        ),
+                ),
+                Row(
+                  mainAxisAlignment: MainAxisAlignment.center,
+                  children: [
+                    Text('Don\t have an account'),
+                    TextButton(
+                      onPressed: () {
+                        Navigator.push(
+                          context,
+                          MaterialPageRoute(
+                            builder: (context) => Registration(),
+                          ),
+                        );
+                      },
+                      child: Text('Sign up'),
+                    ),
+                  ],
+                ),
               ],
             ),
           ),
