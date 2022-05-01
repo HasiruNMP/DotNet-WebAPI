@@ -19,7 +19,7 @@ namespace SLBFE_API.Controllers
         [HttpGet]
         public JsonResult GetUser(String nic)
         {
-            string query = @"select NIC,Email,Password,FirstName,LastName,DOB,Address,Latitude,Longitude,Profession,Affiliation,Gender,Nationality,MaritalStatus,Validity,PrimaryPhone from dbo.Js_Users
+            string query = @"select NIC,Email,FirstName,LastName,DOB,Address,Latitude,Longitude,Profession,Affiliation,Gender,Nationality,MaritalStatus,Validity,PrimaryPhone from dbo.Js_Users
             Where NIC ='" + nic + "' ";
             DataTable table = new DataTable();
             string sqlDataSource = _configuration.GetConnectionString("SLBFEDB");
@@ -40,11 +40,12 @@ namespace SLBFE_API.Controllers
         }
 
 
-        [HttpPost ,Route("registerUser")]
+        [HttpPost, Route("registerUser")]
         public JsonResult PostUser(JsUser user)
         {
-            string query = @"insert into dbo.Js_Users values(@NIC,@Email,@Password,@FirstName,@LastName,@DOB,@Address,@Latitude,@Longitude,@Profession,@Affiliation,@Gender,@Nationality,@MaritalStatus,@Validity,@PrimaryPhone)";
+            string query = @"insert into dbo.JS_USERS values(@NIC,@Email,@FirstName,@LastName,@DOB,@Address,@Latitude,@Longitude,@Profession,@Affiliation,@Gender,@Nationality,@MaritalStatus,@Validity,@PrimaryPhone)";
             string query1 = @"insert into dbo.JS_CONTACTS values(@JS_NIC,@Personal,@Work,@Emmergency)";
+            string query2 = @"insert into dbo.USER_AUTH values(@UserID,@Password,'JS')";
             DataTable table = new DataTable();
             string sqlDataSource = _configuration.GetConnectionString("SLBFEDB");
             SqlDataReader myReader;
@@ -55,8 +56,7 @@ namespace SLBFE_API.Controllers
                 {
                     myCommand.Parameters.AddWithValue("@NIC", user.Nic);
                     myCommand.Parameters.AddWithValue("@Email", user.Email);
-                    myCommand.Parameters.AddWithValue("@Password", user.Password);
-                    myCommand.Parameters.AddWithValue("@FirstName", user.FirstName );
+                    myCommand.Parameters.AddWithValue("@FirstName", user.FirstName);
                     myCommand.Parameters.AddWithValue("@LastName", user.LastName);
                     myCommand.Parameters.AddWithValue("@DOB", user.Dob);
                     myCommand.Parameters.AddWithValue("@Address", user.Address);
@@ -73,27 +73,44 @@ namespace SLBFE_API.Controllers
                     myReader = myCommand.ExecuteReader();
                     table.Load(myReader);
                     myReader.Close();
-                 
+
 
                 }
-       
+
+
+
                 using (SqlCommand myCommand = new SqlCommand(query1, myCon))
                 {
-         
-                    myCommand.Parameters.AddWithValue("@JS_NIC",user.Nic.ToString());
+
+                    myCommand.Parameters.AddWithValue("@JS_NIC", user.Nic.ToString());
                     myCommand.Parameters.AddWithValue("@Personal", user.PrimaryPhone);
-                    myCommand.Parameters.AddWithValue("@Work",' ' );
+                    myCommand.Parameters.AddWithValue("@Work", ' ');
                     myCommand.Parameters.AddWithValue("@Emmergency", ' ');
-       
+
+
+                    myReader = myCommand.ExecuteReader();
+                    table.Load(myReader);
+                    myReader.Close();
+                
+
+                }
+
+                using (SqlCommand myCommand = new SqlCommand(query2, myCon))
+                {
+
+                    myCommand.Parameters.AddWithValue("@UserID", user.Email);
+                    myCommand.Parameters.AddWithValue("@Password", user.Password);
+
 
                     myReader = myCommand.ExecuteReader();
                     table.Load(myReader);
                     myReader.Close();
                     myCon.Close();
 
+
                 }
+                return new JsonResult("Added Successfully!");
             }
-            return new JsonResult("Added Successfully!");
         }
 
 
@@ -238,13 +255,12 @@ namespace SLBFE_API.Controllers
         }
 
 
-        [HttpGet, Route("login")]
-        public ActionResult JsUserLogin(String email, String password)
+        [HttpGet, Route("getNic")]
+        public ActionResult JsUserLogin(String email)
         {
-            string query = @"SELECT Email
-                      ,Password,NIC
+            string query = @"SELECT NIC
                   FROM dbo.JS_USERS
-                  Where Email ='" +email+"'  AND Password ='"+password+"'";
+                  Where Email ='" +email+"' ";
 
             DataTable table = new DataTable();
             string sqlDataSource = _configuration.GetConnectionString("SLBFEDB");
@@ -401,9 +417,9 @@ namespace SLBFE_API.Controllers
         }
 
         [HttpPut, Route("updatePassword")]
-        public JsonResult updatePassword(int nic, String password)
+        public JsonResult updatePassword(String userId, String password)
         {
-            string query = @"update dbo.Js_Users set Password='"+password + "' where NIC='"+nic+"'";
+            string query = @"update dbo.USER_AUTH set Password='"+password + "' where UserID='"+userId+"'";
 
             DataTable table = new DataTable();
             string sqlDataSource = _configuration.GetConnectionString("SLBFEDB");
@@ -429,7 +445,6 @@ namespace SLBFE_API.Controllers
         {
             string query = @"SELECT [NIC]
                   ,[Email]
-                  ,[Password]
                   ,[FirstName]
                   ,[LastName]
                   ,[DOB]

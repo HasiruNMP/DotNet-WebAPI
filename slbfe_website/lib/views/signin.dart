@@ -132,7 +132,8 @@ class _SignInState extends State<SignIn> {
                       requestModel.password = _userPassworController.text;
                       //  print(requestModel.toJson());
                       if (_selectedUserType == 'Buro Officer') {
-                        int login = await APIService().boLogin(requestModel);
+                        int login =
+                            await APIService().login(requestModel, 'BO');
                         //  print("status: $login");
                         if (login == 0) {
                           showAlertDialog(
@@ -148,7 +149,8 @@ class _SignInState extends State<SignIn> {
                           );
                         }
                       } else {
-                        int login = await APIService().fcLogin(requestModel);
+                        int login =
+                            await APIService().login(requestModel, 'FC');
                         //  print("status: $login");
                         if (login == 0) {
                           showAlertDialog(

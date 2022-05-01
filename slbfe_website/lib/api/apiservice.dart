@@ -7,11 +7,11 @@ import 'package:slbfe_website/model/jsusermodel.dart';
 import '../model/loginmodel.dart';
 
 class APIService {
-  Future boLogin(LoginRequestModel requestModel) async {
+  Future login(LoginRequestModel requestModel, String userType) async {
     String email = '';
     String password = '';
     http.Response response = await http.get(Uri.parse(
-        'https://localhost:7018/api/BoUser/bologin?email=${requestModel.email}&password=${requestModel.password}'));
+        'https://localhost:7018/api/Auth/login?userId=${requestModel.email}&password=${requestModel.password}&userType=$userType'));
 
     if (response.statusCode == 200) {
       print(response.statusCode);
@@ -22,44 +22,7 @@ class APIService {
         print('0');
         return 0;
       } else {
-        email = jsonDecode(data)[0]["Email"];
-        password = jsonDecode(data)[0]["Password"];
-        print(email);
-        print(password);
-      }
-
-      if (email == requestModel.email && password == requestModel.password) {
-        global.email = email;
-        print('Login Successfull!');
-        print('email: $email');
-
-        return 1;
-      }
-    } else {
-      print(response.statusCode);
-      print(response.reasonPhrase);
-      print('Something went wrong');
-      print('-1');
-      return -1;
-    }
-  }
-
-  Future fcLogin(LoginRequestModel requestModel) async {
-    String email = '';
-    String password = '';
-    http.Response response = await http.get(Uri.parse(
-        'https://localhost:7018/api/FcUser/fclogin?email=${requestModel.email}&password=${requestModel.password}'));
-
-    if (response.statusCode == 200) {
-      print(response.statusCode);
-      String data = response.body;
-      print('data:$data');
-      if (data == '[]') {
-        print("Wrong password or email provided");
-        print('0');
-        return 0;
-      } else {
-        email = jsonDecode(data)[0]["Email"];
+        email = jsonDecode(data)[0]["UserID"];
         password = jsonDecode(data)[0]["Password"];
         print(email);
         print(password);

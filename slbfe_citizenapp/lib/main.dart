@@ -48,7 +48,7 @@ class MyApp extends StatelessWidget {
       routes: {
         SignIn.id: (context) => SignIn(),
       },
-      home: BottomNavigation(global.nic),
+      home: SignIn(),
     );
   }
 }

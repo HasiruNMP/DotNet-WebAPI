@@ -1,7 +1,7 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:twilio_phone_verify/twilio_phone_verify.dart';
-
+import 'package:slbfe_citizenapp/global.dart' as global;
 import '../api/apiservice.dart';
 
 class resetPassword extends StatefulWidget {
@@ -252,7 +252,7 @@ class _resetPasswordState extends State<resetPassword> {
                           onPressed: () async {
                             if (formKey2.currentState!.validate()) {
                               var status = await APIService.updatePassword(
-                                  widget.nic, newPasswordController.text);
+                                  global.email, newPasswordController.text);
                               print(status);
                               status == true
                                   ? showAlertDialog(

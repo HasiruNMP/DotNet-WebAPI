@@ -14,9 +14,8 @@ class APIService {
   Future login(LoginRequestModel requestModel) async {
     String email = '';
     String password = '';
-    int nic;
     http.Response response = await http.get(Uri.parse(
-        'https://10.0.2.2:7018/api/JsUser/login?email=${requestModel.email}&password=${requestModel.password}'));
+        'https://10.0.2.2:7018/api/Auth/login?userId=${requestModel.email}&password=${requestModel.password}&userType=JS'));
 
     if (response.statusCode == 200) {
       print(response.statusCode);
@@ -27,22 +26,21 @@ class APIService {
         print('0');
         return 0;
       } else {
-        nic = jsonDecode(data)[0]["NIC"];
-        email = jsonDecode(data)[0]["Email"];
+        email = jsonDecode(data)[0]["UserID"];
         password = jsonDecode(data)[0]["Password"];
         print(email);
         print(password);
       }
 
       if (email == requestModel.email && password == requestModel.password) {
-        // global.nic = nic;
+        global.email = email;
+        var nic = getNic(email);
         print('Login Successfull!');
         print('Nic: $nic');
 
         SharedPreferences prefs = await SharedPreferences.getInstance();
         prefs.setBool('isLoggedIn', true);
         prefs.setString('userEmail', email);
-
         return nic;
       }
     } else {
@@ -51,6 +49,22 @@ class APIService {
       print('Something went wrong');
       print('-1');
       return -1;
+    }
+  }
+
+  static Future getNic(String email) async {
+    http.Response response = await http.get(
+        Uri.parse('https://10.0.2.2:7018/api/JsUser/getNic?email=${email}'));
+
+    if (response.statusCode == 200) {
+      print(response.statusCode);
+
+      String data = response.body;
+      int nic = jsonDecode(data)[0]["NIC"];
+      return nic;
+    } else {
+      print(response.statusCode);
+      print(response.reasonPhrase);
     }
   }
 
@@ -263,15 +277,15 @@ class APIService {
     }
   }
 
-  static Future updatePassword(int nic, String password) async {
+  static Future updatePassword(String userID, String password) async {
     var headers = {'Content-Type': 'application/json'};
     var request = http.Request(
       'PUT',
       Uri.parse(
-          'https://10.0.2.2:7018/api/JsUser/updatePassword?nic=$nic&password=$password'),
+          'https://10.0.2.2:7018/api/JsUser/updatePassword?userId=$userID&password=$password'),
     );
     request.body = json.encode({
-      "NIC": nic,
+      "UserID": userID,
       "Password": password,
     });
     request.headers.addAll(headers);

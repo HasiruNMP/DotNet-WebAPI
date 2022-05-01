@@ -20,9 +20,12 @@ namespace SLBFE_API.Controllers
 
         [HttpPost, Route("registerFcUser")]
         public JsonResult PostUser(FcUser user)
+
         {
-            string query = @"insert into dbo.FC_USERS values(@Email,@Password,@Name,@CompanyName)";
-    
+         
+            string query = @"insert into dbo.FC_USERS values(@Email,@Name,@CompanyName)";
+            string query2 = @"insert into dbo.USER_AUTH values(@UserID,@Password,'FC')";
+
             DataTable table = new DataTable();
             string sqlDataSource = _configuration.GetConnectionString("SLBFEDB");
             SqlDataReader myReader;
@@ -32,7 +35,6 @@ namespace SLBFE_API.Controllers
                 using (SqlCommand myCommand = new SqlCommand(query, myCon))
                 {
                     myCommand.Parameters.AddWithValue("@Email", user.Email);
-                    myCommand.Parameters.AddWithValue("@Password", user.Password);
                     myCommand.Parameters.AddWithValue("@Name", user.Name);
                     myCommand.Parameters.AddWithValue("@CompanyName", user.CompanyName);
                   
@@ -40,11 +42,27 @@ namespace SLBFE_API.Controllers
                     myReader = myCommand.ExecuteReader();
                     table.Load(myReader);
                     myReader.Close();
-                    myCon.Close();
+                 
 
                 }
 
-          
+                using (SqlCommand myCommand = new SqlCommand(query2, myCon))
+                {
+
+                    myCommand.Parameters.AddWithValue("@UserID", user.Email);
+                    myCommand.Parameters.AddWithValue("@Password", user.Password);
+           
+
+
+                    myReader = myCommand.ExecuteReader();
+                    table.Load(myReader);
+                    myReader.Close();
+                    myCon.Close();
+
+
+                }
+
+
             }
             return new JsonResult("Added Successfully!");
         }
