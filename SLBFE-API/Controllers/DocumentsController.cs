@@ -50,10 +50,11 @@ namespace SLBFE_API.Controllers
         [HttpGet("profilepic")]
         public async Task<ActionResult> DownloadProfilePicture(int NIC)
         {
-            var filePath = $"FileStorage/JobSeekers/{NIC}/ProfilePicture/propic.jpg";
+            var filePath = _webHostEnvironment.ContentRootPath + $"/FileStorage/JobSeekers/{NIC}/ProfilePicture/propic.jpg";
 
             var bytes = await System.IO.File.ReadAllBytesAsync(filePath);
             return File(bytes, "text/plain", Path.GetFileName(filePath));
+            //return Ok(filePath);
         }
     }
 }
