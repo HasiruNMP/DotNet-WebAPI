@@ -189,6 +189,20 @@ class _PersonalInfoState extends State<PersonalInfo> {
     fontSize: 16,
     fontWeight: FontWeight.bold,
   );
+  Future <void> validateUser()async{
+    var request = http.Request('PUT', Uri.parse('https://localhost:7018/api/JsUser/updateValidity?NIC=222222222'));
+
+
+    http.StreamedResponse response = await request.send();
+
+    if (response.statusCode == 200) {
+      print(await response.stream.bytesToString());
+    }
+    else {
+      print(response.reasonPhrase);
+    }
+
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -302,9 +316,7 @@ class _PersonalInfoState extends State<PersonalInfo> {
               children: [
                 OutlinedButton(
                   onPressed: () {
-                    setState(() {
-                      print(123);
-                    });
+                    validateUser();
                   },
                   child: Text('Mark As Validated'),
                 ),

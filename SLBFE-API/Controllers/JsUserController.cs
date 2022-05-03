@@ -484,7 +484,6 @@ namespace SLBFE_API.Controllers
         {
             string query = @"SELECT [NIC]
                   ,[Email]
-                  ,[Password]
                   ,[FirstName]
                   ,[LastName]
                   ,[DOB]
@@ -516,6 +515,26 @@ namespace SLBFE_API.Controllers
                 }
             }
             return new JsonResult(table);
+        }
+
+        [HttpPut, Route("updateValidity")]
+        public JsonResult updateValidity(int NIC)
+        {
+            string query = @"UPDATE dbo.JS_USERS SET Validity= 1 WHERE NIC=" + NIC;
+            DataTable table = new DataTable();
+            string sqlDataSource = _configuration.GetConnectionString("SLBFEDB");
+            SqlDataReader myReader;
+            using (SqlConnection myCon = new SqlConnection(sqlDataSource))
+            {
+                myCon.Open();
+                using (SqlCommand myCommand = new SqlCommand(query, myCon))
+                {
+                    myReader = myCommand.ExecuteReader();
+                    table.Load(myReader);
+                    myReader.Close();
+                }
+            }
+            return new JsonResult("Validated Successfully!");
         }
 
     }
