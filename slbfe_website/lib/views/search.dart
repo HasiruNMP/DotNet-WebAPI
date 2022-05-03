@@ -18,11 +18,11 @@ class Search extends StatefulWidget {
 
 class _SearchState extends State<Search>{
 
-  List<String> alStreamList = ["Any", "Art", "Biological Science", "Commerce", "Physical Science",];
+  List<String> alStreamList = ["Any", "Art", "Biological Science", "Commerce", "Physical Science","Technology",];
   List<String> gradesList = ["Any", "A", "B", "C", "S",];
   List<String> alGradesList = ["Any", "3 Passes", "2 Passes", "1 Pass",];
   List<String> hEduList = ["Any", "Certificate", "Diploma", "Bachelor","Master","Doctor"];
-  List<String> hEduFieldList = ["Any", "Science", "Engineering", "Computer Science",];
+  List<String> hEduFieldList = ["Any", "Science", "Engineering", "Computer Science","Medical","Agriculture","Economics","Finance","Business",];
 
   String selOLScience = "Any";
   String selOLMaths = "Any";
