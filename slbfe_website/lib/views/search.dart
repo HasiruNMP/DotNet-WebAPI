@@ -251,6 +251,7 @@ class _SearchState extends State<Search>{
                         phone: jobSeekers[index]['PrimaryPhone'],
                         email: jobSeekers[index]['Email'],
                         cvUrl: jobSeekers[index]['Email'],
+                        val: jobSeekers[index]['Validity'],
                       );
                     })
                 ):
@@ -268,8 +269,9 @@ class _SearchState extends State<Search>{
 class JobSeekerCard extends StatelessWidget {
 
   String nic, name, dob, gender, profession, email, phone, cvUrl;
+  bool val;
 
-  JobSeekerCard({required this.nic,required this.name,required this.dob,required this.gender,required this.profession,required this.email,required this.phone,required this.cvUrl});
+  JobSeekerCard({required this.nic,required this.name,required this.dob,required this.gender,required this.profession,required this.email,required this.phone,required this.cvUrl,required this.val,});
 
   int calAge(String dob){
     DateTime d1 = DateTime.parse(dob);
@@ -306,8 +308,13 @@ class JobSeekerCard extends StatelessWidget {
                         fontWeight: FontWeight.bold,
                       ),
                     ),
-                    SizedBox(height: 10,),
+                    SizedBox(height: 5,),
                     Text("Email: $email, Phone: $phone"),
+                    SizedBox(height: 5,),
+                    Chip(
+                      label: val? Text("Validated") : Text("Not Validated"),
+                      avatar: val? Icon(Icons.check_circle,color: Colors.green,) : Icon(Icons.error_outline,),
+                    ),
                   ],
                 ),
                 Expanded(child: Container()),

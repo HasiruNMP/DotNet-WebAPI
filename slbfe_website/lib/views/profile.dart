@@ -189,20 +189,37 @@ class _PersonalInfoState extends State<PersonalInfo> {
     fontSize: 16,
     fontWeight: FontWeight.bold,
   );
-  Future <void> validateUser()async{
-    var request = http.Request('PUT', Uri.parse('https://localhost:7018/api/JsUser/updateValidity?NIC=222222222'));
 
+  static const snackBar = SnackBar(
+    content: Text('Marked the User as Validated!'),
+  );
+  static const snackBar2 = SnackBar(
+    content: Text('Error Marking as Validated!'),
+  );
+  static const snackBar3 = SnackBar(
+    content: Text('Deactivated the User!'),
+  );
+  static const snackBar4 = SnackBar(
+    content: Text('Error Deactivating the User!'),
+  );
+
+  Future <void> validateUser()async{
+
+    var request = http.Request('PUT', Uri.parse('https://localhost:7018/api/JsUser/updateValidity?NIC=222222222'));
 
     http.StreamedResponse response = await request.send();
 
     if (response.statusCode == 200) {
       print(await response.stream.bytesToString());
+      ScaffoldMessenger.of(context).showSnackBar(snackBar);
     }
     else {
       print(response.reasonPhrase);
+      ScaffoldMessenger.of(context).showSnackBar(snackBar2);
     }
 
   }
+
 
   @override
   Widget build(BuildContext context) {
@@ -224,6 +241,7 @@ class _PersonalInfoState extends State<PersonalInfo> {
             builder: (BuildContext context, AsyncSnapshot<List> snapshot) {
               if (snapshot.hasData) {
                 List? list = snapshot.data;
+                //DateTime dob = list![0]['DOB'];
                 return ListView(
                   children: [
                     ListTile(
@@ -257,7 +275,7 @@ class _PersonalInfoState extends State<PersonalInfo> {
                     ListTile(
                       title: Text("Date of Birth"),
                       subtitle: Text(
-                        list[0]['DOB'],
+                        list[0]['DOB'].toString(),
                         style: style1,
                       ),
                     ),
@@ -329,8 +347,10 @@ class _PersonalInfoState extends State<PersonalInfo> {
                     http.StreamedResponse response = await request.send();
                     if (response.statusCode == 200) {
                       print(await response.stream.bytesToString());
+                      ScaffoldMessenger.of(context).showSnackBar(snackBar3);
                     } else {
                       print(response.reasonPhrase);
+                      ScaffoldMessenger.of(context).showSnackBar(snackBar4);
                     }
                   },
                   child: Text('Deactivate Accoount'),
@@ -457,13 +477,13 @@ class _QualificationsState extends State<Qualifications> {
                 ),
                 ListTile(
                   title: Text(
-                    qs[0]['ALResults'],
+                    "AL Results",
                     style: TextStyle(
                       //fontSize: 16,
                     ),
                   ),
                   subtitle: Text(
-                    "3 Passes",
+                    qs[0]['ALResults'],
                     style: TextStyle(
                       color: Colors.black,
                       fontSize: 16,
