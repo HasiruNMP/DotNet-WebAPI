@@ -7,6 +7,7 @@ using System.Threading.Tasks;
 using System.Data;
 using System.Data.SqlClient;
 using SLBFE_API.Models;
+using Microsoft.AspNetCore.Authorization;
 
 namespace SLBFE_API.Controllers
 {
@@ -21,6 +22,7 @@ namespace SLBFE_API.Controllers
         }
 
         [HttpGet,Route("getnewcomplaintlist")]
+        [Authorize(Roles = "BO")]
         public JsonResult GetNewComplaintList()
         {
             string query = @"SELECT * FROM [dbo].[JS_COMPLAINS] WHERE Feedback = 'No Feedback'";
