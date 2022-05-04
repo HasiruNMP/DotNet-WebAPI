@@ -47,6 +47,29 @@ namespace SLBFE_API.Controllers
             return File(bytes, "text/plain", Path.GetFileName(filePath));
         }
 
+        [HttpPut, Route("profile-picture{NIC}")]
+        public ActionResult UploadProPic(int NIC)
+        {
+            try
+            {
+                var httpRequest = Request.Form;
+                var postedFile = httpRequest.Files[0];
+                string filename = postedFile.FileName;
+                var physicalPath = _webHostEnvironment.ContentRootPath + $"/FileStorage/JobSeekers/{NIC}/ProfilePicture/propic.jpg";
+
+                using (var stream = new FileStream(physicalPath, FileMode.Create))
+                {
+                    postedFile.CopyTo(stream);
+                }
+
+                return Ok("Photo Uploaded Succesfully");
+            }
+            catch (Exception ex)
+            {
+                return NotFound(ex);
+            }
+        }
+
         [HttpGet("profilepic")]
         public async Task<ActionResult> DownloadProfilePicture(int NIC)
         {

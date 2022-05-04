@@ -48,7 +48,7 @@ class MyApp extends StatelessWidget {
       routes: {
         SignIn.id: (context) => SignIn(),
       },
-      home: SignIn(),
+      home: Home(),
     );
   }
 }

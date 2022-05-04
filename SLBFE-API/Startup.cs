@@ -17,6 +17,7 @@ using Microsoft.AspNetCore.Rewrite;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.IdentityModel.Tokens;
 using System.Text;
+using System.Reflection;
 
 namespace SLBFE_API
 {
@@ -64,9 +65,20 @@ namespace SLBFE_API
             services.AddSwaggerGen(c => { //<-- NOTE 'Add' instead of 'Configure'
                 c.SwaggerDoc("v1", new OpenApiInfo
                 {
-                    Title = "SLBFE-API",
-                    Version = "v1"
+                    Title = "SLBFE Web API",
+                    Version = "v1",
+                    Description = "An ASP.NET Core Web API for Sri Lanka Bureau of Foreign Employment",
+                    /*Contact = new OpenApiContact
+                    {
+                        Name = "Example Contact",
+                        Url = new Uri("https://example.com/contact")
+                    },*/
                 });
+
+                // using System.Reflection;
+                var xmlFilename = $"{Assembly.GetExecutingAssembly().GetName().Name}.xml";
+                c.IncludeXmlComments(Path.Combine(AppContext.BaseDirectory, xmlFilename));
+
             });
         }
          

@@ -5,6 +5,7 @@
     <Nullable>enable</Nullable>
     <ImplicitUsings>enable</ImplicitUsings>
     <RootNamespace>SLBFE_API</RootNamespace>
+    <GenerateDocumentationFile>true</GenerateDocumentationFile>
   </PropertyGroup>
 
   <ItemGroup>
@@ -25,7 +26,10 @@
   </ItemGroup>
 
   <ItemGroup>
-    <Folder Include="FileStorage\" />
+    <Folder Include="FileStorage\**" />
+    <Content Include="FileStorage\**">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
   </ItemGroup>
 
 </Project>
