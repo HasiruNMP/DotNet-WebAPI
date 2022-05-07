@@ -1,4 +1,5 @@
-﻿using Microsoft.AspNetCore.Http;
+﻿using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using System.Data;
 using System.Data.SqlClient;
@@ -16,6 +17,7 @@ namespace SLBFE_API.Controllers
         }
 
         [HttpGet, Route("search")]
+        [Authorize(Roles = "BO,FC")]
         public ActionResult SearchByQualifications(bool filterOn, string? olEnglish, string? olScience, string? olMaths, string? alStream, string? alResults, string? hEdu, string? hEduField)
         {
             string query = @"SELECT [NIC]

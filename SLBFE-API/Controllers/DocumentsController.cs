@@ -23,7 +23,7 @@ namespace SLBFE_API.Controllers
                 var httpRequest = Request.Form;
                 var postedFile = httpRequest.Files[0];
                 string filename = postedFile.FileName;
-                var physicalPath = _webHostEnvironment.ContentRootPath + "/FileStorage/"+filename;
+                var physicalPath = _webHostEnvironment.ContentRootPath + $"/FileStorage/JobSeekers/Documents/{NIC}/{NIC}" + filename;
 
                 using(var stream = new FileStream(physicalPath, FileMode.Create))
                 {
@@ -41,13 +41,14 @@ namespace SLBFE_API.Controllers
         [HttpGet("download")]
         public async Task<ActionResult> DownloadFile(int NIC, string documentType)
         {
-            var filePath = $"FileStorage/JobSeekers/{NIC}/Documents/{NIC}SampleDoc.pdf";
+            var filePath = _webHostEnvironment.ContentRootPath + $"/FileStorage/JobSeekers/Documents/{NIC}/{NIC}{documentType}.pdf";
 
             var bytes = await System.IO.File.ReadAllBytesAsync(filePath);
+            //return Ok(filePath);
             return File(bytes, "text/plain", Path.GetFileName(filePath));
         }
 
-        [HttpPut, Route("profile-picture{NIC}")]
+        [HttpPut, Route("profile-picture")]
         public ActionResult UploadProPic(int NIC)
         {
             try
@@ -55,7 +56,7 @@ namespace SLBFE_API.Controllers
                 var httpRequest = Request.Form;
                 var postedFile = httpRequest.Files[0];
                 string filename = postedFile.FileName;
-                var physicalPath = _webHostEnvironment.ContentRootPath + $"/FileStorage/JobSeekers/{NIC}/ProfilePicture/propic.jpg";
+                var physicalPath = _webHostEnvironment.ContentRootPath + $"/FileStorage/JobSeekers/ProfilePictures/{NIC}pp.jpg";
 
                 using (var stream = new FileStream(physicalPath, FileMode.Create))
                 {
@@ -73,7 +74,7 @@ namespace SLBFE_API.Controllers
         [HttpGet("profilepic")]
         public async Task<ActionResult> DownloadProfilePicture(int NIC)
         {
-            var filePath = _webHostEnvironment.ContentRootPath + $"/FileStorage/JobSeekers/{NIC}/ProfilePicture/propic.jpg";
+            var filePath = _webHostEnvironment.ContentRootPath + $"/FileStorage/JobSeekers/ProfilePictures/{NIC}pp.jpg";
 
             var bytes = await System.IO.File.ReadAllBytesAsync(filePath);
             return File(bytes, "text/plain", Path.GetFileName(filePath));

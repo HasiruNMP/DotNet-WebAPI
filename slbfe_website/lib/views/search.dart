@@ -41,7 +41,9 @@ class _SearchState extends State<Search>{
     //print(url);
     String urlF = url.replaceAll(RegExp(' +'), '%20');
     print(urlF);
-    final response = await http.get(Uri.parse(urlF));
+    final response = await http.get(Uri.parse(urlF),headers: {
+      'Authorization': 'Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJodHRwOi8vc2NoZW1hcy5taWNyb3NvZnQuY29tL3dzLzIwMDgvMDYvaWRlbnRpdHkvY2xhaW1zL3JvbGUiOiJGQyIsImV4cCI6MTY1NDQzOTAyNCwiaXNzIjoiaHR0cHM6Ly9sb2NhbGhvc3Q6NzAxOC8iLCJhdWQiOiJodHRwczovL2xvY2FsaG9zdDo3MDE4LyJ9.hN-KGXgzbT-PuhAyPLQHMu711eOLHBEKGvPsm0gOoNA'
+    });
     var resJson = json.decode(response.body);
 
     if (response.statusCode == 200) {
@@ -331,7 +333,7 @@ class JobSeekerCard extends StatelessWidget {
                   padding: const EdgeInsets.all(8.0),
                   child: OutlinedButton(
                     onPressed: (){
-                      js.context.callMethod('open', ['https://localhost:7018/documents/download?NIC=$nic&documentType=CV']);
+                      js.context.callMethod('open', ['https://localhost:7018/documents/download?NIC=$nic&documentType=SampleDoc']);
                     },
                     child: Text("Download CV"),
                   ),

@@ -677,7 +677,7 @@ class _DocumentsState extends State<Documents> {
 
   Future<void> downloadFile({required String docType}) async {
     js.context.callMethod('open', [
-      'https://localhost:7018/documents/download?NIC=${widget.nic}&documentType=$docType'
+      'https://localhost:7018/documents/download?NIC=${widget.nic}&documentType=SampleDoc'
     ]);
   }
 }
