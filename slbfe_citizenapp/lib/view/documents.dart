@@ -3,7 +3,7 @@ import 'dart:io';
 import 'package:file_picker/file_picker.dart';
 import 'package:flutter/material.dart';
 import 'package:http/http.dart' as http;
-
+import 'package:slbfe_citizenapp/global.dart';
 import 'package:slbfe_citizenapp/global.dart' as global;
 import 'package:url_launcher/url_launcher.dart';
 
@@ -87,7 +87,7 @@ class DocCard extends StatelessWidget {
                   child: OutlinedButton(
                     onPressed: () {
                       _launchURL(
-                          'https://10.0.2.2:7018/documents/download?NIC=${global.nic}&documentType=$docType2');
+                          '${Urls.apiUrl}/documents/download?NIC=${global.nic}&documentType=$docType2');
                     },
                     child: Text('View'),
                   ),
@@ -123,7 +123,7 @@ class DocCard extends StatelessWidget {
     var request = http.MultipartRequest(
         'PUT',
         Uri.parse(
-            'https://10.0.2.2:7018/documents/upload?NIC=${global.nic}&documentType=$documentType'));
+            '${Urls.apiUrl}/documents/upload?NIC=${global.nic}&documentType=$documentType'));
     request.files.add(await http.MultipartFile.fromPath('file', path));
     http.StreamedResponse response = await request.send();
     if (response.statusCode == 200) {
@@ -137,7 +137,7 @@ class DocCard extends StatelessWidget {
     var request = http.Request(
       'GET',
       Uri.parse(
-          'https://10.0.2.2:7018/documents/download?NIC=1&documentType=CV'),
+          '${Urls.apiUrl}/documents/download?NIC=1&documentType=CV'),
     );
     http.StreamedResponse response = await request.send();
     if (response.statusCode == 200) {

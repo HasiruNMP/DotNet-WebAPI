@@ -3,15 +3,43 @@ import 'dart:convert';
 import 'package:flutter/cupertino.dart';
 import 'package:http/http.dart' as http;
 import 'package:slbfe_website/global.dart' as global;
+import 'package:slbfe_website/global.dart';
 import 'package:slbfe_website/model/jsusermodel.dart';
 import '../model/loginmodel.dart';
 
 class APIService {
   Future login(LoginRequestModel requestModel, String userType) async {
-    String email = '';
+
+    var headers = {
+      'Content-Type': 'application/json'
+    };
+    var request = http.Request('POST', Uri.parse('${Urls.apiUrl}/api/Auth/login'));
+    request.body = json.encode({
+      "userID": requestModel.email,
+      "password": requestModel.password,
+      "userType": userType,
+    });
+    request.headers.addAll(headers);
+
+    http.StreamedResponse response = await request.send();
+
+    if (response.statusCode == 200) {
+      String res = await response.stream.bytesToString();
+      print(res);
+      global.email = requestModel.email;
+      Auth.apiToken = res;
+      return 1;
+    }
+    else {
+      print(response.reasonPhrase);
+      return -1;
+    }
+
+
+
+/*    String email = '';
     String password = '';
-    http.Response response = await http.get(Uri.parse(
-        'https://localhost:7018/api/Auth/login?userId=${requestModel.email}&password=${requestModel.password}&userType=$userType'));
+    http.Response response = await http.get(Uri.parse('${Urls.apiUrl}/api/Auth/login?userId=${requestModel.email}&password=${requestModel.password}&userType=$userType'));
 
     if (response.statusCode == 200) {
       print(response.statusCode);
@@ -41,13 +69,13 @@ class APIService {
       print('Something went wrong');
       print('-1');
       return -1;
-    }
+    }*/
   }
 
   static Future addJsUser(jsUserModel user) async {
     var headers = {'Content-Type': 'application/json'};
     var request = http.Request(
-        'POST', Uri.parse('https://localhost:7018/api/FcUser/registerFcUser'));
+        'POST', Uri.parse('${Urls.apiUrl}/api/FcUser/registerFcUser'));
     request.body = json.encode({
       "email": user.email,
       "password": user.password,

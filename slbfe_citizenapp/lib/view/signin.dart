@@ -48,8 +48,8 @@ class _SignInState extends State<SignIn> {
                       border: OutlineInputBorder(),
                     ),
                     validator: (value) {
-                      if (value!.isEmpty || !value.contains('@')) {
-                        return 'Please enter a valid email address';
+                      if (value!.isEmpty) {
+                        return 'Please enter NIC';
                       }
                       return null;
                     },

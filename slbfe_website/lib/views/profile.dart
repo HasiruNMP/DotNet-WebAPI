@@ -8,6 +8,7 @@ import 'package:slbfe_website/views/location.dart';
 import 'package:slbfe_website/views/map.dart';
 import 'package:http/http.dart' as http;
 import 'dart:js' as js;
+import 'package:slbfe_website/global.dart';
 
 int lastNic = 0;
 
@@ -164,7 +165,7 @@ class _PersonalInfoState extends State<PersonalInfo> {
 
   Future<List> getUserInfo() async {
     List userInfo = [];
-    String url = "https://localhost:7018/api/JsUser?nic=${widget.nic}";
+    String url = "${Urls.apiUrl}/api/JsUser?nic=${widget.nic}";
     final response = await http.get(Uri.parse(url));
     var resJson = json.decode(response.body);
     if (response.statusCode == 200) {
@@ -205,7 +206,7 @@ class _PersonalInfoState extends State<PersonalInfo> {
 
   Future <void> validateUser()async{
 
-    var request = http.Request('PUT', Uri.parse('https://localhost:7018/api/JsUser/updateValidity?NIC=222222222'));
+    var request = http.Request('PUT', Uri.parse('${Urls.apiUrl}/api/JsUser/updateValidity?NIC=222222222'));
 
     http.StreamedResponse response = await request.send();
 
@@ -233,7 +234,7 @@ class _PersonalInfoState extends State<PersonalInfo> {
             radius: 70,
             backgroundColor: Colors.indigo,
             backgroundImage: NetworkImage(
-                'https://localhost:7018/documents/profilepic?NIC=${widget.nic}'),
+                '${Urls.apiUrl}/documents/profilepic?NIC=${widget.nic}'),
           ),
           Expanded(
               child: FutureBuilder(
@@ -343,7 +344,7 @@ class _PersonalInfoState extends State<PersonalInfo> {
                     var request = http.Request(
                         'DELETE',
                         Uri.parse(
-                            'https://localhost:7018/api/JsUser/DeactivateUser?nic=${widget.nic}'));
+                            '${Urls.apiUrl}/api/JsUser/DeactivateUser?nic=${widget.nic}'));
                     http.StreamedResponse response = await request.send();
                     if (response.statusCode == 200) {
                       print(await response.stream.bytesToString());
@@ -380,7 +381,7 @@ class _QualificationsState extends State<Qualifications> {
   bool isLoaded = false;
 
   Future<List> getQualifications() async {
-    String url = "https://localhost:7018/jobseekers/qualifications/ofuser?NIC=${widget.nic}";
+    String url = "${Urls.apiUrl}/jobseekers/qualifications/ofuser?NIC=${widget.nic}";
     final response = await http.get(Uri.parse(url));
     var resJson = json.decode(response.body);
     if (response.statusCode == 200) {
@@ -677,7 +678,7 @@ class _DocumentsState extends State<Documents> {
 
   Future<void> downloadFile({required String docType}) async {
     js.context.callMethod('open', [
-      'https://localhost:7018/documents/download?NIC=${widget.nic}&documentType=SampleDoc'
+      '${Urls.apiUrl}/documents/download?NIC=${widget.nic}&documentType=SampleDoc'
     ]);
   }
 }
@@ -695,7 +696,7 @@ class _ContactsState extends State<Contacts> {
   bool isLoaded = false;
 
   Future<List> getContacts() async {
-    String url = "https://localhost:7018/api/JsUser/getContacts?nic=${widget.nic}";
+    String url = "${Urls.apiUrl}/api/JsUser/getContacts?nic=${widget.nic}";
     final response = await http.get(Uri.parse(url));
     var resJson = json.decode(response.body);
     if (response.statusCode == 200) {

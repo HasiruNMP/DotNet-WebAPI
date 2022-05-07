@@ -6,6 +6,7 @@ import 'package:map/map.dart';
 import 'package:latlng/latlng.dart';
 import 'package:cached_network_image/cached_network_image.dart';
 import 'package:http/http.dart' as http;
+import 'package:slbfe_website/global.dart';
 
 class Location2 extends StatefulWidget {
   int nic;
@@ -22,7 +23,7 @@ class _Location2State extends State<Location2> {
   double lng = 0.0;
 
   Future<void> getLocation() async {
-    String url = "https://localhost:7018/api/JsUser/location?NIC=2000";
+    String url = "${Urls.apiUrl}/api/JsUser/location?NIC=2000";
     final response = await http.get(Uri.parse(url));
     var resJson = json.decode(response.body);
     if (response.statusCode == 200) {

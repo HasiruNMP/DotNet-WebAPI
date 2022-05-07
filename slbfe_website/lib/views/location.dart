@@ -1,6 +1,6 @@
 import 'dart:async';
 import 'dart:convert';
-
+import 'package:slbfe_website/global.dart';
 import 'package:flutter/material.dart';
 import 'package:google_maps_flutter/google_maps_flutter.dart';
 //import 'package:google_maps_flutter_web/google_maps_flutter_web.dart';
@@ -33,7 +33,7 @@ class _LocationState extends State<Location> {
     List coordinates = [];
     double lat = 0.0;
     double lng = 0.0;
-    String url = "https://localhost:7018/api/JsUser/location?NIC=${widget.nic}";
+    String url = "${Urls.apiUrl}/api/JsUser/location?NIC=${widget.nic}";
     final response = await http.get(Uri.parse(url));
     var resJson = json.decode(response.body);
     if (response.statusCode == 200) {

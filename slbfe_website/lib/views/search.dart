@@ -2,6 +2,7 @@ import 'dart:convert';
 import 'package:flutter/material.dart';
 import 'package:group_button/group_button.dart';
 import 'package:http/http.dart' as http;
+import 'package:slbfe_website/global.dart';
 import 'dart:js' as js;
 import 'package:url_launcher/url_launcher.dart';
 
@@ -37,12 +38,12 @@ class _SearchState extends State<Search>{
   bool searched = false;
 
   Future fetchUsers() async {
-    String url = "https://localhost:7018/jobseekers/search?filterOn=true&olEnglish=$selOLEnglish&olScience=$selOLScience&olMaths=$selOLMaths&alStream=$selAlStream&alResults=$selAlResults&hEdu=$selHighEdStage&hEduField=$selHighEdField";
+    String url = "${Urls.apiUrl}/jobseekers/search?filterOn=true&olEnglish=$selOLEnglish&olScience=$selOLScience&olMaths=$selOLMaths&alStream=$selAlStream&alResults=$selAlResults&hEdu=$selHighEdStage&hEduField=$selHighEdField";
     //print(url);
     String urlF = url.replaceAll(RegExp(' +'), '%20');
     print(urlF);
     final response = await http.get(Uri.parse(urlF),headers: {
-      'Authorization': 'Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJodHRwOi8vc2NoZW1hcy5taWNyb3NvZnQuY29tL3dzLzIwMDgvMDYvaWRlbnRpdHkvY2xhaW1zL3JvbGUiOiJGQyIsImV4cCI6MTY1NDQzOTAyNCwiaXNzIjoiaHR0cHM6Ly9sb2NhbGhvc3Q6NzAxOC8iLCJhdWQiOiJodHRwczovL2xvY2FsaG9zdDo3MDE4LyJ9.hN-KGXgzbT-PuhAyPLQHMu711eOLHBEKGvPsm0gOoNA'
+      'Authorization': 'Bearer ${Auth.apiToken}'
     });
     var resJson = json.decode(response.body);
 
@@ -297,7 +298,7 @@ class JobSeekerCard extends StatelessWidget {
                   child: CircleAvatar(
                     radius: 42,
                     backgroundColor: Colors.blueGrey.shade50,
-                    backgroundImage: NetworkImage('https://localhost:7018/documents/profilepic?NIC=${nic}'),
+                    backgroundImage: NetworkImage('${Urls.apiUrl}/documents/profilepic?NIC=${nic}'),
                   ),
                 ),
                 Column(
@@ -333,7 +334,7 @@ class JobSeekerCard extends StatelessWidget {
                   padding: const EdgeInsets.all(8.0),
                   child: OutlinedButton(
                     onPressed: (){
-                      js.context.callMethod('open', ['https://localhost:7018/documents/download?NIC=$nic&documentType=SampleDoc']);
+                      js.context.callMethod('open', ['${Urls.apiUrl}/documents/download?NIC=$nic&documentType=SampleDoc']);
                     },
                     child: Text("Download CV"),
                   ),

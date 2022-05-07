@@ -3,6 +3,7 @@ import 'package:flutter/material.dart';
 import 'dart:async';
 import 'dart:convert';
 import 'package:http/http.dart' as http;
+import 'package:slbfe_website/global.dart';
 
 class Data {
   final int complainId;
@@ -36,7 +37,7 @@ class Complaints extends StatefulWidget {
 class _ComplaintsState extends State<Complaints> {
   Future<List<Data>> fetchData() async {
     final response = await http.get(
-        Uri.parse('https://localhost:7018/complaints/getnewcomplaintlist'));
+        Uri.parse('${Urls.apiUrl}/complaints/getnewcomplaintlist'));
     if (response.statusCode == 200) {
       List jsonResponse = json.decode(response.body);
       return jsonResponse.map((data) => new Data.fromJson(data)).toList();
@@ -47,7 +48,7 @@ class _ComplaintsState extends State<Complaints> {
 
   Future<List<Data>> fetchOldData() async {
     final response = await http.get(
-        Uri.parse('https://localhost:7018/complaints/getoldcomplaintlist'));
+        Uri.parse('${Urls.apiUrl}/complaints/getoldcomplaintlist'));
     if (response.statusCode == 200) {
       List jsonResponse = json.decode(response.body);
       return jsonResponse.map((olddata) => new Data.fromJson(olddata)).toList();
@@ -59,7 +60,7 @@ class _ComplaintsState extends State<Complaints> {
   Future updateFeedback(int complaintId, String feedback) async {
     final response = await http.put(
         Uri.parse(
-            'https://localhost:7018/complaints/sendfeedback?complaintId=$complaintId&feedback=$feedback'),
+            '${Urls.apiUrl}/complaints/sendfeedback?complaintId=$complaintId&feedback=$feedback'),
         headers: <String, String>{
           'Content-Type': 'application/json; charset=UTF-8',
         });

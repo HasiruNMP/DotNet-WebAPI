@@ -4,6 +4,7 @@ import 'package:buttons_tabbar/buttons_tabbar.dart';
 import 'package:flutter/material.dart';
 import 'package:slbfe_website/views/profile.dart';
 import 'package:http/http.dart' as http;
+import 'package:slbfe_website/global.dart';
 
 class Validate extends StatefulWidget {
   const Validate({Key? key}) : super(key: key);
@@ -19,7 +20,7 @@ class _ValidateState extends State<Validate> {
   bool loaded = false;
 
   Future fetchUsers() async {
-    String url = "https://localhost:7018/api/JsUser/tobevalidated";
+    String url = "${Urls.apiUrl}/api/JsUser/tobevalidated";
     final response = await http.get(Uri.parse(url));
     var resJson = json.decode(response.body);
 

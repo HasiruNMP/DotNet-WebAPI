@@ -9,6 +9,7 @@ import 'package:slbfe_citizenapp/global.dart' as global;
 import '../api/apiservice.dart';
 import 'accountSetting.dart';
 import 'contacts.dart';
+import 'package:slbfe_citizenapp/global.dart';
 
 class Profile extends StatefulWidget {
   const Profile({Key? key}) : super(key: key);
@@ -75,7 +76,7 @@ class _ProfileState extends State<Profile> {
                                 backgroundColor: Colors.teal,
                                 radius: 60,
                                 backgroundImage: NetworkImage(
-                                    'https://10.0.2.2:7018/documents/profilepic?NIC=${global.nic}'),
+                                    '${Urls.apiUrl}/documents/profilepic?NIC=${global.nic}'),
                               ),
                             ),
                             SizedBox(

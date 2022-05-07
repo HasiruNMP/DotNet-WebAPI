@@ -5,17 +5,47 @@ import 'package:shared_preferences/shared_preferences.dart';
 import '../model/loginmodel.dart';
 import 'dart:convert';
 import 'dart:async';
+import 'package:slbfe_citizenapp/global.dart';
 
 class UserAuth with ChangeNotifier {
 
   static bool isLoggedIn = false;
 
   Future login(LoginRequestModel requestModel) async {
-    String email = '';
+
+    print(requestModel);
+
+    var headers = {
+      'Content-Type': 'application/json'
+    };
+    var request = http.Request('POST', Uri.parse('https://10.0.2.2:7018/api/Auth/login'));
+    request.body = json.encode({
+      "userID": requestModel.email,
+      "password": requestModel.password,
+      "userType": "JS",
+    });
+    request.headers.addAll(headers);
+
+    http.StreamedResponse response = await request.send();
+
+    if (response.statusCode == 200) {
+      String res = await response.stream.bytesToString();
+      print(res);
+      int nic1 = int.parse(requestModel.email);
+      //global.email = requestModel.email;
+      Auth.apiToken = res;
+      return nic1;
+    }
+    else {
+      print(response.reasonPhrase);
+      return -1;
+    }
+
+    /*String email = '';
     String password = '';
     int nic;
     http.Response response = await http.get(Uri.parse(
-        'https://10.0.2.2:7018/api/JsUser/login?email=${requestModel.email}&password=${requestModel.password}'));
+        '${Urls.apiUrl}/api/JsUser/login?email=${requestModel.email}&password=${requestModel.password}'));
 
     if (response.statusCode == 200) {
       print(response.statusCode);
@@ -51,7 +81,7 @@ class UserAuth with ChangeNotifier {
       print('Something went wrong');
       print('-1');
       return -1;
-    }
+    }*/
   }
 
 }
