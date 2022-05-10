@@ -16,12 +16,12 @@ namespace SLBFE_API.Controllers
             _configuration = configuration;
         }
 
-        [HttpGet, Route("search/bynames")]
+        [HttpGet, Route("search/byname")]
         public ActionResult SearchByKeyword(string keyword)
         {
             try
             {
-                string query = $@"SELECT * FROM dbo.JS_USERS WHERE dbo.JS_USERS.FirstName LIKE '{keyword}' OR dbo.JS_USERS.LastName LIKE '{keyword}';";
+                string query = $@"SELECT * FROM dbo.JS_USERS WHERE FirstName LIKE '{keyword}' OR LastName LIKE '{keyword}' OR NIC LIKE '{keyword}';";
                 DataTable table = new DataTable();
                 string sqlDataSource = _configuration.GetConnectionString("SLBFEDB");
                 SqlDataReader myReader;
