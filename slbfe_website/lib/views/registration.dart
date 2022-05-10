@@ -48,127 +48,182 @@ class _RegistrationState extends State<Registration> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: AppBar(
-        title: Text('Personal Information'),
-      ),
+      appBar: AppBar(),
       body: SafeArea(
-        child: Form(
-          key: formKey,
-          child: Container(
-            margin: EdgeInsets.only(left: 10, right: 10),
-            child: ListView(
-              children: [
-                const SizedBox(
-                  height: 10,
+        child: Row(
+          children: [
+            Expanded(child: Container()),
+            Expanded(
+              child: Container(
+                margin: EdgeInsets.only(
+                  top: MediaQuery.of(context).size.height / 8,
+                  bottom: MediaQuery.of(context).size.height / 10,
                 ),
-                TextFormField(
-                  controller: CnameController,
-                  cursorColor: Colors.green,
-                  decoration: const InputDecoration(
-                    filled: true,
-                    fillColor: Colors.white,
-                    labelText: 'Company Name',
-                    border: OutlineInputBorder(),
+                child: Card(
+                  elevation: 5,
+                  child: Form(
+                    key: formKey,
+                    child: Container(
+                      margin: EdgeInsets.only(left: 10, right: 10),
+                      child: ListView(
+                        children: [
+                          Container(
+                            height: MediaQuery.of(context).size.height / 5.5,
+                            width: double.maxFinite,
+                            color: Colors.indigo,
+                            child: Center(
+                              child: Text(
+                                'Registration',
+                                style: TextStyle(
+                                    fontSize: 18,
+                                    fontWeight: FontWeight.bold,
+                                    color: Colors.white),
+                              ),
+                            ),
+                          ),
+                          const SizedBox(
+                            height: 100.0,
+                          ),
+                          TextFormField(
+                            controller: CnameController,
+                            cursorColor: Colors.indigo,
+                            decoration: InputDecoration(
+                              errorStyle: const TextStyle(
+                                color: Colors.black,
+                              ),
+                              filled: true,
+                              fillColor: Colors.grey.withOpacity(0.3),
+                              labelText: 'Company Name',
+                              border: InputBorder.none,
+                            ),
+                            validator: (value) {
+                              if (value!.isEmpty) {
+                                return 'Please enter your company name';
+                              }
+                              return null;
+                            },
+                          ),
+                          const SizedBox(
+                            height: 10,
+                          ),
+                          TextFormField(
+                            controller: emailController,
+                            cursorColor: Colors.indigo,
+                            decoration: InputDecoration(
+                              errorStyle: const TextStyle(
+                                color: Colors.black,
+                              ),
+                              filled: true,
+                              fillColor: Colors.grey.withOpacity(0.3),
+                              labelText: 'Email',
+                              border: InputBorder.none,
+                            ),
+                            validator: (value) {
+                              if (value!.isEmpty) {
+                                return 'Please enter a valid email address';
+                              }
+                              return null;
+                            },
+                          ),
+                          const SizedBox(
+                            height: 10,
+                          ),
+                          TextFormField(
+                            controller: nameController,
+                            cursorColor: Colors.indigo,
+                            decoration: InputDecoration(
+                              errorStyle: const TextStyle(
+                                color: Colors.black,
+                              ),
+                              filled: true,
+                              fillColor: Colors.grey.withOpacity(0.3),
+                              labelText: 'Name',
+                              border: InputBorder.none,
+                            ),
+                            validator: (value) {
+                              if (value!.isEmpty) {
+                                return 'Please enter your name';
+                              }
+                              return null;
+                            },
+                          ),
+                          const SizedBox(
+                            height: 10,
+                          ),
+                          TextFormField(
+                            obscureText: true,
+                            controller: passController,
+                            cursorColor: Colors.indigo,
+                            decoration: InputDecoration(
+                              errorStyle: const TextStyle(
+                                color: Colors.black,
+                              ),
+                              filled: true,
+                              fillColor: Colors.grey.withOpacity(0.3),
+                              labelText: 'Password',
+                              border: InputBorder.none,
+                            ),
+                            validator: (value) {
+                              if (value!.isEmpty) {
+                                return 'Please enter password';
+                              }
+                              return null;
+                            },
+                          ),
+                          const SizedBox(
+                            height: 10,
+                          ),
+                          TextFormField(
+                            obscureText: true,
+                            controller: rpassController,
+                            cursorColor: Colors.indigo,
+                            decoration: InputDecoration(
+                              errorStyle: const TextStyle(
+                                color: Colors.black,
+                              ),
+                              filled: true,
+                              fillColor: Colors.grey.withOpacity(0.3),
+                              labelText: 'Re-type password',
+                              border: InputBorder.none,
+                            ),
+                            validator: (value) {
+                              if (value!.isEmpty) {
+                                return 'Please re-type the password';
+                              } else if (passController.text != value) {
+                                return 'Password not matching';
+                              }
+                              return null;
+                            },
+                          ),
+                          SizedBox(
+                            height: 30,
+                          ),
+                          Column(
+                            children: [
+                              Container(
+                                child: ElevatedButton(
+                                  onPressed: () {
+                                    if (formKey.currentState!.validate()) {
+                                      SaveValues();
+                                    } else
+                                      return null;
+                                  },
+                                  child: Text('Submit'),
+                                ),
+                                height: 40,
+                                width: 100,
+                              ),
+                            ],
+                          )
+                        ],
+                      ),
+                    ),
                   ),
-                  validator: (value) {
-                    if (value!.isEmpty) {
-                      return 'Please enter your company name';
-                    }
-                    return null;
-                  },
                 ),
-                const SizedBox(
-                  height: 10,
-                ),
-                TextFormField(
-                  controller: emailController,
-                  cursorColor: Colors.green,
-                  decoration: const InputDecoration(
-                    filled: true,
-                    fillColor: Colors.white,
-                    labelText: 'Email',
-                    border: OutlineInputBorder(),
-                  ),
-                  validator: (value) {
-                    if (value!.isEmpty) {
-                      return 'Please enter a valid email address';
-                    }
-                    return null;
-                  },
-                ),
-                const SizedBox(
-                  height: 10,
-                ),
-                TextFormField(
-                  controller: nameController,
-                  cursorColor: Colors.green,
-                  decoration: const InputDecoration(
-                    filled: true,
-                    fillColor: Colors.white,
-                    labelText: 'Name',
-                    border: OutlineInputBorder(),
-                  ),
-                  validator: (value) {
-                    if (value!.isEmpty) {
-                      return 'Please enter your name';
-                    }
-                    return null;
-                  },
-                ),
-                const SizedBox(
-                  height: 10,
-                ),
-                TextFormField(
-                  obscureText: true,
-                  controller: passController,
-                  cursorColor: Colors.green,
-                  decoration: const InputDecoration(
-                    filled: true,
-                    fillColor: Colors.white,
-                    labelText: 'Password',
-                    border: OutlineInputBorder(),
-                  ),
-                  validator: (value) {
-                    if (value!.isEmpty) {
-                      return 'Please enter profession';
-                    }
-                    return null;
-                  },
-                ),
-                const SizedBox(
-                  height: 10,
-                ),
-                TextFormField(
-                  obscureText: true,
-                  controller: rpassController,
-                  cursorColor: Colors.green,
-                  decoration: const InputDecoration(
-                    filled: true,
-                    fillColor: Colors.white,
-                    labelText: 'Password',
-                    border: OutlineInputBorder(),
-                  ),
-                  validator: (value) {
-                    if (value!.isEmpty) {
-                      return 'Please re-type the password';
-                    } else if (passController.text != value) {
-                      return 'Password not matching';
-                    }
-                    return null;
-                  },
-                ),
-                ElevatedButton(
-                  onPressed: () {
-                    if (formKey.currentState!.validate()) {
-                      SaveValues();
-                    } else
-                      return null;
-                  },
-                  child: Text('Submit'),
-                )
-              ],
+              ),
             ),
-          ),
+            Expanded(child: Container()),
+          ],
         ),
       ),
     );
