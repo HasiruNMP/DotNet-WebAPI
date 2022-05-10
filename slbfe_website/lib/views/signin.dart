@@ -49,7 +49,7 @@ class _SignInState extends State<SignIn> {
                     child: ListView(
                       children: [
                         Image.network(
-                          '${Urls.apiUrl}/documents/logo',
+                          '${Urls.apiUrl}/api/files/slbfe/logo',
                           height: 300,
                         ),
                         Container(

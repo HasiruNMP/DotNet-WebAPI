@@ -9,11 +9,9 @@ import '../model/loginmodel.dart';
 
 class APIService {
   Future login(LoginRequestModel requestModel, String userType) async {
-
-    var headers = {
-      'Content-Type': 'application/json'
-    };
-    var request = http.Request('POST', Uri.parse('${Urls.apiUrl}/api/Auth/login'));
+    var headers = {'Content-Type': 'application/json'};
+    var request =
+        http.Request('POST', Uri.parse('${Urls.apiUrl}/api/Auth/login'));
     request.body = json.encode({
       "userID": requestModel.email,
       "password": requestModel.password,
@@ -29,13 +27,10 @@ class APIService {
       global.email = requestModel.email;
       Auth.apiToken = res;
       return 1;
-    }
-    else {
+    } else {
       print(response.reasonPhrase);
       return -1;
     }
-
-
 
 /*    String email = '';
     String password = '';
@@ -75,7 +70,7 @@ class APIService {
   static Future addJsUser(jsUserModel user) async {
     var headers = {'Content-Type': 'application/json'};
     var request = http.Request(
-        'POST', Uri.parse('${Urls.apiUrl}/api/FcUser/registerFcUser'));
+        'POST', Uri.parse('${Urls.apiUrl}/api/companies/register'));
     request.body = json.encode({
       "email": user.email,
       "password": user.password,

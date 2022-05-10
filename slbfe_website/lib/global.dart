@@ -8,7 +8,7 @@ class Urls {
   //https://localhost:7018
   //https://slbfe-api.azurewebsites.net
 
-  static String apiUrl = "https://slbfe-api.azurewebsites.net";
+  static String apiUrl = "https://localhost:7018";
 }
 
 class Auth {

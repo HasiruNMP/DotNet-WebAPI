@@ -19,8 +19,7 @@ class _SearchByNameState extends State<SearchByName> {
   bool loaded = false;
 
   Future fetchUsers() async {
-    String url =
-        "https://localhost:7018/jobseekers/search/byname?keyword=${tec.text}";
+    String url = "${Urls.apiUrl}/api/jobseekers/search?keyword=${tec.text}";
     final response = await http.get(Uri.parse(url));
     var resJson = json.decode(response.body);
 

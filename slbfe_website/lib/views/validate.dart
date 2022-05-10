@@ -19,7 +19,7 @@ class _ValidateState extends State<Validate> {
   bool loaded = false;
 
   Future fetchUsers() async {
-    String url = "${Urls.apiUrl}/api/JsUser/tobevalidated";
+    String url = "${Urls.apiUrl}/api/jobseekers/non-validated";
     final response = await http.get(Uri.parse(url));
     var resJson = json.decode(response.body);
 

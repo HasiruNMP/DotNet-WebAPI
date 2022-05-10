@@ -7,7 +7,6 @@ import 'package:google_maps_flutter/google_maps_flutter.dart';
 import 'package:http/http.dart' as http;
 
 class Location extends StatefulWidget {
-
   int nic;
 
   Location(this.nic);
@@ -17,7 +16,6 @@ class Location extends StatefulWidget {
 }
 
 class _LocationState extends State<Location> {
-
   Completer<GoogleMapController> _controller = Completer();
 
   late CameraPosition userLoc;
@@ -33,7 +31,7 @@ class _LocationState extends State<Location> {
     List coordinates = [];
     double lat = 0.0;
     double lng = 0.0;
-    String url = "${Urls.apiUrl}/api/JsUser/location?NIC=${widget.nic}";
+    String url = "${Urls.apiUrl}/api/jobseekers/${widget.nic}/location";
     final response = await http.get(Uri.parse(url));
     var resJson = json.decode(response.body);
     if (response.statusCode == 200) {
@@ -43,24 +41,20 @@ class _LocationState extends State<Location> {
       lng = coordinates[0]['Longitude'] as double;
 
       return LatLng(lat, lng);
-    }
-    else {
+    } else {
       print(response.reasonPhrase);
       return LatLng(lat, lng);
     }
   }
 
-  void addMarker(double? lat, double? lng){
+  void addMarker(double? lat, double? lng) {
     setState(() {
-      markers.add(
-          Marker(
-            markerId: const MarkerId('user'),
-            infoWindow:
-            const InfoWindow(title: 'User Location'),
-            icon: BitmapDescriptor.defaultMarker,
-            position: LatLng(lat!, lng!),
-          )
-      );
+      markers.add(Marker(
+        markerId: const MarkerId('user'),
+        infoWindow: const InfoWindow(title: 'User Location'),
+        icon: BitmapDescriptor.defaultMarker,
+        position: LatLng(lat!, lng!),
+      ));
     });
   }
 
@@ -68,30 +62,29 @@ class _LocationState extends State<Location> {
   Widget build(BuildContext context) {
     //getLocation();
     return FutureBuilder<LatLng>(
-      future: getLocation(),
-      builder: (context, snapshot) {
-        if(snapshot.hasData){
+        future: getLocation(),
+        builder: (context, snapshot) {
+          if (snapshot.hasData) {
+            LatLng? loc1 = snapshot.data;
 
-          LatLng? loc1 = snapshot.data;
-
-          return Container(
-            child: GoogleMap(
-              markers: markers,
-              initialCameraPosition: CameraPosition(target: LatLng(loc1!.latitude, loc1.longitude), zoom: 5),
-              onMapCreated: (GoogleMapController controller) {
-                _controller.complete(controller);
-                addMarker(loc1.latitude, loc1.longitude);
-                userLoc = CameraPosition(
-                  target: LatLng(loc1.latitude, loc1.longitude),
-                  zoom: 5,
-                );
-                goToUserLoc();
-              },
-            ),
-          );
-        }
-        return Center(child: CircularProgressIndicator());
-      }
-    );
+            return Container(
+              child: GoogleMap(
+                markers: markers,
+                initialCameraPosition: CameraPosition(
+                    target: LatLng(loc1!.latitude, loc1.longitude), zoom: 5),
+                onMapCreated: (GoogleMapController controller) {
+                  _controller.complete(controller);
+                  addMarker(loc1.latitude, loc1.longitude);
+                  userLoc = CameraPosition(
+                    target: LatLng(loc1.latitude, loc1.longitude),
+                    zoom: 5,
+                  );
+                  goToUserLoc();
+                },
+              ),
+            );
+          }
+          return Center(child: CircularProgressIndicator());
+        });
   }
 }

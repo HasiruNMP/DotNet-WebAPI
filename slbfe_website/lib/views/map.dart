@@ -16,14 +16,13 @@ class Location2 extends StatefulWidget {
 }
 
 class _Location2State extends State<Location2> {
-
   List coordinates = [];
   bool isLoaded = false;
   double lat = 0.0;
   double lng = 0.0;
 
   Future<void> getLocation() async {
-    String url = "${Urls.apiUrl}/api/JsUser/location?NIC=2000";
+    String url = "${Urls.apiUrl}/api/jobseekers/${widget.nic}/location";
     final response = await http.get(Uri.parse(url));
     var resJson = json.decode(response.body);
     if (response.statusCode == 200) {
@@ -33,8 +32,7 @@ class _Location2State extends State<Location2> {
       lng = coordinates[0]['Longitude'] as double;
       _gotoDefault();
       //setState(() => isLoaded = true);
-    }
-    else {
+    } else {
       print(response.reasonPhrase);
     }
   }
@@ -62,8 +60,8 @@ class _Location2State extends State<Location2> {
 
   void _gotoDefault() {
     setState(() {
-      controller.center = LatLng(lat,lng);
-      markers.add(LatLng(lat,lng));
+      controller.center = LatLng(lat, lng);
+      markers.add(LatLng(lat, lng));
     });
   }
 
@@ -117,10 +115,10 @@ class _Location2State extends State<Location2> {
           controller: controller,
           builder: (context, transformer) {
             final markerPositions =
-            markers.map(transformer.fromLatLngToXYCoords).toList();
+                markers.map(transformer.fromLatLngToXYCoords).toList();
 
             final markerWidgets = markerPositions.map(
-                  (pos) => _buildMarkerWidget(pos, Colors.red),
+              (pos) => _buildMarkerWidget(pos, Colors.red),
             );
 
             //final homeLocation = transformer.fromLatLngToXYCoords(LatLng(35.68, 51.412));
@@ -132,7 +130,7 @@ class _Location2State extends State<Location2> {
                 transformer.constraints.biggest.height / 2);
 
             final centerMarkerWidget =
-            _buildMarkerWidget(centerLocation, Colors.purple);
+                _buildMarkerWidget(centerLocation, Colors.purple);
 
             return GestureDetector(
               behavior: HitTestBehavior.opaque,
@@ -141,13 +139,14 @@ class _Location2State extends State<Location2> {
               onScaleUpdate: _onScaleUpdate,
               onTapUp: (details) {
                 final location =
-                transformer.fromXYCoordsToLatLng(details.localPosition);
+                    transformer.fromXYCoordsToLatLng(details.localPosition);
 
                 final clicked = transformer.fromLatLngToXYCoords(location);
 
                 print('${location.longitude}, ${location.latitude}');
                 print('${clicked.dx}, ${clicked.dy}');
-                print('${details.localPosition.dx}, ${details.localPosition.dy}');
+                print(
+                    '${details.localPosition.dx}, ${details.localPosition.dy}');
               },
               child: Listener(
                 behavior: HitTestBehavior.opaque,

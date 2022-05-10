@@ -74,7 +74,7 @@ class _SearchState extends State<Search> {
 
   Future fetchUsers() async {
     String url =
-        "https://localhost:7018/jobseekers/search?filterOn=true&olEnglish=$selOLEnglish&olScience=$selOLScience&olMaths=$selOLMaths&alStream=$selAlStream&alResults=$selAlResults&hEdu=$selHighEdStage&hEduField=$selHighEdField";
+        "${Urls.apiUrl}/api/jobseekers/search/by-qualifications?filterOn=true&olEnglish=$selOLEnglish&olScience=$selOLScience&olMaths=$selOLMaths&alStream=$selAlStream&alResults=$selAlResults&hEdu=$selHighEdStage&hEduField=$selHighEdField";
     //print(url);
     String urlF = url.replaceAll(RegExp(' +'), '%20');
     print(urlF);
@@ -398,7 +398,7 @@ class JobSeekerCard extends StatelessWidget {
                     radius: 42,
                     backgroundColor: Colors.blueGrey.shade50,
                     backgroundImage: NetworkImage(
-                        '${Urls.apiUrl}/documents/profilepic?NIC=${nic}'),
+                        '${Urls.apiUrl}/api/files/$nic/images/propic/download'),
                   ),
                 ),
                 Column(
@@ -446,7 +446,7 @@ class JobSeekerCard extends StatelessWidget {
                   child: OutlinedButton(
                     onPressed: () {
                       js.context.callMethod('open', [
-                        '${Urls.apiUrl}/documents/download?NIC=$nic&documentType=SampleDoc'
+                        '${Urls.apiUrl}/api/files/$nic/documents/SampleDoc/download'
                       ]);
                     },
                     child: Text("Download CV"),

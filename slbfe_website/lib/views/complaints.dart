@@ -39,8 +39,8 @@ class Complaints extends StatefulWidget {
 
 class _ComplaintsState extends State<Complaints> {
   Future<List<Data>> fetchData() async {
-    final response = await http.get(
-        Uri.parse('https://localhost:7018/complaints/getnewcomplaintlist'));
+    final response =
+        await http.get(Uri.parse('https://localhost:7018/complaints/all/new'));
     if (response.statusCode == 200) {
       List jsonResponse = json.decode(response.body);
       return jsonResponse.map((data) => new Data.fromJson(data)).toList();
@@ -50,8 +50,8 @@ class _ComplaintsState extends State<Complaints> {
   }
 
   Future<List<Data>> fetchOldData() async {
-    final response = await http
-        .get(Uri.parse('${Urls.apiUrl}/complaints/getoldcomplaintlist'));
+    final response =
+        await http.get(Uri.parse('${Urls.apiUrl}/complaints/all/replied'));
     if (response.statusCode == 200) {
       List jsonResponse = json.decode(response.body);
       return jsonResponse.map((olddata) => new Data.fromJson(olddata)).toList();
@@ -63,7 +63,7 @@ class _ComplaintsState extends State<Complaints> {
   Future updateFeedback(int complaintId, String feedback) async {
     final response = await http.put(
         Uri.parse(
-            '${Urls.apiUrl}/complaints/sendfeedback?complaintId=$complaintId&feedback=$feedback'),
+            '${Urls.apiUrl}/complaints/$complainId/feedback/update?feedback=$feedback'),
         headers: <String, String>{
           'Content-Type': 'application/json; charset=UTF-8',
         });
