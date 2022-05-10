@@ -6,6 +6,7 @@ import 'package:slbfe_website/views/complaints.dart';
 import 'package:slbfe_website/views/profile.dart';
 import 'package:slbfe_website/views/registration.dart';
 import 'package:slbfe_website/views/search.dart';
+import 'package:slbfe_website/views/searchbyname.dart';
 import 'package:slbfe_website/views/signin.dart';
 import 'package:slbfe_website/views/validate.dart';
 import 'package:slbfe_website/global.dart' as global;
@@ -111,7 +112,7 @@ class _HomeScreenState extends State<HomeScreen> {
               child: PageView(
                 controller: controller,
                 children: <Widget>[
-                  Profile(),
+                  SearchByName(),
                   widget.loginType != 'FC' ? Validate() : Container(),
                   widget.loginType != 'FC' ? Complaints() : Container(),
                   Search(),
