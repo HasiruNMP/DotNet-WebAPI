@@ -16,8 +16,36 @@ namespace SLBFE_API.Controllers
             _configuration = configuration;
         }
 
+        [HttpGet, Route("search/bynames")]
+        public ActionResult SearchByKeyword(string keyword)
+        {
+            try
+            {
+                string query = $@"SELECT * FROM dbo.JS_USERS WHERE dbo.JS_USERS.FirstName LIKE '{keyword}' OR dbo.JS_USERS.LastName LIKE '{keyword}';";
+                DataTable table = new DataTable();
+                string sqlDataSource = _configuration.GetConnectionString("SLBFEDB");
+                SqlDataReader myReader;
+                using (SqlConnection myCon = new SqlConnection(sqlDataSource))
+                {
+                    myCon.Open();
+                    using (SqlCommand myCommand = new SqlCommand(query, myCon))
+                    {
+                        myReader = myCommand.ExecuteReader();
+                        table.Load(myReader);
+                        myReader.Close();
+                        myCon.Close();
+                    }
+                }
+                return new JsonResult(table);
+            }
+            catch (Exception ex)
+            {
+                return BadRequest();
+            }
+        }
+
         [HttpGet, Route("search")]
-        [Authorize(Roles = "BO,FC")]
+        //[Authorize(Roles = "BO,FC")]
         public ActionResult SearchByQualifications(bool filterOn, string? olEnglish, string? olScience, string? olMaths, string? alStream, string? alResults, string? hEdu, string? hEduField)
         {
             string query = @"SELECT [NIC]

@@ -20,11 +20,12 @@ namespace SLBFE_API.Controllers
         {
             _configuration = configuration;
         }
+
         /// <summary>
         /// Deletes a specific TodoItem.
         /// </summary>
         [HttpGet,Route("getnewcomplaintlist")]
-        [Authorize(Roles = "BO")]
+        //[Authorize(Roles = "BO")]
         public JsonResult GetNewComplaintList()
         {
             string query = @"SELECT * FROM [dbo].[JS_COMPLAINS] WHERE Feedback = 'No Feedback'";
