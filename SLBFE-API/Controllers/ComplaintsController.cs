@@ -25,7 +25,7 @@ namespace SLBFE_API.Controllers
         /// Returns the list of complaints that haven't got a feedback yet
         /// </summary>
         [HttpGet,Route("all/new")]
-        [Authorize(Roles = "BO")]
+        //[Authorize(Roles = "BO")]
         public JsonResult GetNewComplaintList()
         {
             string query = @"SELECT * FROM [dbo].[JS_COMPLAINS] WHERE Feedback = 'No Feedback'";
@@ -51,7 +51,7 @@ namespace SLBFE_API.Controllers
         /// </summary>
         /// <returns></returns>
         [HttpGet, Route("all/replied")]
-        [Authorize(Roles = "BO")]
+        //[Authorize(Roles = "BO")]
         public JsonResult GetOldComplaintList()
         {
             string query = @"SELECT * FROM [dbo].[JS_COMPLAINS] WHERE Feedback != 'No Feedback'";
@@ -79,7 +79,7 @@ namespace SLBFE_API.Controllers
         /// <param name="feedback"></param>
         /// <returns></returns>
         [HttpPut,Route("{ComplaintID}/feedback/update")]
-        [Authorize(Roles = "BO")]
+        //[Authorize(Roles = "BO")]
         public JsonResult PutFeedback(int ComplaintID, String feedback)
         {
             string query = @"UPDATE [dbo].[JS_COMPLAINS] SET Feedback = '" + feedback + "' WHERE ComplaintID =" + ComplaintID;
@@ -106,7 +106,7 @@ namespace SLBFE_API.Controllers
         /// <param name="comp"></param>
         /// <returns></returns>
         [HttpPost,Route("new")]
-        [Authorize(Roles = "JS")]
+        //[Authorize(Roles = "JS")]
         public JsonResult PostComplaint(JsComplain comp)
         {
             string query = @"insert into [dbo].[JS_COMPLAINS] values(@JS_NIC,@Complain,@Feedback,@AddedDate)";
@@ -141,7 +141,7 @@ namespace SLBFE_API.Controllers
         /// <param name="NIC"></param>
         /// <returns></returns>
         [HttpGet, Route("ofuser/{NIC}")]
-        [Authorize(Roles = "JS,BO")]
+        //[Authorize(Roles = "JS,BO")]
         public JsonResult GetComplaintListapp(int NIC)
         {
             string query = @"SELECT * FROM [dbo].[JS_COMPLAINS] WHERE JS_NIC =" + NIC;

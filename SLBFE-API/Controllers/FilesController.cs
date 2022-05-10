@@ -21,7 +21,7 @@ namespace SLBFE_API.Controllers
         /// </summary>
         /// /// <response code="400">If there's an error saving the document</response>
         [HttpPut, Route("{NIC}/documents/{documentType}/upload")]
-        [Authorize(Roles = "JS")]
+        //[Authorize(Roles = "JS")]
         public ActionResult SaveDocument(int NIC, string documentType)
         {
             try
@@ -49,7 +49,7 @@ namespace SLBFE_API.Controllers
         /// </summary>
         /// /// <response code="404">If the document cannot be found</response>
         [HttpGet, Route("{NIC}/documents/{documentType}/download")]
-        [Authorize(Roles = "BO,JS")]
+        //[Authorize(Roles = "BO,JS")]
         public async Task<ActionResult> DownloadFile(int NIC, string documentType)
         {
             try
@@ -69,7 +69,7 @@ namespace SLBFE_API.Controllers
         /// </summary>
         /// /// <response code="400">If there's an error saving the photo</response>
         [HttpPut, Route("{NIC}/images/propic/upload")]
-        [Authorize(Roles = "JS")]
+        //[Authorize(Roles = "JS")]
         public ActionResult UploadProPic(int NIC)
         {
             try

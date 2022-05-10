@@ -107,7 +107,7 @@ namespace SLBFE_API.Controllers
         /// <param name="NIC"></param>
         /// <returns></returns>
         [HttpGet,Route("{NIC}")]
-        [Authorize]
+        //[Authorize]
         public ActionResult GetUser(String NIC)
         {
             try
@@ -151,7 +151,7 @@ namespace SLBFE_API.Controllers
         /// <param name="NIC"></param>
         /// <returns></returns>
         [HttpPut, Route("{NIC}/update")]
-        [Authorize(Roles = "JS")]
+        //[Authorize(Roles = "JS")]
         public JsonResult userDetailsUpdate(JsUser user,String NIC)
         {
             string query = @"update dbo.Js_Users set FirstName=@FirstName,LastName=@LastName,
@@ -196,7 +196,7 @@ namespace SLBFE_API.Controllers
         /// <param name="password"></param>
         /// <returns></returns>
         [HttpDelete, Route("{NIC}/delete")]
-        [Authorize(Roles = "JS")]
+        //[Authorize(Roles = "JS")]
         public JsonResult DeleteUser(int nic,String password)
         {
             string query = @"delete from dbo.Js_Users where NIC=@NIC";
@@ -252,7 +252,7 @@ namespace SLBFE_API.Controllers
         /// <param name="NIC"></param>
         /// <returns></returns>
         [HttpDelete, Route("{NIC}/deactivate")]
-        [Authorize(Roles = "BO")]
+        //[Authorize(Roles = "BO")]
         public JsonResult DeactivateUser(int NIC)
         {
             string queryDeleteUser = @"delete from dbo.Js_Users where NIC=@NIC";
@@ -308,7 +308,7 @@ namespace SLBFE_API.Controllers
         /// <param name="email"></param>
         /// <returns></returns>
         /*[HttpGet, Route("{email}/nic")]
-        [Authorize(Roles = "JS")]
+        //[Authorize(Roles = "JS")]
         public ActionResult JsUserLogin(String email)
         {
             string query = @"SELECT NIC
@@ -339,7 +339,7 @@ namespace SLBFE_API.Controllers
         /// <param name="nic"></param>
         /// <returns></returns>
         [HttpGet, Route("{NIC}/contacts")]
-        [Authorize(Roles = "BO")]
+        //[Authorize(Roles = "BO")]
         public JsonResult GetUserContacts(int nic)
         {
             string query = @"select JS_NIC,Personal,Work,Emmergency from dbo.JS_CONTACTS
@@ -369,7 +369,7 @@ namespace SLBFE_API.Controllers
         /// <param name="NIC"></param>
         /// <returns></returns>
         [HttpPut, Route("{NIC}/contacts/update")]
-        [Authorize(Roles = "JS")]
+        //[Authorize(Roles = "JS")]
         public JsonResult updateUserContacts(JsContact contact,string NIC)
         {
             string query = @"update dbo.JS_CONTACTS set Personal=@Personal,
@@ -419,7 +419,7 @@ namespace SLBFE_API.Controllers
         /// <param name="NIC"></param>
         /// <returns></returns>
         [HttpGet, Route("{NIC}/location")]
-        [Authorize(Roles = "BO")]
+        //[Authorize(Roles = "BO")]
         public JsonResult GetComplaintListapp(int NIC)
         {
             string query = @"SELECT NIC, Latitude, Longitude FROM dbo.JS_USERS WHERE NIC = " + NIC;
@@ -448,7 +448,7 @@ namespace SLBFE_API.Controllers
         /// <param name="lng"></param>
         /// <returns></returns>
         [HttpPut, Route("{NIC}/location/update")]
-        [Authorize(Roles = "JS")]
+        //[Authorize(Roles = "JS")]
         public JsonResult updateLocation(int NIC, double lat, double lng)
         {
             string query = @"UPDATE dbo.JS_USERS SET Latitude=" + lat + ",Longitude=" + lng + " WHERE NIC=" + NIC;
@@ -474,7 +474,7 @@ namespace SLBFE_API.Controllers
         /// <param name="NIC"></param>
         /// <returns></returns>
         [HttpGet, Route("{NIC}/qualifications")]
-        [Authorize(Roles = "BO")]
+        //[Authorize(Roles = "BO")]
         public JsonResult Qualifications(int NIC)
         {
             string query = @"SELECT * FROM [dbo].[JS_QUALIFICATIONS] WHERE JS_NIC =" + NIC;
@@ -509,7 +509,7 @@ namespace SLBFE_API.Controllers
         /// <param name="hEduField"></param>
         /// <returns></returns>
         [HttpPut, Route("{NIC}/qualifications/update")]
-        [Authorize(Roles = "JS")]
+        //[Authorize(Roles = "JS")]
         public ActionResult updateQualifications(int NIC, string olEnglish, string olScience, string olMaths, string alStream, string alResults, string alEnglish, string hEdu, string hEduField)
         {
             string query = $@"
@@ -583,7 +583,7 @@ namespace SLBFE_API.Controllers
         /// <param name="password"></param>
         /// <returns></returns>
         [HttpPut, Route("{NIC}/password/update")]
-        [Authorize(Roles = "JS")]
+        //[Authorize(Roles = "JS")]
         public JsonResult updatePassword(String NIC, String password)
         {
             string query = @"update dbo.USER_AUTH set Password='"+password + "' where UserID='"+NIC+"'";
@@ -614,7 +614,7 @@ namespace SLBFE_API.Controllers
         /// <param name="status"></param>
         /// <returns></returns>
         [HttpPut, Route("{NIC}/validity/update")]
-        [Authorize(Roles = "BO")]
+        //[Authorize(Roles = "BO")]
         public JsonResult updateValidity(int NIC, bool status)
         {
             string query = @$"UPDATE dbo.JS_USERS SET Validity={status} WHERE NIC=" + NIC;
@@ -639,7 +639,7 @@ namespace SLBFE_API.Controllers
         /// </summary>
         /// <returns></returns>
         [HttpGet, Route("non-validated")]
-        [Authorize(Roles = "BO")]
+        //[Authorize(Roles = "BO")]
         public JsonResult GetUsersToValidate()
         {
             string query = @"SELECT [NIC]
@@ -684,7 +684,7 @@ namespace SLBFE_API.Controllers
         /// <param name="keyword"></param>
         /// <returns></returns>
         [HttpGet, Route("search")]
-        [Authorize]
+        //[Authorize]
         public ActionResult SearchByKeyword(string keyword)
         {
             try
@@ -725,7 +725,7 @@ namespace SLBFE_API.Controllers
         /// <param name="hEduField"></param>
         /// <returns></returns>
         [HttpGet, Route("search/by-qualifications")]
-        [Authorize(Roles = "BO,FC")]
+        //[Authorize(Roles = "BO,FC")]
         public ActionResult SearchByQualifications(bool filterOn, string? olEnglish, string? olScience, string? olMaths, string? alStream, string? alResults, string? hEdu, string? hEduField)
         {
             string query = @"SELECT [NIC]

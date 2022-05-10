@@ -24,11 +24,9 @@ namespace SLBFE_API.Controllers
         /// </summary>
         /// /// <response code="400"></response>
         [HttpPost, Route("register")]
-        [Authorize(Roles = "FC")]
+        //[Authorize(Roles = "FC")]
         public JsonResult PostUser(FcUser user)
-
         {
-         
             string query = @"insert into dbo.FC_USERS values(@Email,@Name,@CompanyName)";
             string query2 = @"insert into dbo.USER_AUTH values(@UserID,@Password,'FC')";
 
