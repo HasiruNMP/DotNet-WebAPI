@@ -10,7 +10,7 @@ using System.Text;
 
 namespace SLBFE_API.Controllers
 {
-    [Route("api/[controller]")]
+    [Route("api/auth")]
     [ApiController]
     public class AuthController : ControllerBase
     {
@@ -37,7 +37,12 @@ namespace SLBFE_API.Controllers
             return null;
         }
 
-
+        /// <summary>
+        /// Authenticates a user and returns a API token
+        /// </summary>
+        /// <param name="toLogin">User credentials and user type</param>
+        /// <returns>JSON Web Token</returns>
+        /// /// <response code="404">if no user found by the given credentials</response>
         [HttpPost, Route("login")]
         public ActionResult Login(UserAuth toLogin)
         {

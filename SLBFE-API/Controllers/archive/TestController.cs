@@ -1,4 +1,4 @@
-﻿using Microsoft.AspNetCore.Http;
+﻿/*using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using System.Data;
 using System.Data.SqlClient;
@@ -7,31 +7,26 @@ namespace SLBFE_API.Controllers
 {
     [Route("api/[controller]")]
     [ApiController]
-    public class BoUserController : ControllerBase
+    public class TestController : ControllerBase
     {
 
         private readonly IConfiguration _configuration;
-
-        public BoUserController(IConfiguration configuration)
+        public TestController(IConfiguration configuration)
         {
             _configuration = configuration;
         }
-        [HttpGet, Route("bologin")]
-        public ActionResult UserLogin(String email, String password)
-        {
-            string query = @"SELECT Email
-                      ,Password
-                  FROM dbo.BO_USERS
-                  Where Email ='" + email + "'  AND Password ='" + password + "'";
 
+        [HttpGet]
+        public JsonResult TestGet()
+        {
+            string q = @"SELECT TOP (1000) [Id],[Name] FROM [dbo].[User]";
             DataTable table = new DataTable();
             string sqlDataSource = _configuration.GetConnectionString("SLBFEDB");
             SqlDataReader myReader;
             using (SqlConnection myCon = new SqlConnection(sqlDataSource))
             {
                 myCon.Open();
-                using (SqlCommand myCommand = new SqlCommand(query, myCon))
-
+                using (SqlCommand myCommand = new SqlCommand(q, myCon))
                 {
                     myReader = myCommand.ExecuteReader();
                     table.Load(myReader);
@@ -39,7 +34,8 @@ namespace SLBFE_API.Controllers
                     myCon.Close();
                 }
             }
-            return Ok(table);
+            return new JsonResult(table);
         }
     }
 }
+*/

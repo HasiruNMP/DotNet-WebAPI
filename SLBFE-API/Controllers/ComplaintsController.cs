@@ -13,19 +13,19 @@ namespace SLBFE_API.Controllers
 {
     [Route("complaints")]
     [ApiController]
-    public class ComplainsController : ControllerBase
+    public class ComplaintsController : ControllerBase
     {
         private readonly IConfiguration _configuration;
-        public ComplainsController(IConfiguration configuration)
+        public ComplaintsController(IConfiguration configuration)
         {
             _configuration = configuration;
         }
 
         /// <summary>
-        /// Deletes a specific TodoItem.
+        /// Returns the list of complaints that haven't got a feedback yet
         /// </summary>
-        [HttpGet,Route("getnewcomplaintlist")]
-        //[Authorize(Roles = "BO")]
+        [HttpGet,Route("all/new")]
+        [Authorize(Roles = "BO")]
         public JsonResult GetNewComplaintList()
         {
             string query = @"SELECT * FROM [dbo].[JS_COMPLAINS] WHERE Feedback = 'No Feedback'";
@@ -46,7 +46,12 @@ namespace SLBFE_API.Controllers
             return new JsonResult(table);
         }
 
-        [HttpGet, Route("getoldcomplaintlist")]
+        /// <summary>
+        /// Returns the list of complaints that feedbacks have been sent
+        /// </summary>
+        /// <returns></returns>
+        [HttpGet, Route("all/replied")]
+        [Authorize(Roles = "BO")]
         public JsonResult GetOldComplaintList()
         {
             string query = @"SELECT * FROM [dbo].[JS_COMPLAINS] WHERE Feedback != 'No Feedback'";
@@ -67,10 +72,17 @@ namespace SLBFE_API.Controllers
             return new JsonResult(table);
         }
 
-        [HttpPut,Route("sendfeedback")]
-        public JsonResult PutFeedback(int complaintId, String feedback)
+        /// <summary>
+        /// Updates the feedback for the complaint of the given id
+        /// </summary>
+        /// <param name="ComplaintID"></param>
+        /// <param name="feedback"></param>
+        /// <returns></returns>
+        [HttpPut,Route("{ComplaintID}/feedback/update")]
+        [Authorize(Roles = "BO")]
+        public JsonResult PutFeedback(int ComplaintID, String feedback)
         {
-            string query = @"UPDATE [dbo].[JS_COMPLAINS] SET Feedback = '" + feedback + "' WHERE ComplaintID =" + complaintId;
+            string query = @"UPDATE [dbo].[JS_COMPLAINS] SET Feedback = '" + feedback + "' WHERE ComplaintID =" + ComplaintID;
             DataTable table = new DataTable();
             string sqlDataSource = _configuration.GetConnectionString("SLBFEDB");
             SqlDataReader myReader;
@@ -88,8 +100,13 @@ namespace SLBFE_API.Controllers
             return new JsonResult("Updated Successfully");
         }
 
-
-        [HttpPost,Route("addcomplaint")]
+        /// <summary>
+        /// Adds a new complaint
+        /// </summary>
+        /// <param name="comp"></param>
+        /// <returns></returns>
+        [HttpPost,Route("new")]
+        [Authorize(Roles = "JS")]
         public JsonResult PostComplaint(JsComplain comp)
         {
             string query = @"insert into [dbo].[JS_COMPLAINS] values(@JS_NIC,@Complain,@Feedback,@AddedDate)";
@@ -117,7 +134,14 @@ namespace SLBFE_API.Controllers
             }
             return new JsonResult("Added Successfully");
         }
-        [HttpGet, Route("getcomplaintlistapp")]
+
+        /// <summary>
+        /// returns a list of complaints that have been made by a specific user
+        /// </summary>
+        /// <param name="NIC"></param>
+        /// <returns></returns>
+        [HttpGet, Route("ofuser/{NIC}")]
+        [Authorize(Roles = "JS,BO")]
         public JsonResult GetComplaintListapp(int NIC)
         {
             string query = @"SELECT * FROM [dbo].[JS_COMPLAINS] WHERE JS_NIC =" + NIC;

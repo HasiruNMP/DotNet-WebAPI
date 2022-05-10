@@ -1,4 +1,5 @@
-﻿using Microsoft.AspNetCore.Http;
+﻿using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using SLBFE_API.Models;
 using System.Data;
@@ -6,19 +7,24 @@ using System.Data.SqlClient;
 
 namespace SLBFE_API.Controllers
 {
-    [Route("api/[controller]")]
+    [Route("api/companies")]
     [ApiController]
-    public class FcUserController : ControllerBase
+    public class CompaniesController : ControllerBase
     {
 
         private readonly IConfiguration _configuration;
 
-        public FcUserController(IConfiguration configuration)
+        public CompaniesController(IConfiguration configuration)
         {
             _configuration = configuration;
         }
 
-        [HttpPost, Route("registerFcUser")]
+        /// <summary>
+        /// Register a new foriegn company user
+        /// </summary>
+        /// /// <response code="400"></response>
+        [HttpPost, Route("register")]
+        [Authorize(Roles = "FC")]
         public JsonResult PostUser(FcUser user)
 
         {
@@ -61,13 +67,11 @@ namespace SLBFE_API.Controllers
 
 
                 }
-
-
             }
-            return new JsonResult("Added Successfully!");
+            return new JsonResult("Registered Successfully!");
         }
 
-        [HttpGet, Route("fclogin")]
+/*        [HttpGet, Route("fclogin")]
         public ActionResult UserLogin(String email, String password)
         {
             string query = @"SELECT Email
@@ -91,7 +95,7 @@ namespace SLBFE_API.Controllers
                 }
             }
             return Ok(table);
-        }
+        }*/
 
     }
 }
