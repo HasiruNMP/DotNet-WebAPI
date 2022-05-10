@@ -144,6 +144,7 @@ class _SignInState extends State<SignIn> {
                           child: TextFormField(
                             controller: _userPassworController,
                             cursorColor: Colors.indigo,
+                            obscureText: true,
                             decoration: InputDecoration(
                               errorStyle: const TextStyle(
                                 color: Colors.black,
