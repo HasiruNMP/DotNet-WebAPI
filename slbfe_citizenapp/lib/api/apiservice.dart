@@ -15,10 +15,9 @@ class APIService {
   Future login(LoginRequestModel requestModel) async {
     print(requestModel);
 
-    var headers = {
-      'Content-Type': 'application/json'
-    };
-    var request = http.Request('POST', Uri.parse('${Urls.apiUrl}/api/Auth/login'));
+    var headers = {'Content-Type': 'application/json'};
+    var request =
+        http.Request('POST', Uri.parse('${Urls.apiUrl}/api/Auth/login'));
     request.body = json.encode({
       "userID": requestModel.email,
       "password": requestModel.password,
@@ -35,16 +34,15 @@ class APIService {
       //global.email = requestModel.email;
       Auth.apiToken = res;
       return nic1;
-    }
-    else {
+    } else {
       print(response.reasonPhrase);
       return -1;
     }
   }
 
   static Future getNic(String email) async {
-    http.Response response = await http.get(
-        Uri.parse('${Urls.apiUrl}/api/JsUser/getNic?email=${email}'));
+    http.Response response = await http
+        .get(Uri.parse('${Urls.apiUrl}/api/JsUser/getNic?email=${email}'));
 
     if (response.statusCode == 200) {
       print(response.statusCode);
@@ -153,7 +151,8 @@ class APIService {
     request.body = json.encode({
       "jsNic": complain.jsNic,
       "complain": complain.complain,
-      "feedback": '',
+      "feedback": 'No Feedback',
+      'date': DateTime.now().toString(),
     });
     request.headers.addAll(headers);
 
@@ -171,8 +170,8 @@ class APIService {
   }
 
   static Future getContacts(int nic) async {
-    http.Response response = await http.get(
-        Uri.parse('${Urls.apiUrl}/api/JsUser/getContacts?nic=$nic'));
+    http.Response response = await http
+        .get(Uri.parse('${Urls.apiUrl}/api/JsUser/getContacts?nic=$nic'));
 
     if (response.statusCode == 200) {
       print(response.statusCode);
@@ -250,10 +249,8 @@ class APIService {
   }
 
   static Future deleteAccount(int nic, String password) async {
-    var request = http.Request(
-        'DELETE',
-        Uri.parse(
-            '${Urls.apiUrl}/api/JsUser?nic=$nic&password=$password'));
+    var request = http.Request('DELETE',
+        Uri.parse('${Urls.apiUrl}/api/JsUser?nic=$nic&password=$password'));
 
     http.StreamedResponse response = await request.send();
 
@@ -267,7 +264,7 @@ class APIService {
     }
   }
 
-  static Future updatePassword(String userID, String password) async {
+  static Future updatePassword(int userID, String password) async {
     var headers = {'Content-Type': 'application/json'};
     var request = http.Request(
       'PUT',
@@ -294,8 +291,8 @@ class APIService {
   }
 
   static Future<List<complaintModel>> getComplaintsOfUser(int nic) async {
-    final response = await http.get(Uri.parse(
-        '${Urls.apiUrl}/complaints/getcomplaintlistapp?NIC=$nic'));
+    final response = await http.get(
+        Uri.parse('${Urls.apiUrl}/complaints/getcomplaintlistapp?NIC=$nic'));
     if (response.statusCode == 200) {
       List jsonResponse = json.decode(response.body);
       return jsonResponse

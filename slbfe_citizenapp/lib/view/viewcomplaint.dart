@@ -73,7 +73,7 @@ class _ViewComplaintState extends State<ViewComplaint> {
                     padding: const EdgeInsets.all(8.0),
                     child: TextFormField(
                       enabled: false,
-                      controller: complaintController,
+                      controller: feedbackController,
                       decoration: InputDecoration(
                         disabledBorder: OutlineInputBorder(),
                         border: OutlineInputBorder(),

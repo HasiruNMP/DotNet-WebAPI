@@ -7,7 +7,8 @@ import 'dart:js' as js;
 import 'package:url_launcher/url_launcher.dart';
 
 void launchURL(String _email) async {
-  if (!await launch('mailto:$_email?subject=<subject>&body=<body>')) throw 'Could not email $_email';
+  if (!await launch('mailto:$_email?subject=<subject>&body=<body>'))
+    throw 'Could not email $_email';
 }
 
 class Search extends StatefulWidget {
@@ -17,13 +18,47 @@ class Search extends StatefulWidget {
   State<Search> createState() => _SearchState();
 }
 
-class _SearchState extends State<Search>{
-
-  List<String> alStreamList = ["Any", "Art", "Biological Science", "Commerce", "Physical Science","Technology",];
-  List<String> gradesList = ["Any", "A", "B", "C", "S",];
-  List<String> alGradesList = ["Any", "3 Passes", "2 Passes", "1 Pass",];
-  List<String> hEduList = ["Any", "Certificate", "Diploma", "Bachelor","Master","Doctor"];
-  List<String> hEduFieldList = ["Any", "Science", "Engineering", "Computer Science","Medical","Agriculture","Economics","Finance","Business",];
+class _SearchState extends State<Search> {
+  List<String> alStreamList = [
+    "Any",
+    "Art",
+    "Biological Science",
+    "Commerce",
+    "Physical Science",
+    "Technology",
+  ];
+  List<String> gradesList = [
+    "Any",
+    "A",
+    "B",
+    "C",
+    "S",
+  ];
+  List<String> alGradesList = [
+    "Any",
+    "3 Passes",
+    "2 Passes",
+    "1 Pass",
+  ];
+  List<String> hEduList = [
+    "Any",
+    "Certificate",
+    "Diploma",
+    "Bachelor",
+    "Master",
+    "Doctor"
+  ];
+  List<String> hEduFieldList = [
+    "Any",
+    "Science",
+    "Engineering",
+    "Computer Science",
+    "Medical",
+    "Agriculture",
+    "Economics",
+    "Finance",
+    "Business",
+  ];
 
   String selOLScience = "Any";
   String selOLMaths = "Any";
@@ -38,31 +73,28 @@ class _SearchState extends State<Search>{
   bool searched = false;
 
   Future fetchUsers() async {
-    String url = "${Urls.apiUrl}/jobseekers/search?filterOn=true&olEnglish=$selOLEnglish&olScience=$selOLScience&olMaths=$selOLMaths&alStream=$selAlStream&alResults=$selAlResults&hEdu=$selHighEdStage&hEduField=$selHighEdField";
+    String url =
+        "https://localhost:7018/jobseekers/search?filterOn=true&olEnglish=$selOLEnglish&olScience=$selOLScience&olMaths=$selOLMaths&alStream=$selAlStream&alResults=$selAlResults&hEdu=$selHighEdStage&hEduField=$selHighEdField";
     //print(url);
     String urlF = url.replaceAll(RegExp(' +'), '%20');
     print(urlF);
-    final response = await http.get(Uri.parse(urlF),headers: {
-      'Authorization': 'Bearer ${Auth.apiToken}'
-    });
+    final response = await http.get(Uri.parse(urlF),
+        headers: {'Authorization': 'Bearer ${Auth.apiToken}'});
     var resJson = json.decode(response.body);
 
     if (response.statusCode == 200) {
       var a = resJson as List;
       jobSeekers = a.toList();
       setState(() => searched = true);
-    }
-    else {
+    } else {
       print(response.reasonPhrase);
     }
   }
 
-
-
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-        body: Container(
+      body: Container(
         child: Row(
           children: [
             Expanded(
@@ -71,69 +103,99 @@ class _SearchState extends State<Search>{
                 padding: const EdgeInsets.all(8.0),
                 child: ListView(
                   children: [
-                    Container(child: Text("Filter",style: TextStyle(fontWeight: FontWeight.bold),),alignment: Alignment.center,),
+                    Container(
+                      child: Text(
+                        "Filter",
+                        style: TextStyle(fontWeight: FontWeight.bold),
+                      ),
+                      alignment: Alignment.center,
+                    ),
                     Divider(),
-                    SizedBox(height: 10,),
-                    Container(child: Text("Ordinary Level"),alignment: Alignment.center,),
-                    SizedBox(height: 10,),
+                    SizedBox(
+                      height: 10,
+                    ),
+                    Container(
+                      child: Text("Ordinary Level"),
+                      alignment: Alignment.center,
+                    ),
+                    SizedBox(
+                      height: 10,
+                    ),
                     Text("Science"),
                     Wrap(
-                      children: List<Widget>.generate(gradesList.length, (int idx) {
-                        return Padding(
-                          padding: const EdgeInsets.all(2.0),
-                          child: FilterChip(
-                              label: Text(gradesList[idx]),
-                              selected: selOLScience == gradesList[idx],
-                              onSelected: (bool selected) {
-                                setState(() {
-                                  selOLScience = gradesList[idx];
-                                });
-                              }),
-                        );
-                      },
+                      children: List<Widget>.generate(
+                        gradesList.length,
+                        (int idx) {
+                          return Padding(
+                            padding: const EdgeInsets.all(2.0),
+                            child: FilterChip(
+                                label: Text(gradesList[idx]),
+                                selected: selOLScience == gradesList[idx],
+                                onSelected: (bool selected) {
+                                  setState(() {
+                                    selOLScience = gradesList[idx];
+                                  });
+                                }),
+                          );
+                        },
                       ).toList(),
                     ),
-                    SizedBox(height: 10,),
+                    SizedBox(
+                      height: 10,
+                    ),
                     Text("Mathematics"),
                     Wrap(
-                      children: List<Widget>.generate(gradesList.length, (int idx) {
-                        return Padding(
-                          padding: const EdgeInsets.all(2.0),
-                          child: FilterChip(
-                              label: Text(gradesList[idx]),
-                              selected: selOLMaths == gradesList[idx],
-                              onSelected: (bool selected) {
-                                setState(() {
-                                  selOLMaths = gradesList[idx];
-                                });
-                              }),
-                        );
-                      },
+                      children: List<Widget>.generate(
+                        gradesList.length,
+                        (int idx) {
+                          return Padding(
+                            padding: const EdgeInsets.all(2.0),
+                            child: FilterChip(
+                                label: Text(gradesList[idx]),
+                                selected: selOLMaths == gradesList[idx],
+                                onSelected: (bool selected) {
+                                  setState(() {
+                                    selOLMaths = gradesList[idx];
+                                  });
+                                }),
+                          );
+                        },
                       ).toList(),
                     ),
-                    SizedBox(height: 10,),
+                    SizedBox(
+                      height: 10,
+                    ),
                     Text("English"),
                     Wrap(
-                      children: List<Widget>.generate(gradesList.length, (int idx) {
-                        return Padding(
-                          padding: const EdgeInsets.all(2.0),
-                          child: FilterChip(
-                              label: Text(gradesList[idx]),
-                              selected: selOLEnglish == gradesList[idx],
-                              onSelected: (bool selected) {
-                                setState(() {
-                                  selOLEnglish = gradesList[idx];
-                                });
-                              }),
-                        );
-                      },
+                      children: List<Widget>.generate(
+                        gradesList.length,
+                        (int idx) {
+                          return Padding(
+                            padding: const EdgeInsets.all(2.0),
+                            child: FilterChip(
+                                label: Text(gradesList[idx]),
+                                selected: selOLEnglish == gradesList[idx],
+                                onSelected: (bool selected) {
+                                  setState(() {
+                                    selOLEnglish = gradesList[idx];
+                                  });
+                                }),
+                          );
+                        },
                       ).toList(),
                     ),
-                    SizedBox(height: 20,),
-                    Container(child: Text("Advanced Level"),alignment: Alignment.center,),
+                    SizedBox(
+                      height: 20,
+                    ),
+                    Container(
+                      child: Text("Advanced Level"),
+                      alignment: Alignment.center,
+                    ),
                     Text("Stream"),
                     Wrap(
-                      children: List<Widget>.generate(alStreamList.length, (int idx) {
+                      children: List<Widget>.generate(
+                        alStreamList.length,
+                        (int idx) {
                           return Padding(
                             padding: const EdgeInsets.all(2.0),
                             child: FilterChip(
@@ -148,85 +210,107 @@ class _SearchState extends State<Search>{
                         },
                       ).toList(),
                     ),
-                    SizedBox(height: 10,),
+                    SizedBox(
+                      height: 10,
+                    ),
                     Text("Results"),
                     Wrap(
-                      children: List<Widget>.generate(alGradesList.length, (int idx) {
-                        return Padding(
-                          padding: const EdgeInsets.all(2.0),
-                          child: FilterChip(
-                              label: Text(alGradesList[idx]),
-                              selected: selAlResults == alGradesList[idx],
-                              onSelected: (bool selected) {
-                                setState(() {
-                                  selAlResults = alGradesList[idx];
-                                });
-                              }),
-                        );
-                      },
+                      children: List<Widget>.generate(
+                        alGradesList.length,
+                        (int idx) {
+                          return Padding(
+                            padding: const EdgeInsets.all(2.0),
+                            child: FilterChip(
+                                label: Text(alGradesList[idx]),
+                                selected: selAlResults == alGradesList[idx],
+                                onSelected: (bool selected) {
+                                  setState(() {
+                                    selAlResults = alGradesList[idx];
+                                  });
+                                }),
+                          );
+                        },
                       ).toList(),
                     ),
-                    SizedBox(height: 10,),
+                    SizedBox(
+                      height: 10,
+                    ),
                     Text("English Result"),
                     Wrap(
-                      children: List<Widget>.generate(gradesList.length, (int idx) {
-                        return Padding(
-                          padding: const EdgeInsets.all(2.0),
-                          child: FilterChip(
-                              label: Text(gradesList[idx]),
-                              selected: selAlEnglish == gradesList[idx],
-                              onSelected: (bool selected) {
-                                setState(() {
-                                  selAlEnglish = gradesList[idx];
-                                });
-                              }),
-                        );
-                      },
+                      children: List<Widget>.generate(
+                        gradesList.length,
+                        (int idx) {
+                          return Padding(
+                            padding: const EdgeInsets.all(2.0),
+                            child: FilterChip(
+                                label: Text(gradesList[idx]),
+                                selected: selAlEnglish == gradesList[idx],
+                                onSelected: (bool selected) {
+                                  setState(() {
+                                    selAlEnglish = gradesList[idx];
+                                  });
+                                }),
+                          );
+                        },
                       ).toList(),
                     ),
-                    SizedBox(height: 20,),
-                    Container(child: Text("Higher Education"),alignment: Alignment.center,),
+                    SizedBox(
+                      height: 20,
+                    ),
+                    Container(
+                      child: Text("Higher Education"),
+                      alignment: Alignment.center,
+                    ),
                     Text("Stage"),
                     Wrap(
-                      children: List<Widget>.generate(hEduList.length, (int idx) {
-                        return Padding(
-                          padding: const EdgeInsets.all(2.0),
-                          child: FilterChip(
-                              label: Text(hEduList[idx]),
-                              selected: selHighEdStage == hEduList[idx],
-                              onSelected: (bool selected) {
-                                setState(() {
-                                  selHighEdStage = hEduList[idx];
-                                });
-                              }),
-                        );
-                      },
+                      children: List<Widget>.generate(
+                        hEduList.length,
+                        (int idx) {
+                          return Padding(
+                            padding: const EdgeInsets.all(2.0),
+                            child: FilterChip(
+                                label: Text(hEduList[idx]),
+                                selected: selHighEdStage == hEduList[idx],
+                                onSelected: (bool selected) {
+                                  setState(() {
+                                    selHighEdStage = hEduList[idx];
+                                  });
+                                }),
+                          );
+                        },
                       ).toList(),
                     ),
-                    SizedBox(height: 10,),
+                    SizedBox(
+                      height: 10,
+                    ),
                     Text("Field"),
                     Wrap(
-                      children: List<Widget>.generate(hEduFieldList.length, (int idx) {
-                        return Padding(
-                          padding: const EdgeInsets.all(2.0),
-                          child: FilterChip(
-                              label: Text(hEduFieldList[idx]),
-                              selected: selHighEdField == hEduFieldList[idx],
-                              onSelected: (bool selected) {
-                                setState(() {
-                                  selHighEdField = hEduFieldList[idx];
-                                });
-                              }),
-                        );
-                      },
+                      children: List<Widget>.generate(
+                        hEduFieldList.length,
+                        (int idx) {
+                          return Padding(
+                            padding: const EdgeInsets.all(2.0),
+                            child: FilterChip(
+                                label: Text(hEduFieldList[idx]),
+                                selected: selHighEdField == hEduFieldList[idx],
+                                onSelected: (bool selected) {
+                                  setState(() {
+                                    selHighEdField = hEduFieldList[idx];
+                                  });
+                                }),
+                          );
+                        },
                       ).toList(),
                     ),
-                    SizedBox(height: 10,),
+                    SizedBox(
+                      height: 10,
+                    ),
                     Container(
                       child: Padding(
-                        padding: const EdgeInsets.symmetric(horizontal: 10.0,vertical: 8),
+                        padding: const EdgeInsets.symmetric(
+                            horizontal: 10.0, vertical: 8),
                         child: ElevatedButton(
-                          onPressed: (){
+                          onPressed: () {
                             fetchUsers();
                           },
                           child: Text("SEARCH"),
@@ -240,27 +324,33 @@ class _SearchState extends State<Search>{
             VerticalDivider(),
             Expanded(
               flex: 3,
-              child: (searched)?
-              Container(
-                child: (jobSeekers.length != 0)?
-                ListView(
-                    children: List.generate(jobSeekers.length, (index) {
-                      return JobSeekerCard(
-                        nic: jobSeekers[index]['NIC'].toString(),
-                        name: jobSeekers[index]['FirstName']+ ' ' +jobSeekers[index]['LastName'],
-                        dob: jobSeekers[index]['DOB'],
-                        gender: jobSeekers[index]['Gender'],
-                        profession: jobSeekers[index]['Profession'],
-                        phone: jobSeekers[index]['PrimaryPhone'],
-                        email: jobSeekers[index]['Email'],
-                        cvUrl: jobSeekers[index]['Email'],
-                        val: jobSeekers[index]['Validity'],
-                      );
-                    })
-                ):
-                Center(child: Text("No Results"),),
-              ):
-              Center(child: Text("Press Search"),),
+              child: (searched)
+                  ? Container(
+                      child: (jobSeekers.length != 0)
+                          ? ListView(
+                              children:
+                                  List.generate(jobSeekers.length, (index) {
+                              return JobSeekerCard(
+                                nic: jobSeekers[index]['NIC'].toString(),
+                                name: jobSeekers[index]['FirstName'] +
+                                    ' ' +
+                                    jobSeekers[index]['LastName'],
+                                dob: jobSeekers[index]['DOB'],
+                                gender: jobSeekers[index]['Gender'],
+                                profession: jobSeekers[index]['Profession'],
+                                phone: jobSeekers[index]['PrimaryPhone'],
+                                email: jobSeekers[index]['Email'],
+                                cvUrl: jobSeekers[index]['Email'],
+                                val: jobSeekers[index]['Validity'],
+                              );
+                            }))
+                          : Center(
+                              child: Text("No Results"),
+                            ),
+                    )
+                  : Center(
+                      child: Text("Press Search"),
+                    ),
             ),
           ],
         ),
@@ -270,15 +360,24 @@ class _SearchState extends State<Search>{
 }
 
 class JobSeekerCard extends StatelessWidget {
-
   String nic, name, dob, gender, profession, email, phone, cvUrl;
   bool val;
 
-  JobSeekerCard({required this.nic,required this.name,required this.dob,required this.gender,required this.profession,required this.email,required this.phone,required this.cvUrl,required this.val,});
+  JobSeekerCard({
+    required this.nic,
+    required this.name,
+    required this.dob,
+    required this.gender,
+    required this.profession,
+    required this.email,
+    required this.phone,
+    required this.cvUrl,
+    required this.val,
+  });
 
-  int calAge(String dob){
+  int calAge(String dob) {
     DateTime d1 = DateTime.parse(dob);
-    int age = ((DateTime.now().difference(d1).inDays)/365).round();
+    int age = ((DateTime.now().difference(d1).inDays) / 365).round();
     return age;
   }
 
@@ -298,7 +397,8 @@ class JobSeekerCard extends StatelessWidget {
                   child: CircleAvatar(
                     radius: 42,
                     backgroundColor: Colors.blueGrey.shade50,
-                    backgroundImage: NetworkImage('${Urls.apiUrl}/documents/profilepic?NIC=${nic}'),
+                    backgroundImage: NetworkImage(
+                        '${Urls.apiUrl}/documents/profilepic?NIC=${nic}'),
                   ),
                 ),
                 Column(
@@ -311,12 +411,23 @@ class JobSeekerCard extends StatelessWidget {
                         fontWeight: FontWeight.bold,
                       ),
                     ),
-                    SizedBox(height: 5,),
+                    SizedBox(
+                      height: 5,
+                    ),
                     Text("Email: $email, Phone: $phone"),
-                    SizedBox(height: 5,),
+                    SizedBox(
+                      height: 5,
+                    ),
                     Chip(
-                      label: val? Text("Validated") : Text("Not Validated"),
-                      avatar: val? Icon(Icons.check_circle,color: Colors.green,) : Icon(Icons.error_outline,),
+                      label: val ? Text("Validated") : Text("Not Validated"),
+                      avatar: val
+                          ? Icon(
+                              Icons.check_circle,
+                              color: Colors.green,
+                            )
+                          : Icon(
+                              Icons.error_outline,
+                            ),
                     ),
                   ],
                 ),
@@ -324,7 +435,7 @@ class JobSeekerCard extends StatelessWidget {
                 Padding(
                   padding: const EdgeInsets.all(8.0),
                   child: OutlinedButton(
-                    onPressed: (){
+                    onPressed: () {
                       launchURL(email);
                     },
                     child: Text("Send Email"),
@@ -333,8 +444,10 @@ class JobSeekerCard extends StatelessWidget {
                 Padding(
                   padding: const EdgeInsets.all(8.0),
                   child: OutlinedButton(
-                    onPressed: (){
-                      js.context.callMethod('open', ['${Urls.apiUrl}/documents/download?NIC=$nic&documentType=SampleDoc']);
+                    onPressed: () {
+                      js.context.callMethod('open', [
+                        '${Urls.apiUrl}/documents/download?NIC=$nic&documentType=SampleDoc'
+                      ]);
                     },
                     child: Text("Download CV"),
                   ),

@@ -23,107 +23,106 @@ class _SignInState extends State<SignIn> {
 
   @override
   Widget build(BuildContext context) {
-    return MaterialApp(
-      home: Scaffold(
-        appBar: AppBar(
-          title: const Center(
-            child: Text('Sign In'),
-          ),
+    return Scaffold(
+      appBar: AppBar(
+        title: const Center(
+          child: Text('Sign In'),
         ),
-        body: SafeArea(
-          child: Form(
-            key: _formKey,
-            child: Column(
-              crossAxisAlignment: CrossAxisAlignment.center,
-              children: [
-                const SizedBox(
-                  height: 100,
-                ),
-                Padding(
-                  padding: EdgeInsets.all(8.0),
-                  child: TextFormField(
-                    controller: _userEmailController,
-                    decoration: const InputDecoration(
-                      hintText: 'Email',
-                      border: OutlineInputBorder(),
-                    ),
-                    validator: (value) {
-                      if (value!.isEmpty) {
-                        return 'Please enter NIC';
-                      }
-                      return null;
-                    },
+      ),
+      body: SafeArea(
+        child: Form(
+          key: _formKey,
+          child: Column(
+            crossAxisAlignment: CrossAxisAlignment.center,
+            mainAxisAlignment: MainAxisAlignment.center,
+            children: [
+              const SizedBox(
+                height: 100,
+              ),
+              Padding(
+                padding: EdgeInsets.all(8.0),
+                child: TextFormField(
+                  controller: _userEmailController,
+                  decoration: const InputDecoration(
+                    hintText: 'NIC',
+                    border: OutlineInputBorder(),
                   ),
-                ),
-                Padding(
-                  padding: EdgeInsets.all(8.0),
-                  child: TextFormField(
-                    controller: _userPassworController,
-                    decoration: const InputDecoration(
-                      hintText: 'Password',
-                      border: OutlineInputBorder(),
-                    ),
-                    validator: (value) {
-                      if (value!.isEmpty || value.length < 5) {
-                        return 'Please enter a long password';
-                      }
-                      return null;
-                    },
-                  ),
-                ),
-                ElevatedButton(
-                  onPressed: () async {
-                    if (_formKey.currentState!.validate()) {
-                      requestModel.email = _userEmailController.text;
-                      requestModel.password = _userPassworController.text;
-                      //  print(requestModel.toJson());
-
-                      int login = await APIService().login(requestModel);
-                      //  print("status: $login");
-                      if (login == 0) {
-                        showAlertDialog(
-                            'Wrong password or email provided', context);
-                      } else if (login == -1) {
-                        showAlertDialog('Something went Wrong', context);
-                      } else {
-                        Navigator.pushReplacement(
-                          context,
-                          MaterialPageRoute(
-                            builder: (context) => BottomNavigation(login),
-                          ),
-                        );
-                      }
-                    } else {
-                      return null;
+                  validator: (value) {
+                    if (value!.isEmpty) {
+                      return 'Please enter NIC';
                     }
+                    return null;
                   },
-                  child: loading == false
-                      ? Text('Sign In')
-                      : const CircularProgressIndicator(
-                          backgroundColor: Colors.black38,
-                          valueColor:
-                              AlwaysStoppedAnimation<Color>(Colors.white),
+                ),
+              ),
+              Padding(
+                padding: EdgeInsets.all(8.0),
+                child: TextFormField(
+                  controller: _userPassworController,
+                  obscureText: true,
+                  decoration: const InputDecoration(
+                    hintText: 'Password',
+                    border: OutlineInputBorder(),
+                  ),
+                  validator: (value) {
+                    if (value!.isEmpty || value.length < 5) {
+                      return 'Please enter a long password';
+                    }
+                    return null;
+                  },
+                ),
+              ),
+              ElevatedButton(
+                onPressed: () async {
+                  if (_formKey.currentState!.validate()) {
+                    requestModel.email = _userEmailController.text;
+                    requestModel.password = _userPassworController.text;
+                    //  print(requestModel.toJson());
+
+                    int login = await APIService().login(requestModel);
+                    //  print("status: $login");
+                    if (login == 0) {
+                      showAlertDialog(
+                          'Wrong password or email provided', context);
+                    } else if (login == -1) {
+                      showAlertDialog('Something went Wrong', context);
+                    } else {
+                      Navigator.pushReplacement(
+                        context,
+                        MaterialPageRoute(
+                          builder: (context) => BottomNavigation(login),
                         ),
-                ),
-                Row(
-                  mainAxisAlignment: MainAxisAlignment.center,
-                  children: [
-                    Text('Don\t have an account'),
-                    TextButton(
-                      onPressed: () {
-                        Navigator.push(
-                          context,
-                          MaterialPageRoute(
-                            builder: (context) => Registration(),
-                          ),
-                        );
-                      },
-                      child: Text('Sign In'),
-                    ),
-                  ],
-                ),
-              ],
-            ),
+                      );
+                    }
+                  } else {
+                    return null;
+                  }
+                },
+                child: loading == false
+                    ? Text('Sign In')
+                    : const CircularProgressIndicator(
+                        backgroundColor: Colors.black38,
+                        valueColor: AlwaysStoppedAnimation<Color>(Colors.white),
+                      ),
+              ),
+              Row(
+                mainAxisAlignment: MainAxisAlignment.center,
+                children: [
+                  Text('Don\t have an account?'),
+                  TextButton(
+                    onPressed: () {
+                      Navigator.push(
+                        context,
+                        MaterialPageRoute(
+                          builder: (context) => Registration(),
+                        ),
+                      );
+                    },
+                    child: Text('Sign Up'),
+                  ),
+                ],
+              ),
+            ],
           ),
         ),
       ),

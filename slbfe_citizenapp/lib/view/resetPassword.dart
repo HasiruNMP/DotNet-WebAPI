@@ -252,7 +252,7 @@ class _resetPasswordState extends State<resetPassword> {
                           onPressed: () async {
                             if (formKey2.currentState!.validate()) {
                               var status = await APIService.updatePassword(
-                                  global.email, newPasswordController.text);
+                                  global.nic, newPasswordController.text);
                               print(status);
                               status == true
                                   ? showAlertDialog(

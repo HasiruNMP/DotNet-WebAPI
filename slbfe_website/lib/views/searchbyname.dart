@@ -14,13 +14,13 @@ class SearchByName extends StatefulWidget {
 }
 
 class _SearchByNameState extends State<SearchByName> {
-
   int selected = 0;
   List users = [];
   bool loaded = false;
 
-  Future fetchUsers(String kw) async {
-    String url = "https://localhost:7018/jobseekers/search/bynames?keyword=$kw";
+  Future fetchUsers() async {
+    String url =
+        "https://localhost:7018/jobseekers/search/byname?keyword=${tec.text}";
     final response = await http.get(Uri.parse(url));
     var resJson = json.decode(response.body);
 
@@ -30,15 +30,13 @@ class _SearchByNameState extends State<SearchByName> {
       users = a.toList();
       print(users);
       setState(() => loaded = true);
-    }
-    else {
+    } else {
       print(response.reasonPhrase);
     }
   }
 
   @override
-  void initState() {
-  }
+  void initState() {}
 
   final tec = TextEditingController();
 
@@ -56,13 +54,16 @@ class _SearchByNameState extends State<SearchByName> {
               child: Column(
                 children: [
                   Text("Search Users By Name"),
-                  SizedBox(height: 5,),
+                  SizedBox(
+                    height: 5,
+                  ),
                   Container(
                     child: Row(
                       children: [
                         Expanded(
                           flex: 8,
                           child: TextFormField(
+                            controller: tec,
                             decoration: InputDecoration(
                               labelText: 'Type Name Here',
                               //errorText: 'Error message',
@@ -77,9 +78,9 @@ class _SearchByNameState extends State<SearchByName> {
                           flex: 1,
                           child: IconButton(
                             color: Colors.indigo,
-                            onPressed: (){
+                            onPressed: () {
                               print('searching');
-                              fetchUsers(tec.text);
+                              fetchUsers();
                             },
                             icon: Icon(Icons.search),
                             //child: Icon(Icons.search),
@@ -90,20 +91,30 @@ class _SearchByNameState extends State<SearchByName> {
                   ),
                   Divider(),
                   Expanded(
-                    child: (loaded)? Container(
-                      //color: Colors.deepPurple,
-                      child: (users.length != 0)? Container(
-                        child: ListView(
-                          children: List.generate(users.length, (i) {
-                            return ValidateCard(
-                              nic: users[i]['NIC'],
-                              email: users[i]['Email'],
-                              name: users[i]['FirstName'] + ' ' + users[i]['LastName'],
-                            );
-                          },),
-                        ),
-                      ): Center(child: Text("No Users By That Name")),
-                    ): Center(child: Text("Type A Name and Press Search Icon")),
+                    child: (loaded)
+                        ? Container(
+                            //color: Colors.deepPurple,
+                            child: (users.length != 0)
+                                ? Container(
+                                    child: ListView(
+                                      children: List.generate(
+                                        users.length,
+                                        (i) {
+                                          return ValidateCard(
+                                            nic: users[i]['NIC'],
+                                            email: users[i]['Email'],
+                                            name: users[i]['FirstName'] +
+                                                ' ' +
+                                                users[i]['LastName'],
+                                          );
+                                        },
+                                      ),
+                                    ),
+                                  )
+                                : Center(child: Text("No Users By That Name")),
+                          )
+                        : Center(
+                            child: Text("Type A Name and Press Search Icon")),
                   ),
                 ],
               ),
@@ -111,11 +122,15 @@ class _SearchByNameState extends State<SearchByName> {
             VerticalDivider(),
             Expanded(
               flex: 4,
-              child: (selected != 0)? Column(
-                children: [
-                  Expanded(child: ProfileWidget(selected),),
-                ],
-              ): Center(child: Text("Select A User")),
+              child: (selected != 0)
+                  ? Column(
+                      children: [
+                        Expanded(
+                          child: ProfileWidget(selected),
+                        ),
+                      ],
+                    )
+                  : Center(child: Text("Select A User")),
             ),
           ],
         ),
@@ -123,13 +138,15 @@ class _SearchByNameState extends State<SearchByName> {
     );
   }
 
-  Widget ValidateCard({required nic,required name,required email}) {
+  Widget ValidateCard({required nic, required name, required email}) {
     return Padding(
-      padding: const EdgeInsets.symmetric(vertical: 1,horizontal: 8),
+      padding: const EdgeInsets.symmetric(vertical: 1, horizontal: 8),
       child: Card(
-        color: (nic != selected)? Colors.blueGrey.shade50 : Colors.blueGrey.shade200,
+        color: (nic != selected)
+            ? Colors.blueGrey.shade50
+            : Colors.blueGrey.shade200,
         child: InkWell(
-          onTap: (){
+          onTap: () {
             setState(() {
               selected = nic;
               print(nic);
@@ -143,7 +160,6 @@ class _SearchByNameState extends State<SearchByName> {
       ),
     );
   }
-
 }
 
 /*class ValidateCard extends StatelessWidget {

@@ -14,7 +14,6 @@ class Validate extends StatefulWidget {
 }
 
 class _ValidateState extends State<Validate> {
-
   int selected = 0;
   List users = [];
   bool loaded = false;
@@ -28,8 +27,7 @@ class _ValidateState extends State<Validate> {
       var a = resJson as List;
       users = a.toList();
       setState(() => loaded = true);
-    }
-    else {
+    } else {
       print(response.reasonPhrase);
     }
   }
@@ -52,22 +50,37 @@ class _ValidateState extends State<Validate> {
               flex: 1,
               child: Column(
                 children: [
-                  Text("Users to Validate"),
+                  Text(
+                    "Users to Validate",
+                    style: TextStyle(fontWeight: FontWeight.bold, fontSize: 17),
+                  ),
+                  SizedBox(
+                    height: 10,
+                  ),
                   Expanded(
-                    child: (loaded)? Container(
-                      //color: Colors.deepPurple,
-                      child: (users.length != 0)? Container(
-                        child: ListView(
-                          children: List.generate(users.length, (i) {
-                            return ValidateCard(
-                              nic: users[i]['NIC'],
-                              email: users[i]['Email'],
-                              name: users[i]['FirstName'] + ' ' + users[i]['LastName'],
-                            );
-                          },),
-                        ),
-                      ): Center(child: Text("No Users To Validate")),
-                    ): Center(child: CircularProgressIndicator()),
+                    child: (loaded)
+                        ? Container(
+                            //color: Colors.deepPurple,
+                            child: (users.length != 0)
+                                ? Container(
+                                    child: ListView(
+                                      children: List.generate(
+                                        users.length,
+                                        (i) {
+                                          return ValidateCard(
+                                            nic: users[i]['NIC'],
+                                            email: users[i]['Email'],
+                                            name: users[i]['FirstName'] +
+                                                ' ' +
+                                                users[i]['LastName'],
+                                          );
+                                        },
+                                      ),
+                                    ),
+                                  )
+                                : Center(child: Text("No Users To Validate")),
+                          )
+                        : Center(child: CircularProgressIndicator()),
                   ),
                 ],
               ),
@@ -75,11 +88,15 @@ class _ValidateState extends State<Validate> {
             VerticalDivider(),
             Expanded(
               flex: 4,
-              child: (selected != 0)? Column(
-                children: [
-                  Expanded(child: ProfileWidget(selected),),
-                ],
-              ): Center(child: Text("Select A User")),
+              child: (selected != 0)
+                  ? Column(
+                      children: [
+                        Expanded(
+                          child: ProfileWidget(selected),
+                        ),
+                      ],
+                    )
+                  : Center(child: Text("Select A User")),
             ),
           ],
         ),
@@ -87,13 +104,15 @@ class _ValidateState extends State<Validate> {
     );
   }
 
-  Widget ValidateCard({required nic,required name,required email}) {
+  Widget ValidateCard({required nic, required name, required email}) {
     return Padding(
-      padding: const EdgeInsets.symmetric(vertical: 1,horizontal: 8),
+      padding: const EdgeInsets.symmetric(vertical: 1, horizontal: 8),
       child: Card(
-        color: (nic != selected)? Colors.blueGrey.shade50 : Colors.blueGrey.shade200,
+        color: (nic != selected)
+            ? Colors.blueGrey.shade50
+            : Colors.blueGrey.shade200,
         child: InkWell(
-          onTap: (){
+          onTap: () {
             setState(() {
               selected = nic;
               print(nic);
@@ -107,7 +126,6 @@ class _ValidateState extends State<Validate> {
       ),
     );
   }
-
 }
 
 /*class ValidateCard extends StatelessWidget {

@@ -29,175 +29,244 @@ class _SignInState extends State<SignIn> {
 
   @override
   Widget build(BuildContext context) {
-    return MaterialApp(
-      home: Scaffold(
-        appBar: AppBar(
-          title: const Center(
-            child: Text('Sign In'),
-          ),
+    return Scaffold(
+      appBar: AppBar(
+        title: const Center(
+          child: Text('Sign In'),
         ),
-        body: SafeArea(
-          child: Form(
-            key: _formKey,
-            child: Column(
-              crossAxisAlignment: CrossAxisAlignment.center,
-              children: [
-                const SizedBox(
-                  height: 100,
+      ),
+      body: SafeArea(
+        child: Row(
+          children: [
+            Expanded(child: Container()),
+            Expanded(
+              child: Container(
+                margin: EdgeInsets.only(
+                  top: MediaQuery.of(context).size.height / 5,
+                  bottom: MediaQuery.of(context).size.height / 10,
                 ),
-                Text(
-                  loginTitle,
-                ),
-                const SizedBox(
-                  height: 30.0,
-                ),
-                Row(
-                  children: [
-                    Expanded(
-                      child: Container(
-                        child: ListTile(
-                          leading: Radio<String>(
-                            value: 'Buro Officer',
-                            groupValue: _selectedUserType,
-                            onChanged: (value) {
-                              setState(() {
-                                _selectedUserType = value!;
-                                loginTitle = '$value Login';
-                              });
+                child: Card(
+                  elevation: 5,
+                  child: Form(
+                    key: _formKey,
+                    child: ListView(
+                      children: [
+                        Container(
+                          height: MediaQuery.of(context).size.height / 5.5,
+                          width: double.maxFinite,
+                          color: Colors.indigo,
+                          child: Center(
+                            child: Text(
+                              loginTitle,
+                              style: TextStyle(
+                                  fontSize: 18,
+                                  fontWeight: FontWeight.bold,
+                                  color: Colors.white),
+                            ),
+                          ),
+                        ),
+                        const SizedBox(
+                          height: 100.0,
+                        ),
+                        Row(
+                          children: [
+                            SizedBox(
+                              width: 70,
+                            ),
+                            Expanded(
+                              child: Container(
+                                child: ListTile(
+                                  leading: Radio<String>(
+                                    value: 'Buro Officer',
+                                    groupValue: _selectedUserType,
+                                    onChanged: (value) {
+                                      setState(() {
+                                        _selectedUserType = value!;
+                                        loginTitle = '$value Login';
+                                      });
+                                    },
+                                  ),
+                                  title: Text(
+                                    'Buro Officer',
+                                  ),
+                                ),
+                              ),
+                            ),
+                            Expanded(
+                              child: Container(
+                                child: ListTile(
+                                  leading: Radio<String>(
+                                    value: 'Company',
+                                    groupValue: _selectedUserType,
+                                    onChanged: (value) {
+                                      setState(() {
+                                        _selectedUserType = value!;
+                                        loginTitle = '$value Login';
+                                      });
+                                    },
+                                  ),
+                                  title: Text(
+                                    'Company',
+                                  ),
+                                ),
+                              ),
+                            ),
+                          ],
+                        ),
+                        SizedBox(
+                          height: 20.0,
+                        ),
+                        Padding(
+                          padding: EdgeInsets.all(8.0),
+                          child: TextFormField(
+                            controller: _userEmailController,
+                            cursorColor: Colors.indigo,
+                            decoration: InputDecoration(
+                              errorStyle: const TextStyle(
+                                color: Colors.black,
+                              ),
+                              filled: true,
+                              fillColor: Colors.grey.withOpacity(0.3),
+                              labelText: 'Email',
+                              border: InputBorder.none,
+                            ),
+                            validator: (value) {
+                              if (value!.isEmpty || !value.contains('@')) {
+                                return 'Please enter a valid email address';
+                              }
+                              return null;
                             },
                           ),
-                          title: Text(
-                            'Buro Officer',
-                          ),
                         ),
-                      ),
-                    ),
-                    Expanded(
-                      child: Container(
-                        child: ListTile(
-                          leading: Radio<String>(
-                            value: 'Company',
-                            groupValue: _selectedUserType,
-                            onChanged: (value) {
-                              setState(() {
-                                _selectedUserType = value!;
-                                loginTitle = '$value Login';
-                              });
+                        Padding(
+                          padding: EdgeInsets.all(8.0),
+                          child: TextFormField(
+                            controller: _userPassworController,
+                            cursorColor: Colors.indigo,
+                            decoration: InputDecoration(
+                              errorStyle: const TextStyle(
+                                color: Colors.black,
+                              ),
+                              filled: true,
+                              fillColor: Colors.grey.withOpacity(0.3),
+                              labelText: 'Password',
+                              border: InputBorder.none,
+                            ),
+                            validator: (value) {
+                              if (value!.isEmpty || value.length < 5) {
+                                return 'Please enter a long password';
+                              }
+                              return null;
                             },
                           ),
-                          title: Text(
-                            'Company',
-                          ),
                         ),
-                      ),
+                        SizedBox(
+                          height: 20.0,
+                        ),
+                        Column(
+                          children: [
+                            Container(
+                              width: 100,
+                              height: 40,
+                              child: ElevatedButton(
+                                onPressed: () async {
+                                  if (_formKey.currentState!.validate()) {
+                                    requestModel.email =
+                                        _userEmailController.text;
+                                    requestModel.password =
+                                        _userPassworController.text;
+                                    //  print(requestModel.toJson());
+                                    if (_selectedUserType == 'Buro Officer') {
+                                      int login = await APIService()
+                                          .login(requestModel, 'BO');
+                                      //  print("status: $login");
+                                      if (login == 0) {
+                                        showAlertDialog(
+                                            'Wrong password or email provided',
+                                            context);
+                                      } else if (login == -1) {
+                                        showAlertDialog(
+                                            'Something went Wrong', context);
+                                      } else {
+                                        Navigator.pushReplacement(
+                                          context,
+                                          MaterialPageRoute(
+                                            builder: (context) =>
+                                                HomeScreen('BO'),
+                                          ),
+                                        );
+                                      }
+                                    } else {
+                                      int login = await APIService()
+                                          .login(requestModel, 'FC');
+                                      //  print("status: $login");
+                                      if (login == 0) {
+                                        showAlertDialog(
+                                            'Wrong password or email provided',
+                                            context);
+                                      } else if (login == -1) {
+                                        showAlertDialog(
+                                            'Something went Wrong', context);
+                                      } else {
+                                        Navigator.pushReplacement(
+                                          context,
+                                          MaterialPageRoute(
+                                            builder: (context) =>
+                                                HomeScreen('FC'),
+                                          ),
+                                        );
+                                      }
+                                    }
+                                  } else {
+                                    return null;
+                                  }
+                                },
+                                child: loading == false
+                                    ? Text('Sign In')
+                                    : const CircularProgressIndicator(
+                                        backgroundColor: Colors.black38,
+                                        valueColor:
+                                            AlwaysStoppedAnimation<Color>(
+                                                Colors.white),
+                                      ),
+                              ),
+                            ),
+                          ],
+                        ),
+                        SizedBox(
+                          height: 20.0,
+                        ),
+                        Row(
+                          mainAxisAlignment: MainAxisAlignment.center,
+                          children: [
+                            Text(
+                              'Don\t have an account?',
+                              style: TextStyle(fontSize: 15),
+                            ),
+                            TextButton(
+                              onPressed: () {
+                                Navigator.push(
+                                  context,
+                                  MaterialPageRoute(
+                                    builder: (context) => Registration(),
+                                  ),
+                                );
+                              },
+                              child: Text(
+                                'Sign up',
+                                style: TextStyle(fontWeight: FontWeight.bold),
+                              ),
+                            ),
+                          ],
+                        ),
+                      ],
                     ),
-                  ],
-                ),
-                Padding(
-                  padding: EdgeInsets.all(8.0),
-                  child: TextFormField(
-                    controller: _userEmailController,
-                    decoration: const InputDecoration(
-                      hintText: 'Email',
-                      border: OutlineInputBorder(),
-                    ),
-                    validator: (value) {
-                      if (value!.isEmpty || !value.contains('@')) {
-                        return 'Please enter a valid email address';
-                      }
-                      return null;
-                    },
                   ),
                 ),
-                Padding(
-                  padding: EdgeInsets.all(8.0),
-                  child: TextFormField(
-                    controller: _userPassworController,
-                    decoration: const InputDecoration(
-                      hintText: 'Password',
-                      border: OutlineInputBorder(),
-                    ),
-                    validator: (value) {
-                      if (value!.isEmpty || value.length < 5) {
-                        return 'Please enter a long password';
-                      }
-                      return null;
-                    },
-                  ),
-                ),
-                ElevatedButton(
-                  onPressed: () async {
-                    if (_formKey.currentState!.validate()) {
-                      requestModel.email = _userEmailController.text;
-                      requestModel.password = _userPassworController.text;
-                      //  print(requestModel.toJson());
-                      if (_selectedUserType == 'Buro Officer') {
-                        int login =
-                            await APIService().login(requestModel, 'BO');
-                        //  print("status: $login");
-                        if (login == 0) {
-                          showAlertDialog(
-                              'Wrong password or email provided', context);
-                        } else if (login == -1) {
-                          showAlertDialog('Something went Wrong', context);
-                        } else {
-                          Navigator.pushReplacement(
-                            context,
-                            MaterialPageRoute(
-                              builder: (context) => HomeScreen('BO'),
-                            ),
-                          );
-                        }
-                      } else {
-                        int login =
-                            await APIService().login(requestModel, 'FC');
-                        //  print("status: $login");
-                        if (login == 0) {
-                          showAlertDialog(
-                              'Wrong password or email provided', context);
-                        } else if (login == -1) {
-                          showAlertDialog('Something went Wrong', context);
-                        } else {
-                          Navigator.pushReplacement(
-                            context,
-                            MaterialPageRoute(
-                              builder: (context) => HomeScreen('FC'),
-                            ),
-                          );
-                        }
-                      }
-                    } else {
-                      return null;
-                    }
-                  },
-                  child: loading == false
-                      ? Text('Sign In')
-                      : const CircularProgressIndicator(
-                          backgroundColor: Colors.black38,
-                          valueColor:
-                              AlwaysStoppedAnimation<Color>(Colors.white),
-                        ),
-                ),
-                Row(
-                  mainAxisAlignment: MainAxisAlignment.center,
-                  children: [
-                    Text('Don\t have an account'),
-                    TextButton(
-                      onPressed: () {
-                        Navigator.push(
-                          context,
-                          MaterialPageRoute(
-                            builder: (context) => Registration(),
-                          ),
-                        );
-                      },
-                      child: Text('Sign up'),
-                    ),
-                  ],
-                ),
-              ],
+              ),
             ),
-          ),
+            Expanded(child: Container()),
+          ],
         ),
       ),
     );

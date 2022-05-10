@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:slbfe_citizenapp/api/apiservice.dart';
 import 'package:slbfe_citizenapp/model/jsusermodel.dart';
 import 'package:slbfe_citizenapp/global.dart' as global;
+
 class PersonaInfo extends StatefulWidget {
   static String id = 'personalinfo';
   int nic;
@@ -46,7 +47,7 @@ class _PersonaInfoState extends State<PersonaInfo> {
     nicController.text = user[0]["NIC"].toString();
     fnameController.text = user[0]["FirstName"];
     lnameController.text = user[0]["LastName"];
-    dobController.text = user[0]["DOB"];
+    dobController.text = user[0]["DOB"].substring(0, 10);
     addressController.text = user[0]["Address"];
     professionController.text = user[0]["Profession"];
     genderController.text = user[0]["Gender"];

@@ -125,6 +125,20 @@ class _accountSettingState extends State<accountSetting> {
                         });
                   },
                 ),
+                const SizedBox(
+                  height: 10,
+                ),
+                ElevatedButton(
+                  // color: Colors.deepPurple[200],
+                  // textColor: Colors.black, // foreground
+                  onPressed: () {
+                    Navigator.pushAndRemoveUntil(
+                        context,
+                        MaterialPageRoute(builder: (context) => SignIn()),
+                        (route) => false);
+                  },
+                  child: Text('Sign Out'),
+                ),
               ],
             ),
           ),

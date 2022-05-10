@@ -10,6 +10,8 @@ namespace SLBFE_API.Models
         public string Complain { get; set; } = null!;
         public string Feedback { get; set; } = null!;
 
-      //  public virtual JsUser JsNicNavigation { get; set; } = null;
+        public string Date { get; set; } = null!;
+
+        //  public virtual JsUser JsNicNavigation { get; set; } = null;
     }
 }

@@ -20,7 +20,6 @@ class Profile extends StatefulWidget {
 }
 
 class _ProfileState extends State<Profile> {
-
   //bool searched = false;
   int nic = 0;
   final tecNIC = TextEditingController();
@@ -36,31 +35,33 @@ class _ProfileState extends State<Profile> {
   @override
   Widget build(BuildContext context) {
     return Container(
-      child: (nic != 0)? ProfileWidget(nic) : Center(
-        child: Column(
-          mainAxisAlignment: MainAxisAlignment.center,
-          children: [
-            Container(
-              width: 300,
-              child: TextField(
-                decoration: InputDecoration(
-                  border: OutlineInputBorder(),
-                  labelText: 'NIC',
-                ),
+      child: (nic != 0)
+          ? ProfileWidget(nic)
+          : Center(
+              child: Column(
+                mainAxisAlignment: MainAxisAlignment.center,
+                children: [
+                  Container(
+                    width: 300,
+                    child: TextField(
+                      decoration: InputDecoration(
+                        border: OutlineInputBorder(),
+                        labelText: 'NIC',
+                      ),
+                    ),
+                  ),
+                  SizedBox(
+                    width: 10,
+                  ),
+                  ElevatedButton(
+                    onPressed: () {
+                      setNIC();
+                    },
+                    child: Text("SEARCH"),
+                  ),
+                ],
               ),
             ),
-            SizedBox(
-              width: 10,
-            ),
-            ElevatedButton(
-              onPressed: () {
-                setNIC();
-              },
-              child: Text("SEARCH"),
-            ),
-          ],
-        ),
-      ),
     );
   }
 }
@@ -204,23 +205,20 @@ class _PersonalInfoState extends State<PersonalInfo> {
     content: Text('Error Deactivating the User!'),
   );
 
-  Future <void> validateUser()async{
-
-    var request = http.Request('PUT', Uri.parse('${Urls.apiUrl}/api/JsUser/updateValidity?NIC=222222222'));
+  Future<void> validateUser() async {
+    var request = http.Request('PUT',
+        Uri.parse('${Urls.apiUrl}/api/JsUser/updateValidity?NIC=222222222'));
 
     http.StreamedResponse response = await request.send();
 
     if (response.statusCode == 200) {
       print(await response.stream.bytesToString());
       ScaffoldMessenger.of(context).showSnackBar(snackBar);
-    }
-    else {
+    } else {
       print(response.reasonPhrase);
       ScaffoldMessenger.of(context).showSnackBar(snackBar2);
     }
-
   }
-
 
   @override
   Widget build(BuildContext context) {
@@ -276,7 +274,7 @@ class _PersonalInfoState extends State<PersonalInfo> {
                     ListTile(
                       title: Text("Date of Birth"),
                       subtitle: Text(
-                        list[0]['DOB'].toString(),
+                        list[0]['DOB'].toString().substring(0, 10),
                         style: style1,
                       ),
                     ),
@@ -381,7 +379,8 @@ class _QualificationsState extends State<Qualifications> {
   bool isLoaded = false;
 
   Future<List> getQualifications() async {
-    String url = "${Urls.apiUrl}/jobseekers/qualifications/ofuser?NIC=${widget.nic}";
+    String url =
+        "${Urls.apiUrl}/jobseekers/qualifications/ofuser?NIC=${widget.nic}";
     final response = await http.get(Uri.parse(url));
     var resJson = json.decode(response.body);
     if (response.statusCode == 200) {
@@ -406,8 +405,7 @@ class _QualificationsState extends State<Qualifications> {
     return FutureBuilder<List>(
         future: getQualifications(),
         builder: (context, snapshot) {
-
-          if(snapshot.hasData){
+          if (snapshot.hasData) {
             List? qs = snapshot.data;
 
             return ListView(
@@ -416,8 +414,8 @@ class _QualificationsState extends State<Qualifications> {
                   title: Text(
                     "OL Science",
                     style: TextStyle(
-                      //fontSize: 16,
-                    ),
+                        //fontSize: 16,
+                        ),
                   ),
                   subtitle: Text(
                     qs![0]['OLScience'],
@@ -432,8 +430,8 @@ class _QualificationsState extends State<Qualifications> {
                   title: Text(
                     "OL Maths",
                     style: TextStyle(
-                      //fontSize: 16,
-                    ),
+                        //fontSize: 16,
+                        ),
                   ),
                   subtitle: Text(
                     qs[0]['OLMaths'],
@@ -448,8 +446,8 @@ class _QualificationsState extends State<Qualifications> {
                   title: Text(
                     "OL English",
                     style: TextStyle(
-                      //fontSize: 16,
-                    ),
+                        //fontSize: 16,
+                        ),
                   ),
                   subtitle: Text(
                     qs[0]['OLEnglish'],
@@ -464,8 +462,8 @@ class _QualificationsState extends State<Qualifications> {
                   title: Text(
                     "AL Stream",
                     style: TextStyle(
-                      //fontSize: 16,
-                    ),
+                        //fontSize: 16,
+                        ),
                   ),
                   subtitle: Text(
                     qs[0]['ALStream'],
@@ -480,8 +478,8 @@ class _QualificationsState extends State<Qualifications> {
                   title: Text(
                     "AL Results",
                     style: TextStyle(
-                      //fontSize: 16,
-                    ),
+                        //fontSize: 16,
+                        ),
                   ),
                   subtitle: Text(
                     qs[0]['ALResults'],
@@ -496,8 +494,8 @@ class _QualificationsState extends State<Qualifications> {
                   title: Text(
                     "AL English",
                     style: TextStyle(
-                      //fontSize: 16,
-                    ),
+                        //fontSize: 16,
+                        ),
                   ),
                   subtitle: Text(
                     qs[0]['ALEnglish'],
@@ -512,8 +510,8 @@ class _QualificationsState extends State<Qualifications> {
                   title: Text(
                     "Higher Education Level",
                     style: TextStyle(
-                      //fontSize: 16,
-                    ),
+                        //fontSize: 16,
+                        ),
                   ),
                   subtitle: Text(
                     qs[0]['HigherEducation'],
@@ -528,8 +526,8 @@ class _QualificationsState extends State<Qualifications> {
                   title: Text(
                     "Higher Education Field",
                     style: TextStyle(
-                      //fontSize: 16,
-                    ),
+                        //fontSize: 16,
+                        ),
                   ),
                   subtitle: Text(
                     qs[0]['HigherEducationField'],
@@ -544,9 +542,7 @@ class _QualificationsState extends State<Qualifications> {
             );
           }
           return Center(child: CircularProgressIndicator());
-
-        }
-    );
+        });
   }
 }
 
@@ -721,8 +717,7 @@ class _ContactsState extends State<Contacts> {
     return FutureBuilder<List>(
         future: getContacts(),
         builder: (context, snapshot) {
-
-          if(snapshot.hasData){
+          if (snapshot.hasData) {
             List? contacts = snapshot.data;
 
             return ListView(
@@ -731,8 +726,8 @@ class _ContactsState extends State<Contacts> {
                   title: Text(
                     "Primary Contact",
                     style: TextStyle(
-                      //fontSize: 16,
-                    ),
+                        //fontSize: 16,
+                        ),
                   ),
                   subtitle: Text(
                     contacts![0]['Personal'],
@@ -747,8 +742,8 @@ class _ContactsState extends State<Contacts> {
                   title: Text(
                     "Work Contact",
                     style: TextStyle(
-                      //fontSize: 16,
-                    ),
+                        //fontSize: 16,
+                        ),
                   ),
                   subtitle: Text(
                     contacts[0]['Work'],
@@ -763,8 +758,8 @@ class _ContactsState extends State<Contacts> {
                   title: Text(
                     "Emergency Contact",
                     style: TextStyle(
-                      //fontSize: 16,
-                    ),
+                        //fontSize: 16,
+                        ),
                   ),
                   subtitle: Text(
                     contacts[0]['Emmergency'],
@@ -779,8 +774,6 @@ class _ContactsState extends State<Contacts> {
             );
           }
           return Center(child: CircularProgressIndicator());
-
-        }
-    );
+        });
   }
 }

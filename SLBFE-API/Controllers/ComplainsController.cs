@@ -92,7 +92,7 @@ namespace SLBFE_API.Controllers
         [HttpPost,Route("addcomplaint")]
         public JsonResult PostComplaint(JsComplain comp)
         {
-            string query = @"insert into [dbo].[JS_COMPLAINS] values(@JS_NIC,@Complain,@Feedback)";
+            string query = @"insert into [dbo].[JS_COMPLAINS] values(@JS_NIC,@Complain,@Feedback,@AddedDate)";
             DataTable table = new DataTable();
             string sqlDataSource = _configuration.GetConnectionString("SLBFEDB");
             SqlDataReader myReader;
@@ -106,8 +106,9 @@ namespace SLBFE_API.Controllers
                     myCommand.Parameters.AddWithValue("@JS_NIC", comp.JsNic);
                     myCommand.Parameters.AddWithValue("@Complain", comp.Complain);
                     myCommand.Parameters.AddWithValue("@Feedback", comp.Feedback);
-                    
-                   
+                    myCommand.Parameters.AddWithValue("@AddedDate", comp.Date);
+
+
                     myReader = myCommand.ExecuteReader();
                     table.Load(myReader);
                     myReader.Close();
