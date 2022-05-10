@@ -21,7 +21,6 @@ class _BottomNavigationState extends State<BottomNavigation> {
     super.initState();
     global.nic = widget.nic;
     print("logged NIC:${global.nic}");
-    print(global.email);
   }
 
   int _selectedIndex = 0;

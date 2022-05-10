@@ -8,17 +8,14 @@ import 'dart:async';
 import 'package:slbfe_citizenapp/global.dart';
 
 class UserAuth with ChangeNotifier {
-
   static bool isLoggedIn = false;
 
   Future login(LoginRequestModel requestModel) async {
-
     print(requestModel);
 
-    var headers = {
-      'Content-Type': 'application/json'
-    };
-    var request = http.Request('POST', Uri.parse('https://10.0.2.2:7018/api/Auth/login'));
+    var headers = {'Content-Type': 'application/json'};
+    var request =
+        http.Request('POST', Uri.parse('${Urls.apiUrl}/api/Auth/login'));
     request.body = json.encode({
       "userID": requestModel.email,
       "password": requestModel.password,
@@ -35,8 +32,7 @@ class UserAuth with ChangeNotifier {
       //global.email = requestModel.email;
       Auth.apiToken = res;
       return nic1;
-    }
-    else {
+    } else {
       print(response.reasonPhrase);
       return -1;
     }
@@ -83,5 +79,4 @@ class UserAuth with ChangeNotifier {
       return -1;
     }*/
   }
-
 }

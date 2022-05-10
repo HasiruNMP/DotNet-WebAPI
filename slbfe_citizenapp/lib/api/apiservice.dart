@@ -59,7 +59,7 @@ class APIService {
   static Future adduser(jsUserModel user) async {
     var headers = {'Content-Type': 'application/json'};
     var request = http.Request(
-        'POST', Uri.parse('${Urls.apiUrl}/api/JsUser/registerUser'));
+        'POST', Uri.parse('${Urls.apiUrl}/api/jobseekers/register'));
     request.body = json.encode({
       "NIC": user.nic,
       "Email": user.email,
@@ -95,7 +95,7 @@ class APIService {
 
   static Future getUserDetails(int nic) async {
     http.Response response =
-        await http.get(Uri.parse('${Urls.apiUrl}/api/JsUser?nic=$nic'));
+        await http.get(Uri.parse('${Urls.apiUrl}/api/jobseekers/$nic'));
 
     if (response.statusCode == 200) {
       print(response.statusCode);
@@ -112,7 +112,7 @@ class APIService {
     var headers = {'Content-Type': 'application/json'};
     var request = http.Request(
       'PUT',
-      Uri.parse('${Urls.apiUrl}/api/JsUser/UpdateUserDetails'),
+      Uri.parse('${Urls.apiUrl}/api/jobseekers/1/update'),
     );
     request.body = json.encode({
       "Email": "",
@@ -146,8 +146,8 @@ class APIService {
 
   static Future addComplaint(complaintModel complain) async {
     var headers = {'Content-Type': 'application/json'};
-    var request = http.Request(
-        'POST', Uri.parse('${Urls.apiUrl}/complaints/addcomplaint'));
+    var request =
+        http.Request('POST', Uri.parse('${Urls.apiUrl}/complaints/new'));
     request.body = json.encode({
       "jsNic": complain.jsNic,
       "complain": complain.complain,
@@ -170,8 +170,8 @@ class APIService {
   }
 
   static Future getContacts(int nic) async {
-    http.Response response = await http
-        .get(Uri.parse('${Urls.apiUrl}/api/JsUser/getContacts?nic=$nic'));
+    http.Response response =
+        await http.get(Uri.parse('${Urls.apiUrl}/api/jobseekers/$nic'));
 
     if (response.statusCode == 200) {
       print(response.statusCode);
@@ -188,7 +188,7 @@ class APIService {
     var headers = {'Content-Type': 'application/json'};
     var request = http.Request(
       'PUT',
-      Uri.parse('${Urls.apiUrl}/api/JsUser/UpdateUserContacts'),
+      Uri.parse('${Urls.apiUrl}/api/jobseekers/0/contacts/update'),
     );
     request.body = json.encode({
       "jsNic": contact.js_nic,
@@ -215,7 +215,7 @@ class APIService {
     String password = '';
     int nic;
     http.Response response = await http.get(Uri.parse(
-        '${Urls.apiUrl}/api/JsUser/checkPassword?nic=$NIC&password=$Password'));
+        '${Urls.apiUrl}/api/jobseekers/checkPassword?nic=$NIC&password=$Password'));
 
     if (response.statusCode == 200) {
       print(response.statusCode);
@@ -249,8 +249,10 @@ class APIService {
   }
 
   static Future deleteAccount(int nic, String password) async {
-    var request = http.Request('DELETE',
-        Uri.parse('${Urls.apiUrl}/api/JsUser?nic=$nic&password=$password'));
+    var request = http.Request(
+        'DELETE',
+        Uri.parse(
+            '${Urls.apiUrl}/api/jobseekers/{$nic}/delete?password=$password'));
 
     http.StreamedResponse response = await request.send();
 
@@ -269,7 +271,7 @@ class APIService {
     var request = http.Request(
       'PUT',
       Uri.parse(
-          '${Urls.apiUrl}/api/JsUser/updatePassword?userId=$userID&password=$password'),
+          '${Urls.apiUrl}/api/jobseekers/$userID/password/update?password=$password'),
     );
     request.body = json.encode({
       "UserID": userID,
@@ -291,8 +293,8 @@ class APIService {
   }
 
   static Future<List<complaintModel>> getComplaintsOfUser(int nic) async {
-    final response = await http.get(
-        Uri.parse('${Urls.apiUrl}/complaints/getcomplaintlistapp?NIC=$nic'));
+    final response =
+        await http.get(Uri.parse('${Urls.apiUrl}/complaints/ofuser/$nic'));
     if (response.statusCode == 200) {
       List jsonResponse = json.decode(response.body);
       return jsonResponse
@@ -311,7 +313,7 @@ class APIService {
     var request = http.Request(
         'PUT',
         Uri.parse(
-            '${Urls.apiUrl}/api/JsUser/updatelocation?NIC=2000&lat=$lat&lng=$lng'));
+            '${Urls.apiUrl}/api/jobseekers/$nic/location/update?lat=$lat&lng=$lng'));
     http.StreamedResponse response = await request.send();
     if (response.statusCode == 200) {
       print(await response.stream.bytesToString());

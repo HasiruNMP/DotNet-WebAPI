@@ -87,7 +87,7 @@ class DocCard extends StatelessWidget {
                   child: OutlinedButton(
                     onPressed: () {
                       _launchURL(
-                          '${Urls.apiUrl}/documents/download?NIC=${global.nic}&documentType=$docType2');
+                          '${Urls.apiUrl}/api/files/${global.nic}/documents/$docType2/download');
                     },
                     child: Text('View'),
                   ),
@@ -123,7 +123,7 @@ class DocCard extends StatelessWidget {
     var request = http.MultipartRequest(
         'PUT',
         Uri.parse(
-            '${Urls.apiUrl}/documents/upload?NIC=${global.nic}&documentType=$documentType'));
+            '${Urls.apiUrl}/api/files/${global.nic}/documents/$docType/upload'));
     request.files.add(await http.MultipartFile.fromPath('file', path));
     http.StreamedResponse response = await request.send();
     if (response.statusCode == 200) {
@@ -136,8 +136,7 @@ class DocCard extends StatelessWidget {
   Future<void> downloadDoc() async {
     var request = http.Request(
       'GET',
-      Uri.parse(
-          '${Urls.apiUrl}/documents/download?NIC=1&documentType=CV'),
+      Uri.parse('${Urls.apiUrl}/api/files/${global.nic}/documents/CV/download'),
     );
     http.StreamedResponse response = await request.send();
     if (response.statusCode == 200) {
