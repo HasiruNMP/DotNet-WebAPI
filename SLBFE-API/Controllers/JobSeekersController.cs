@@ -336,14 +336,13 @@ namespace SLBFE_API.Controllers
         /// <summary>
         /// Returns contact details of a specific user
         /// </summary>
-        /// <param name="nic"></param>
+        /// <param name="NIC"></param>
         /// <returns></returns>
         [HttpGet, Route("{NIC}/contacts")]
         //[Authorize(Roles = "BO")]
-        public JsonResult GetUserContacts(int nic)
+        public JsonResult GetUserContacts(int NIC)
         {
-            string query = @"select JS_NIC,Personal,Work,Emmergency from dbo.JS_CONTACTS
-            Where JS_NIC ='" + nic + "' ";
+            string query = @"select * from dbo.JS_CONTACTS Where JS_NIC="+NIC;
             DataTable table = new DataTable();
             string sqlDataSource = _configuration.GetConnectionString("SLBFEDB");
             SqlDataReader myReader;
@@ -553,9 +552,9 @@ namespace SLBFE_API.Controllers
         public ActionResult checkPassword(int nic, String password)
         {
             string query = @"SELECT 
-                    NIC,Password
-                  FROM dbo.JS_USERS
-                  Where NIC ='" + nic + "'  AND Password ='" + password + "'";
+                    UserID,Password
+                  FROM dbo.USER_AUTH
+                  Where UserID ='" + nic + "'  AND Password ='" + password + "'";
 
             DataTable table = new DataTable();
             string sqlDataSource = _configuration.GetConnectionString("SLBFEDB");
@@ -617,7 +616,7 @@ namespace SLBFE_API.Controllers
         //[Authorize(Roles = "BO")]
         public JsonResult updateValidity(int NIC, bool status)
         {
-            string query = @$"UPDATE dbo.JS_USERS SET Validity={status} WHERE NIC=" + NIC;
+            string query = @$"UPDATE dbo.JS_USERS SET Validity='" + status + "' WHERE NIC=" + NIC;
             DataTable table = new DataTable();
             string sqlDataSource = _configuration.GetConnectionString("SLBFEDB");
             SqlDataReader myReader;

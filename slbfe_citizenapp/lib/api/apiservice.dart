@@ -170,8 +170,8 @@ class APIService {
   }
 
   static Future getContacts(int nic) async {
-    http.Response response =
-        await http.get(Uri.parse('${Urls.apiUrl}/api/jobseekers/$nic'));
+    http.Response response = await http
+        .get(Uri.parse('${Urls.apiUrl}/api/jobseekers/$nic/contacts'));
 
     if (response.statusCode == 200) {
       print(response.statusCode);
