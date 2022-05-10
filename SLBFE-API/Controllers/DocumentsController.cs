@@ -80,5 +80,14 @@ namespace SLBFE_API.Controllers
             return File(bytes, "text/plain", Path.GetFileName(filePath));
             //return Ok(filePath);
         }
+
+        [HttpGet("logo")]
+        public async Task<ActionResult> Logo()
+        {
+            var filePath = _webHostEnvironment.ContentRootPath + $"/FileStorage/SLBFE/logo.png";
+            var bytes = await System.IO.File.ReadAllBytesAsync(filePath);
+            return File(bytes, "text/plain", Path.GetFileName(filePath));
+            //return Ok(filePath);
+        }
     }
 }
