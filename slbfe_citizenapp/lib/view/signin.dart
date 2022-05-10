@@ -4,6 +4,7 @@ import 'package:slbfe_citizenapp/api/apiservice.dart';
 import 'package:slbfe_citizenapp/model/loginmodel.dart';
 import 'package:slbfe_citizenapp/view/registration.dart';
 import 'package:slbfe_citizenapp/global.dart' as global;
+import '../global.dart';
 import 'bottomnavigation.dart';
 
 class SignIn extends StatefulWidget {
@@ -32,12 +33,14 @@ class _SignInState extends State<SignIn> {
       body: SafeArea(
         child: Form(
           key: _formKey,
-          child: Column(
-            crossAxisAlignment: CrossAxisAlignment.center,
-            mainAxisAlignment: MainAxisAlignment.center,
+          child: ListView(
             children: [
+              Image.network(
+                '${Urls.apiUrl}/documents/logo',
+                height: 300,
+              ),
               const SizedBox(
-                height: 100,
+                height: 20,
               ),
               Padding(
                 padding: EdgeInsets.all(8.0),
@@ -72,38 +75,49 @@ class _SignInState extends State<SignIn> {
                   },
                 ),
               ),
-              ElevatedButton(
-                onPressed: () async {
-                  if (_formKey.currentState!.validate()) {
-                    requestModel.email = _userEmailController.text;
-                    requestModel.password = _userPassworController.text;
-                    //  print(requestModel.toJson());
+              Column(
+                children: [
+                  SizedBox(
+                    height: 40,
+                  ),
+                  Container(
+                    width: 100,
+                    child: ElevatedButton(
+                      onPressed: () async {
+                        if (_formKey.currentState!.validate()) {
+                          requestModel.email = _userEmailController.text;
+                          requestModel.password = _userPassworController.text;
+                          //  print(requestModel.toJson());
 
-                    int login = await APIService().login(requestModel);
-                    //  print("status: $login");
-                    if (login == 0) {
-                      showAlertDialog(
-                          'Wrong password or email provided', context);
-                    } else if (login == -1) {
-                      showAlertDialog('Something went Wrong', context);
-                    } else {
-                      Navigator.pushReplacement(
-                        context,
-                        MaterialPageRoute(
-                          builder: (context) => BottomNavigation(login),
-                        ),
-                      );
-                    }
-                  } else {
-                    return null;
-                  }
-                },
-                child: loading == false
-                    ? Text('Sign In')
-                    : const CircularProgressIndicator(
-                        backgroundColor: Colors.black38,
-                        valueColor: AlwaysStoppedAnimation<Color>(Colors.white),
-                      ),
+                          int login = await APIService().login(requestModel);
+                          //  print("status: $login");
+                          if (login == 0) {
+                            showAlertDialog(
+                                'Wrong password or email provided', context);
+                          } else if (login == -1) {
+                            showAlertDialog('Something went Wrong', context);
+                          } else {
+                            Navigator.pushReplacement(
+                              context,
+                              MaterialPageRoute(
+                                builder: (context) => BottomNavigation(login),
+                              ),
+                            );
+                          }
+                        } else {
+                          return null;
+                        }
+                      },
+                      child: loading == false
+                          ? Text('Sign In')
+                          : const CircularProgressIndicator(
+                              backgroundColor: Colors.black38,
+                              valueColor:
+                                  AlwaysStoppedAnimation<Color>(Colors.white),
+                            ),
+                    ),
+                  ),
+                ],
               ),
               Row(
                 mainAxisAlignment: MainAxisAlignment.center,

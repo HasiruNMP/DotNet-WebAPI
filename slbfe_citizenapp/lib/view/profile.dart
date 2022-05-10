@@ -54,7 +54,6 @@ class _ProfileState extends State<Profile> {
     return Scaffold(
       appBar: AppBar(
         title: const Text('Profile'),
-        backgroundColor: Colors.blue,
       ),
       body: SafeArea(
         child: Padding(
@@ -162,8 +161,8 @@ class _ProfileState extends State<Profile> {
                         shape:
                             MaterialStateProperty.all<RoundedRectangleBorder>(
                                 RoundedRectangleBorder(
-                                    borderRadius: BorderRadius.circular(18.0),
-                                    side: BorderSide(color: Colors.blue))))),
+                      borderRadius: BorderRadius.circular(18.0),
+                    )))),
               ),
               const SizedBox(
                 height: 9,
@@ -183,8 +182,8 @@ class _ProfileState extends State<Profile> {
                         shape:
                             MaterialStateProperty.all<RoundedRectangleBorder>(
                                 RoundedRectangleBorder(
-                                    borderRadius: BorderRadius.circular(18.0),
-                                    side: BorderSide(color: Colors.blue))))),
+                      borderRadius: BorderRadius.circular(18.0),
+                    )))),
               ),
               const SizedBox(
                 height: 9,
@@ -204,8 +203,8 @@ class _ProfileState extends State<Profile> {
                         shape:
                             MaterialStateProperty.all<RoundedRectangleBorder>(
                                 RoundedRectangleBorder(
-                                    borderRadius: BorderRadius.circular(18.0),
-                                    side: BorderSide(color: Colors.blue))))),
+                      borderRadius: BorderRadius.circular(18.0),
+                    )))),
               ),
               const SizedBox(
                 height: 9,
@@ -224,8 +223,8 @@ class _ProfileState extends State<Profile> {
                     style: ButtonStyle(
                       shape: MaterialStateProperty.all<RoundedRectangleBorder>(
                         RoundedRectangleBorder(
-                            borderRadius: BorderRadius.circular(18.0),
-                            side: BorderSide(color: Colors.blue)),
+                          borderRadius: BorderRadius.circular(18.0),
+                        ),
                       ),
                     )),
               ),
@@ -244,10 +243,11 @@ class _ProfileState extends State<Profile> {
                     },
                     child: const Text('Contacts'),
                     style: ButtonStyle(
-                        shape: MaterialStateProperty
-                            .all<RoundedRectangleBorder>(RoundedRectangleBorder(
-                                borderRadius: BorderRadius.circular(18.0),
-                                side: const BorderSide(color: Colors.blue))))),
+                        shape:
+                            MaterialStateProperty.all<RoundedRectangleBorder>(
+                                RoundedRectangleBorder(
+                      borderRadius: BorderRadius.circular(18.0),
+                    )))),
               ),
               const SizedBox(
                 height: 9,
@@ -264,10 +264,11 @@ class _ProfileState extends State<Profile> {
                     },
                     child: const Text('Account'),
                     style: ButtonStyle(
-                        shape: MaterialStateProperty
-                            .all<RoundedRectangleBorder>(RoundedRectangleBorder(
-                                borderRadius: BorderRadius.circular(18.0),
-                                side: const BorderSide(color: Colors.blue))))),
+                        shape:
+                            MaterialStateProperty.all<RoundedRectangleBorder>(
+                                RoundedRectangleBorder(
+                      borderRadius: BorderRadius.circular(18.0),
+                    )))),
               ),
             ],
           ),

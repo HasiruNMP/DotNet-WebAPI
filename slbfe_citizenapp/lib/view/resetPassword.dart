@@ -137,9 +137,8 @@ class _resetPasswordState extends State<resetPassword> {
                                     ),
                                     Container(
                                       width: 200,
-                                      child: FlatButton(
-                                        color: Colors.blue,
-                                        textColor: Colors.black, // foreground
+                                      child: ElevatedButton(
+                                        // foreground
                                         onPressed: () {
                                           if (_formKey.currentState!
                                               .validate()) {
@@ -198,9 +197,8 @@ class _resetPasswordState extends State<resetPassword> {
                           ),
                           Container(
                             width: 200,
-                            child: FlatButton(
-                              color: Colors.blue,
-                              textColor: Colors.black, // foreground
+                            child: ElevatedButton(
+                              // foreground
                               onPressed: () {
                                 if (formKey1.currentState!.validate()) {
                                   verifySmsCode(mobileController.text,
@@ -246,9 +244,8 @@ class _resetPasswordState extends State<resetPassword> {
                       ),
                       Container(
                         width: 200,
-                        child: FlatButton(
-                          color: Colors.blue,
-                          textColor: Colors.black, // foreground
+                        child: ElevatedButton(
+                          // foreground
                           onPressed: () async {
                             if (formKey2.currentState!.validate()) {
                               var status = await APIService.updatePassword(
