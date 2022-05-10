@@ -3,6 +3,7 @@ import 'package:flutter/material.dart';
 import 'package:slbfe_website/views/registration.dart';
 
 import '../api/apiservice.dart';
+import '../global.dart';
 import '../model/loginmodel.dart';
 import 'home_screen.dart';
 // import 'package:slbfe_citizenapp/api/apiservice.dart';
@@ -30,11 +31,7 @@ class _SignInState extends State<SignIn> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: AppBar(
-        title: const Center(
-          child: Text('Sign In'),
-        ),
-      ),
+      appBar: AppBar(),
       body: SafeArea(
         child: Row(
           children: [
@@ -42,8 +39,8 @@ class _SignInState extends State<SignIn> {
             Expanded(
               child: Container(
                 margin: EdgeInsets.only(
-                  top: MediaQuery.of(context).size.height / 5,
-                  bottom: MediaQuery.of(context).size.height / 10,
+                  top: MediaQuery.of(context).size.height / 15,
+                  bottom: MediaQuery.of(context).size.height / 15,
                 ),
                 child: Card(
                   elevation: 5,
@@ -51,8 +48,12 @@ class _SignInState extends State<SignIn> {
                     key: _formKey,
                     child: ListView(
                       children: [
+                        Image.network(
+                          '${Urls.apiUrl}/documents/logo',
+                          height: 300,
+                        ),
                         Container(
-                          height: MediaQuery.of(context).size.height / 5.5,
+                          height: MediaQuery.of(context).size.height / 8,
                           width: double.maxFinite,
                           color: Colors.indigo,
                           child: Center(
@@ -66,7 +67,7 @@ class _SignInState extends State<SignIn> {
                           ),
                         ),
                         const SizedBox(
-                          height: 100.0,
+                          height: 30.0,
                         ),
                         Row(
                           children: [

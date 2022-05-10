@@ -4,6 +4,7 @@ import 'package:slbfe_website/model/jsusermodel.dart';
 import 'package:slbfe_website/views/home_screen.dart';
 
 import '../api/apiservice.dart';
+import '../global.dart';
 // import 'package:intl/intl.dart';
 // import 'package:slbfe_citizenapp/api/apiservice.dart';
 // import 'package:slbfe_citizenapp/model/jsusermodel.dart';
@@ -48,7 +49,10 @@ class _RegistrationState extends State<Registration> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: AppBar(),
+      appBar: AppBar(
+        title: Text('Sign Up'),
+        centerTitle: true,
+      ),
       body: SafeArea(
         child: Row(
           children: [
@@ -57,7 +61,7 @@ class _RegistrationState extends State<Registration> {
               child: Container(
                 margin: EdgeInsets.only(
                   top: MediaQuery.of(context).size.height / 8,
-                  bottom: MediaQuery.of(context).size.height / 10,
+                  bottom: MediaQuery.of(context).size.height / 15,
                 ),
                 child: Card(
                   elevation: 5,
@@ -67,22 +71,12 @@ class _RegistrationState extends State<Registration> {
                       margin: EdgeInsets.only(left: 10, right: 10),
                       child: ListView(
                         children: [
-                          Container(
-                            height: MediaQuery.of(context).size.height / 5.5,
-                            width: double.maxFinite,
-                            color: Colors.indigo,
-                            child: Center(
-                              child: Text(
-                                'Registration',
-                                style: TextStyle(
-                                    fontSize: 18,
-                                    fontWeight: FontWeight.bold,
-                                    color: Colors.white),
-                              ),
-                            ),
+                          Image.network(
+                            '${Urls.apiUrl}/documents/logo',
+                            height: 300,
                           ),
                           const SizedBox(
-                            height: 100.0,
+                            height: 30.0,
                           ),
                           TextFormField(
                             controller: CnameController,
