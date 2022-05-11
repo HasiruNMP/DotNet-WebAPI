@@ -30,7 +30,6 @@ namespace SLBFE_API
 
         public IConfiguration Configuration { get; }
 
-        // This method gets called by the runtime. Use this method to add services to the container.
         public void ConfigureServices(IServiceCollection services)
         {
             services.AddAuthentication(JwtBearerDefaults.AuthenticationScheme)
@@ -62,17 +61,12 @@ namespace SLBFE_API
 
             services.AddControllers().AddXmlDataContractSerializerFormatters();
 
-            services.AddSwaggerGen(c => { //<-- NOTE 'Add' instead of 'Configure'
+            services.AddSwaggerGen(c => {
                 c.SwaggerDoc("v1", new OpenApiInfo
                 {
                     Title = "SLBFE Web API",
                     Version = "v1",
                     Description = "An ASP.NET Core Web API for Sri Lanka Bureau of Foreign Employment",
-                    /*Contact = new OpenApiContact
-                    {
-                        Name = "Example Contact",
-                        Url = new Uri("https://example.com/contact")
-                    },*/
                 });
 
                 // using System.Reflection;
@@ -84,17 +78,10 @@ namespace SLBFE_API
          
 
 
-        // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
         public void Configure(IApplicationBuilder app, IWebHostEnvironment env)
         {
             //Enable CORS
             app.UseCors(options => options.AllowAnyOrigin().AllowAnyMethod().AllowAnyHeader());
-
-            /*if (app.Environment.IsDevelopment())
-            {
-                app.UseSwagger();
-                app.UseSwaggerUI();
-            }*/
 
             app.UseSwagger();
             app.UseSwaggerUI();
@@ -102,12 +89,6 @@ namespace SLBFE_API
             var option = new RewriteOptions();
             option.AddRedirect("^$", "swagger");
             app.UseRewriter(option);
-            /*if (env.IsDevelopment())
-            {
-                //app.UseDeveloperExceptionPage();
-                app.UseSwagger();
-                app.UseSwaggerUI();
-            }*/
 
             app.UseRouting();
 

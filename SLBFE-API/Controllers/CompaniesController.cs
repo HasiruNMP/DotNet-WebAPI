@@ -25,48 +25,55 @@ namespace SLBFE_API.Controllers
         /// /// <response code="400"></response>
         [HttpPost, Route("register")]
         //[Authorize(Roles = "FC")]
-        public JsonResult PostUser(FcUser user)
+        public ActionResult PostUser(FcUser user)
         {
-            string query = @"insert into dbo.FC_USERS values(@Email,@Name,@CompanyName)";
-            string query2 = @"insert into dbo.USER_AUTH values(@UserID,@Password,'FC')";
-
-            DataTable table = new DataTable();
-            string sqlDataSource = _configuration.GetConnectionString("SLBFEDB");
-            SqlDataReader myReader;
-            using (SqlConnection myCon = new SqlConnection(sqlDataSource))
+            try
             {
-                myCon.Open();
-                using (SqlCommand myCommand = new SqlCommand(query, myCon))
+                string query = @"insert into dbo.FC_USERS values(@Email,@Name,@CompanyName)";
+                string query2 = @"insert into dbo.USER_AUTH values(@UserID,@Password,'FC')";
+
+                DataTable table = new DataTable();
+                string sqlDataSource = _configuration.GetConnectionString("SLBFEDB");
+                SqlDataReader myReader;
+                using (SqlConnection myCon = new SqlConnection(sqlDataSource))
                 {
-                    myCommand.Parameters.AddWithValue("@Email", user.Email);
-                    myCommand.Parameters.AddWithValue("@Name", user.Name);
-                    myCommand.Parameters.AddWithValue("@CompanyName", user.CompanyName);
-                  
+                    myCon.Open();
+                    using (SqlCommand myCommand = new SqlCommand(query, myCon))
+                    {
+                        myCommand.Parameters.AddWithValue("@Email", user.Email);
+                        myCommand.Parameters.AddWithValue("@Name", user.Name);
+                        myCommand.Parameters.AddWithValue("@CompanyName", user.CompanyName);
 
-                    myReader = myCommand.ExecuteReader();
-                    table.Load(myReader);
-                    myReader.Close();
-                 
 
+                        myReader = myCommand.ExecuteReader();
+                        table.Load(myReader);
+                        myReader.Close();
+
+
+                    }
+
+                    using (SqlCommand myCommand = new SqlCommand(query2, myCon))
+                    {
+
+                        myCommand.Parameters.AddWithValue("@UserID", user.Email);
+                        myCommand.Parameters.AddWithValue("@Password", user.Password);
+
+
+
+                        myReader = myCommand.ExecuteReader();
+                        table.Load(myReader);
+                        myReader.Close();
+                        myCon.Close();
+
+
+                    }
                 }
-
-                using (SqlCommand myCommand = new SqlCommand(query2, myCon))
-                {
-
-                    myCommand.Parameters.AddWithValue("@UserID", user.Email);
-                    myCommand.Parameters.AddWithValue("@Password", user.Password);
-           
-
-
-                    myReader = myCommand.ExecuteReader();
-                    table.Load(myReader);
-                    myReader.Close();
-                    myCon.Close();
-
-
-                }
+                return new JsonResult("Registered Successfully!");
             }
-            return new JsonResult("Registered Successfully!");
+            catch (Exception ex)
+            {
+                return BadRequest("Registration Error!");
+            }
         }
 
 /*        [HttpGet, Route("fclogin")]

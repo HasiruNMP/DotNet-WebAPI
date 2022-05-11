@@ -107,7 +107,7 @@ namespace SLBFE_API.Controllers
         /// <param name="NIC"></param>
         /// <returns></returns>
         [HttpGet,Route("{NIC}")]
-        //[Authorize]
+        [Authorize]
         public ActionResult GetUser(String NIC)
         {
             try
@@ -151,42 +151,50 @@ namespace SLBFE_API.Controllers
         /// <param name="NIC"></param>
         /// <returns></returns>
         [HttpPut, Route("{NIC}/update")]
-        //[Authorize(Roles = "JS")]
-        public JsonResult userDetailsUpdate(JsUser user,String NIC)
+        [Authorize(Roles = "JS")]
+        public ActionResult userDetailsUpdate(JsUser user,String NIC)
         {
-            string query = @"update dbo.Js_Users set FirstName=@FirstName,LastName=@LastName,
-            Address=@Address,Profession=@Profession,Affiliation=@Affiliation,Gender=@Gender,Nationality=@Nationality,
-            MaritalStatus=@MaritalStatus,Validity=@Validity,PrimaryPhone=@PrimaryPhone
-            where NIC=@NIC";
-            DataTable table = new DataTable();
-            string sqlDataSource = _configuration.GetConnectionString("SLBFEDB");
-            SqlDataReader myReader;
-            using (SqlConnection myCon = new SqlConnection(sqlDataSource))
+            try
             {
-                myCon.Open();
-                using (SqlCommand myCommand = new SqlCommand(query, myCon))
+                string query = @"update dbo.Js_Users set FirstName=@FirstName,LastName=@LastName,
+                    Address=@Address,Profession=@Profession,Affiliation=@Affiliation,Gender=@Gender,Nationality=@Nationality,
+                    MaritalStatus=@MaritalStatus,Validity=@Validity,PrimaryPhone=@PrimaryPhone
+                    where NIC=@NIC";
+                DataTable table = new DataTable();
+                string sqlDataSource = _configuration.GetConnectionString("SLBFEDB");
+                SqlDataReader myReader;
+                using (SqlConnection myCon = new SqlConnection(sqlDataSource))
                 {
-                    myCommand.Parameters.AddWithValue("@NIC", user.Nic);
-                    myCommand.Parameters.AddWithValue("@FirstName", user.FirstName);
-                    myCommand.Parameters.AddWithValue("@LastName", user.LastName);
-                    myCommand.Parameters.AddWithValue("@DOB", user.Dob);
-                    myCommand.Parameters.AddWithValue("@Address", user.Address);
-                    myCommand.Parameters.AddWithValue("@Profession", user.Profession);
-                    myCommand.Parameters.AddWithValue("@Affiliation", user.Affiliation);
-                    myCommand.Parameters.AddWithValue("@Gender", user.Gender);
-                    myCommand.Parameters.AddWithValue("@Nationality", user.Nationality);
-                    myCommand.Parameters.AddWithValue("@MaritalStatus", user.MaritalStatus);
-                    myCommand.Parameters.AddWithValue("@Validity", user.Validity);
-                    myCommand.Parameters.AddWithValue("@PrimaryPhone", user.PrimaryPhone);
+                    myCon.Open();
+                    using (SqlCommand myCommand = new SqlCommand(query, myCon))
+                    {
+                        myCommand.Parameters.AddWithValue("@NIC", user.Nic);
+                        myCommand.Parameters.AddWithValue("@FirstName", user.FirstName);
+                        myCommand.Parameters.AddWithValue("@LastName", user.LastName);
+                        myCommand.Parameters.AddWithValue("@DOB", user.Dob);
+                        myCommand.Parameters.AddWithValue("@Address", user.Address);
+                        myCommand.Parameters.AddWithValue("@Profession", user.Profession);
+                        myCommand.Parameters.AddWithValue("@Affiliation", user.Affiliation);
+                        myCommand.Parameters.AddWithValue("@Gender", user.Gender);
+                        myCommand.Parameters.AddWithValue("@Nationality", user.Nationality);
+                        myCommand.Parameters.AddWithValue("@MaritalStatus", user.MaritalStatus);
+                        myCommand.Parameters.AddWithValue("@Validity", user.Validity);
+                        myCommand.Parameters.AddWithValue("@PrimaryPhone", user.PrimaryPhone);
 
-                    myReader = myCommand.ExecuteReader();
-                    table.Load(myReader);
-                    myReader.Close();
-                    myCon.Close();
+                        myReader = myCommand.ExecuteReader();
+                        table.Load(myReader);
+                        myReader.Close();
+                        myCon.Close();
 
+                    }
                 }
+                return new JsonResult("Updated Successfully!");
             }
-            return new JsonResult("Updated Successfully!");
+            catch (Exception ex)
+            {
+                return BadRequest();
+            }
+            
         }
 
         /// <summary>
@@ -196,54 +204,62 @@ namespace SLBFE_API.Controllers
         /// <param name="password"></param>
         /// <returns></returns>
         [HttpDelete, Route("{NIC}/delete")]
-        //[Authorize(Roles = "JS")]
-        public JsonResult DeleteUser(int nic,String password)
+        [Authorize(Roles = "JS")]
+        public ActionResult DeleteUser(int nic,String password)
         {
-            string query = @"delete from dbo.Js_Users where NIC=@NIC";
-            string query1 = @"delete from dbo.JS_Contacts where JS_NIC=@NIC";
-            string query2 = @"delete from dbo.JS_QUALIFICATIONS where JS_NIC=@NIC";
-            string query3 = @"delete from dbo.JS_COMPLAINS where JS_NIC=@NIC";
-            DataTable table = new DataTable();
-            string sqlDataSource = _configuration.GetConnectionString("SLBFEDB");
-            SqlDataReader myReader;
-            using (SqlConnection myCon = new SqlConnection(sqlDataSource))
+            try
             {
-                myCon.Open();
-                using (SqlCommand myCommand = new SqlCommand(query1, myCon))
+                string query = @"delete from dbo.Js_Users where NIC=@NIC";
+                string query1 = @"delete from dbo.JS_Contacts where JS_NIC=@NIC";
+                string query2 = @"delete from dbo.JS_QUALIFICATIONS where JS_NIC=@NIC";
+                string query3 = @"delete from dbo.JS_COMPLAINS where JS_NIC=@NIC";
+                DataTable table = new DataTable();
+                string sqlDataSource = _configuration.GetConnectionString("SLBFEDB");
+                SqlDataReader myReader;
+                using (SqlConnection myCon = new SqlConnection(sqlDataSource))
                 {
-                    myCommand.Parameters.AddWithValue("@NIC", nic);
-                    myReader = myCommand.ExecuteReader();
-                    table.Load(myReader);
-                    myReader.Close();
-                  
-                }
-                using (SqlCommand myCommand = new SqlCommand(query2, myCon))
-                {
-                    myCommand.Parameters.AddWithValue("@NIC", nic);
-                    myReader = myCommand.ExecuteReader();
-                    table.Load(myReader);
-                    myReader.Close();
-                  
-                }
-                using (SqlCommand myCommand = new SqlCommand(query3, myCon))
-                {
-                    myCommand.Parameters.AddWithValue("@NIC", nic);
-                    myReader = myCommand.ExecuteReader();
-                    table.Load(myReader);
-                    myReader.Close();
+                    myCon.Open();
+                    using (SqlCommand myCommand = new SqlCommand(query1, myCon))
+                    {
+                        myCommand.Parameters.AddWithValue("@NIC", nic);
+                        myReader = myCommand.ExecuteReader();
+                        table.Load(myReader);
+                        myReader.Close();
 
-                }
+                    }
+                    using (SqlCommand myCommand = new SqlCommand(query2, myCon))
+                    {
+                        myCommand.Parameters.AddWithValue("@NIC", nic);
+                        myReader = myCommand.ExecuteReader();
+                        table.Load(myReader);
+                        myReader.Close();
 
-                using (SqlCommand myCommand = new SqlCommand(query, myCon))
-                {
-                    myCommand.Parameters.AddWithValue("@NIC", nic);
-                    myReader = myCommand.ExecuteReader();
-                    table.Load(myReader);
-                    myReader.Close();
-                    myCon.Close();
+                    }
+                    using (SqlCommand myCommand = new SqlCommand(query3, myCon))
+                    {
+                        myCommand.Parameters.AddWithValue("@NIC", nic);
+                        myReader = myCommand.ExecuteReader();
+                        table.Load(myReader);
+                        myReader.Close();
+
+                    }
+
+                    using (SqlCommand myCommand = new SqlCommand(query, myCon))
+                    {
+                        myCommand.Parameters.AddWithValue("@NIC", nic);
+                        myReader = myCommand.ExecuteReader();
+                        table.Load(myReader);
+                        myReader.Close();
+                        myCon.Close();
+                    }
                 }
+                return new JsonResult("Delteted Successfully!");
             }
-            return new JsonResult("Delteted Successfully!");
+            catch(Exception ex)
+            {
+                return BadRequest();
+            }
+            
         }
 
         /// <summary>
@@ -252,54 +268,61 @@ namespace SLBFE_API.Controllers
         /// <param name="NIC"></param>
         /// <returns></returns>
         [HttpDelete, Route("{NIC}/deactivate")]
-        //[Authorize(Roles = "BO")]
-        public JsonResult DeactivateUser(int NIC)
+        [Authorize(Roles = "BO")]
+        public ActionResult DeactivateUser(int NIC)
         {
-            string queryDeleteUser = @"delete from dbo.Js_Users where NIC=@NIC";
-            string queryDeleteContacts = @"delete from dbo.JS_Contacts where JS_NIC=@NIC";
-            string queryDeleteQualifications = @"delete from dbo.JS_QUALIFICATIONS where JS_NIC=@NIC";
-            string queryDeleteComplains = @"delete from dbo.JS_COMPLAINS where JS_NIC=@NIC";
-            DataTable table = new DataTable();
-            string sqlDataSource = _configuration.GetConnectionString("SLBFEDB");
-            SqlDataReader myReader;
-            using (SqlConnection myCon = new SqlConnection(sqlDataSource))
+            try
             {
-                myCon.Open();
-                using (SqlCommand myCommand = new SqlCommand(queryDeleteContacts, myCon))
+                string queryDeleteUser = @"delete from dbo.Js_Users where NIC=@NIC";
+                string queryDeleteContacts = @"delete from dbo.JS_Contacts where JS_NIC=@NIC";
+                string queryDeleteQualifications = @"delete from dbo.JS_QUALIFICATIONS where JS_NIC=@NIC";
+                string queryDeleteComplains = @"delete from dbo.JS_COMPLAINS where JS_NIC=@NIC";
+                DataTable table = new DataTable();
+                string sqlDataSource = _configuration.GetConnectionString("SLBFEDB");
+                SqlDataReader myReader;
+                using (SqlConnection myCon = new SqlConnection(sqlDataSource))
                 {
-                    myCommand.Parameters.AddWithValue("@NIC", NIC);
-                    myReader = myCommand.ExecuteReader();
-                    table.Load(myReader);
-                    myReader.Close();
+                    myCon.Open();
+                    using (SqlCommand myCommand = new SqlCommand(queryDeleteContacts, myCon))
+                    {
+                        myCommand.Parameters.AddWithValue("@NIC", NIC);
+                        myReader = myCommand.ExecuteReader();
+                        table.Load(myReader);
+                        myReader.Close();
 
-                }
-                using (SqlCommand myCommand = new SqlCommand(queryDeleteQualifications, myCon))
-                {
-                    myCommand.Parameters.AddWithValue("@NIC", NIC);
-                    myReader = myCommand.ExecuteReader();
-                    table.Load(myReader);
-                    myReader.Close();
+                    }
+                    using (SqlCommand myCommand = new SqlCommand(queryDeleteQualifications, myCon))
+                    {
+                        myCommand.Parameters.AddWithValue("@NIC", NIC);
+                        myReader = myCommand.ExecuteReader();
+                        table.Load(myReader);
+                        myReader.Close();
 
-                }
-                using (SqlCommand myCommand = new SqlCommand(queryDeleteComplains, myCon))
-                {
-                    myCommand.Parameters.AddWithValue("@NIC", NIC);
-                    myReader = myCommand.ExecuteReader();
-                    table.Load(myReader);
-                    myReader.Close();
+                    }
+                    using (SqlCommand myCommand = new SqlCommand(queryDeleteComplains, myCon))
+                    {
+                        myCommand.Parameters.AddWithValue("@NIC", NIC);
+                        myReader = myCommand.ExecuteReader();
+                        table.Load(myReader);
+                        myReader.Close();
 
-                }
+                    }
 
-                using (SqlCommand myCommand = new SqlCommand(queryDeleteUser, myCon))
-                {
-                    myCommand.Parameters.AddWithValue("@NIC", NIC);
-                    myReader = myCommand.ExecuteReader();
-                    table.Load(myReader);
-                    myReader.Close();
-                    myCon.Close();
+                    using (SqlCommand myCommand = new SqlCommand(queryDeleteUser, myCon))
+                    {
+                        myCommand.Parameters.AddWithValue("@NIC", NIC);
+                        myReader = myCommand.ExecuteReader();
+                        table.Load(myReader);
+                        myReader.Close();
+                        myCon.Close();
+                    }
                 }
+                return new JsonResult("Delteted Successfully!");
             }
-            return new JsonResult("Delteted Successfully!");
+            catch(Exception ex)
+            {
+                return BadRequest();
+            }
         }
 
         /// <summary>
@@ -339,26 +362,34 @@ namespace SLBFE_API.Controllers
         /// <param name="NIC"></param>
         /// <returns></returns>
         [HttpGet, Route("{NIC}/contacts")]
-        //[Authorize(Roles = "BO")]
-        public JsonResult GetUserContacts(int NIC)
+        [Authorize(Roles = "BO")]
+        public ActionResult GetUserContacts(int nic)
         {
-            string query = @"select * from dbo.JS_CONTACTS Where JS_NIC="+NIC;
-            DataTable table = new DataTable();
-            string sqlDataSource = _configuration.GetConnectionString("SLBFEDB");
-            SqlDataReader myReader;
-            using (SqlConnection myCon = new SqlConnection(sqlDataSource))
+            try
             {
-                myCon.Open();
-                using (SqlCommand myCommand = new SqlCommand(query, myCon))
+                string query = @"select JS_NIC,Personal,Work,Emmergency from dbo.JS_CONTACTS
+            Where JS_NIC ='" + nic + "' ";
+                DataTable table = new DataTable();
+                string sqlDataSource = _configuration.GetConnectionString("SLBFEDB");
+                SqlDataReader myReader;
+                using (SqlConnection myCon = new SqlConnection(sqlDataSource))
                 {
-                    myReader = myCommand.ExecuteReader();
-                    table.Load(myReader);
-                    myReader.Close();
-                    myCon.Close();
+                    myCon.Open();
+                    using (SqlCommand myCommand = new SqlCommand(query, myCon))
+                    {
+                        myReader = myCommand.ExecuteReader();
+                        table.Load(myReader);
+                        myReader.Close();
+                        myCon.Close();
 
+                    }
                 }
+                return new JsonResult(table);
             }
-            return new JsonResult(table);
+            catch(Exception ex)
+            {
+                return BadRequest();
+            }
         }
 
         /// <summary>
@@ -368,48 +399,55 @@ namespace SLBFE_API.Controllers
         /// <param name="NIC"></param>
         /// <returns></returns>
         [HttpPut, Route("{NIC}/contacts/update")]
-        //[Authorize(Roles = "JS")]
-        public JsonResult updateUserContacts(JsContact contact,string NIC)
+        [Authorize(Roles = "JS")]
+        public ActionResult updateUserContacts(JsContact contact,string NIC)
         {
-            string query = @"update dbo.JS_CONTACTS set Personal=@Personal,
+            try
+            {
+                string query = @"update dbo.JS_CONTACTS set Personal=@Personal,
             Work=@Work,Emmergency=@Emmergency
             where JS_NIC=@NIC";
-            string query1 = @"update dbo.JS_USERS set PrimaryPhone=@PrimaryPhone
+                string query1 = @"update dbo.JS_USERS set PrimaryPhone=@PrimaryPhone
             where NIC=@NIC";
-            DataTable table = new DataTable();
-            string sqlDataSource = _configuration.GetConnectionString("SLBFEDB");
-            SqlDataReader myReader;
-            using (SqlConnection myCon = new SqlConnection(sqlDataSource))
-            {
-                myCon.Open();
-                using (SqlCommand myCommand = new SqlCommand(query, myCon))
+                DataTable table = new DataTable();
+                string sqlDataSource = _configuration.GetConnectionString("SLBFEDB");
+                SqlDataReader myReader;
+                using (SqlConnection myCon = new SqlConnection(sqlDataSource))
                 {
-                    myCommand.Parameters.AddWithValue("@NIC", contact.JsNic);
-                    myCommand.Parameters.AddWithValue("@Personal", contact.Personal);
-                    myCommand.Parameters.AddWithValue("@Work",contact.Work);
-                    myCommand.Parameters.AddWithValue("@Emmergency", contact.Emmergency);
-   
-                    myReader = myCommand.ExecuteReader();
-                    table.Load(myReader);
-                    myReader.Close();
-                   
+                    myCon.Open();
+                    using (SqlCommand myCommand = new SqlCommand(query, myCon))
+                    {
+                        myCommand.Parameters.AddWithValue("@NIC", contact.JsNic);
+                        myCommand.Parameters.AddWithValue("@Personal", contact.Personal);
+                        myCommand.Parameters.AddWithValue("@Work", contact.Work);
+                        myCommand.Parameters.AddWithValue("@Emmergency", contact.Emmergency);
 
+                        myReader = myCommand.ExecuteReader();
+                        table.Load(myReader);
+                        myReader.Close();
+
+
+                    }
+
+                    using (SqlCommand myCommand = new SqlCommand(query1, myCon))
+                    {
+                        myCommand.Parameters.AddWithValue("@NIC", contact.JsNic);
+                        myCommand.Parameters.AddWithValue("@PrimaryPhone", contact.Personal);
+
+
+                        myReader = myCommand.ExecuteReader();
+                        table.Load(myReader);
+                        myReader.Close();
+                        myCon.Close();
+
+                    }
                 }
-           
-                using (SqlCommand myCommand = new SqlCommand(query1, myCon))
-                {
-                    myCommand.Parameters.AddWithValue("@NIC", contact.JsNic);
-                    myCommand.Parameters.AddWithValue("@PrimaryPhone", contact.Personal);
-              
-
-                    myReader = myCommand.ExecuteReader();
-                    table.Load(myReader);
-                    myReader.Close();
-                    myCon.Close();
-
-                }
+                return new JsonResult("Updated Successfully!");
             }
-            return new JsonResult("Updated Successfully!");
+            catch(Exception ex)
+            {
+                return BadRequest();
+            }
         }
 
         /// <summary>
@@ -418,25 +456,32 @@ namespace SLBFE_API.Controllers
         /// <param name="NIC"></param>
         /// <returns></returns>
         [HttpGet, Route("{NIC}/location")]
-        //[Authorize(Roles = "BO")]
-        public JsonResult GetComplaintListapp(int NIC)
+        [Authorize(Roles = "BO")]
+        public ActionResult Getloc(int NIC)
         {
-            string query = @"SELECT NIC, Latitude, Longitude FROM dbo.JS_USERS WHERE NIC = " + NIC;
-            DataTable table = new DataTable();
-            string sqlDataSource = _configuration.GetConnectionString("SLBFEDB");
-            SqlDataReader myReader;
-            using (SqlConnection myCon = new SqlConnection(sqlDataSource))
+            try
             {
-                myCon.Open();
-                using (SqlCommand myCommand = new SqlCommand(query, myCon))
+                string query = @"SELECT NIC, Latitude, Longitude FROM dbo.JS_USERS WHERE NIC = " + NIC;
+                DataTable table = new DataTable();
+                string sqlDataSource = _configuration.GetConnectionString("SLBFEDB");
+                SqlDataReader myReader;
+                using (SqlConnection myCon = new SqlConnection(sqlDataSource))
                 {
-                    myReader = myCommand.ExecuteReader();
-                    table.Load(myReader);
-                    myReader.Close();
-                    myCon.Close();
+                    myCon.Open();
+                    using (SqlCommand myCommand = new SqlCommand(query, myCon))
+                    {
+                        myReader = myCommand.ExecuteReader();
+                        table.Load(myReader);
+                        myReader.Close();
+                        myCon.Close();
+                    }
                 }
+                return new JsonResult(table);
             }
-            return new JsonResult(table);
+            catch(Exception e)
+            {
+                return BadRequest();
+            }
         }
 
         /// <summary>
@@ -447,24 +492,31 @@ namespace SLBFE_API.Controllers
         /// <param name="lng"></param>
         /// <returns></returns>
         [HttpPut, Route("{NIC}/location/update")]
-        //[Authorize(Roles = "JS")]
-        public JsonResult updateLocation(int NIC, double lat, double lng)
+        [Authorize(Roles = "JS")]
+        public ActionResult updateLocation(int NIC, double lat, double lng)
         {
-            string query = @"UPDATE dbo.JS_USERS SET Latitude=" + lat + ",Longitude=" + lng + " WHERE NIC=" + NIC;
-            DataTable table = new DataTable();
-            string sqlDataSource = _configuration.GetConnectionString("SLBFEDB");
-            SqlDataReader myReader;
-            using (SqlConnection myCon = new SqlConnection(sqlDataSource))
+            try
             {
-                myCon.Open();
-                using (SqlCommand myCommand = new SqlCommand(query, myCon))
+                string query = @"UPDATE dbo.JS_USERS SET Latitude=" + lat + ",Longitude=" + lng + " WHERE NIC=" + NIC;
+                DataTable table = new DataTable();
+                string sqlDataSource = _configuration.GetConnectionString("SLBFEDB");
+                SqlDataReader myReader;
+                using (SqlConnection myCon = new SqlConnection(sqlDataSource))
                 {
-                    myReader = myCommand.ExecuteReader();
-                    table.Load(myReader);
-                    myReader.Close();
+                    myCon.Open();
+                    using (SqlCommand myCommand = new SqlCommand(query, myCon))
+                    {
+                        myReader = myCommand.ExecuteReader();
+                        table.Load(myReader);
+                        myReader.Close();
+                    }
                 }
+                return new JsonResult("Updated Successfully!");
             }
-            return new JsonResult("Updated Successfully!");
+            catch (Exception e)
+            {
+                return BadRequest();
+            }
         }
 
         /// <summary>
@@ -473,45 +525,45 @@ namespace SLBFE_API.Controllers
         /// <param name="NIC"></param>
         /// <returns></returns>
         [HttpGet, Route("{NIC}/qualifications")]
-        //[Authorize(Roles = "BO")]
-        public JsonResult Qualifications(int NIC)
+        [Authorize(Roles = "BO")]
+        public ActionResult Qualifications(int NIC)
         {
-            string query = @"SELECT * FROM [dbo].[JS_QUALIFICATIONS] WHERE JS_NIC =" + NIC;
-            DataTable table = new DataTable();
-            string sqlDataSource = _configuration.GetConnectionString("SLBFEDB");
-            SqlDataReader myReader;
-            using (SqlConnection myCon = new SqlConnection(sqlDataSource))
+            try
             {
-                myCon.Open();
-                using (SqlCommand myCommand = new SqlCommand(query, myCon))
+                string query = @"SELECT * FROM [dbo].[JS_QUALIFICATIONS] WHERE JS_NIC =" + NIC;
+                DataTable table = new DataTable();
+                string sqlDataSource = _configuration.GetConnectionString("SLBFEDB");
+                SqlDataReader myReader;
+                using (SqlConnection myCon = new SqlConnection(sqlDataSource))
                 {
-                    myReader = myCommand.ExecuteReader();
-                    table.Load(myReader);
-                    myReader.Close();
-                    myCon.Close();
+                    myCon.Open();
+                    using (SqlCommand myCommand = new SqlCommand(query, myCon))
+                    {
+                        myReader = myCommand.ExecuteReader();
+                        table.Load(myReader);
+                        myReader.Close();
+                        myCon.Close();
+                    }
                 }
+                return new JsonResult(table);
             }
-            return new JsonResult(table);
+            catch(Exception e)
+            {
+                return BadRequest();
+            }
         }
 
         /// <summary>
         /// Updates the qualifications of a specific user
         /// </summary>
-        /// <param name="NIC"></param>
-        /// <param name="olEnglish"></param>
-        /// <param name="olScience"></param>
-        /// <param name="olMaths"></param>
-        /// <param name="alStream"></param>
-        /// <param name="alResults"></param>
-        /// <param name="alEnglish"></param>
-        /// <param name="hEdu"></param>
-        /// <param name="hEduField"></param>
         /// <returns></returns>
         [HttpPut, Route("{NIC}/qualifications/update")]
-        //[Authorize(Roles = "JS")]
+        [Authorize(Roles = "JS")]
         public ActionResult updateQualifications(int NIC, string olEnglish, string olScience, string olMaths, string alStream, string alResults, string alEnglish, string hEdu, string hEduField)
         {
-            string query = $@"
+            try
+            {
+                string query = $@"
                 UPDATE [dbo].[JS_QUALIFICATIONS] 
                 SET 
                 OLScience = '{olScience}',
@@ -525,21 +577,23 @@ namespace SLBFE_API.Controllers
                 WHERE JS_NIC = {NIC};
                 ";
 
-            DataTable table = new DataTable();
-            string sqlDataSource = _configuration.GetConnectionString("SLBFEDB");
-            SqlDataReader myReader;
-            using (SqlConnection myCon = new SqlConnection(sqlDataSource))
-            {
-                myCon.Open();
-                using (SqlCommand myCommand = new SqlCommand(query, myCon))
+                DataTable table = new DataTable();
+                string sqlDataSource = _configuration.GetConnectionString("SLBFEDB");
+                SqlDataReader myReader;
+                using (SqlConnection myCon = new SqlConnection(sqlDataSource))
                 {
-                    myReader = myCommand.ExecuteReader();
-                    table.Load(myReader);
-                    myReader.Close();
-                    myCon.Close();
+                    myCon.Open();
+                    using (SqlCommand myCommand = new SqlCommand(query, myCon))
+                    {
+                        myReader = myCommand.ExecuteReader();
+                        table.Load(myReader);
+                        myReader.Close();
+                        myCon.Close();
+                    }
                 }
+                return Ok("Qualification Update Succesful!");
             }
-            return Ok("Qualification Update Succesful!");
+            catch (Exception e) { return BadRequest(); }
         }
 
         /// <summary>
@@ -582,28 +636,35 @@ namespace SLBFE_API.Controllers
         /// <param name="password"></param>
         /// <returns></returns>
         [HttpPut, Route("{NIC}/password/update")]
-        //[Authorize(Roles = "JS")]
-        public JsonResult updatePassword(String NIC, String password)
+        [Authorize(Roles = "JS")]
+        public ActionResult updatePassword(String NIC, String password)
         {
-            string query = @"update dbo.USER_AUTH set Password='"+password + "' where UserID='"+NIC+"'";
-
-            DataTable table = new DataTable();
-            string sqlDataSource = _configuration.GetConnectionString("SLBFEDB");
-            SqlDataReader myReader;
-            using (SqlConnection myCon = new SqlConnection(sqlDataSource))
+            try
             {
-                myCon.Open();
-                using (SqlCommand myCommand = new SqlCommand(query, myCon))
-                {
-              
-                    myReader = myCommand.ExecuteReader();
-                    table.Load(myReader);
-                    myReader.Close();
-                    myCon.Close();
+                string query = @"update dbo.USER_AUTH set Password='" + password + "' where UserID='" + NIC + "'";
 
+                DataTable table = new DataTable();
+                string sqlDataSource = _configuration.GetConnectionString("SLBFEDB");
+                SqlDataReader myReader;
+                using (SqlConnection myCon = new SqlConnection(sqlDataSource))
+                {
+                    myCon.Open();
+                    using (SqlCommand myCommand = new SqlCommand(query, myCon))
+                    {
+
+                        myReader = myCommand.ExecuteReader();
+                        table.Load(myReader);
+                        myReader.Close();
+                        myCon.Close();
+
+                    }
                 }
+                return new JsonResult("Password Updated Successfully!");
             }
-            return new JsonResult("Password Updated Successfully!");
+            catch (Exception ex)
+            {
+                return BadRequest();
+            }
         }
 
         /// <summary>
@@ -613,24 +674,31 @@ namespace SLBFE_API.Controllers
         /// <param name="status"></param>
         /// <returns></returns>
         [HttpPut, Route("{NIC}/validity/update")]
-        //[Authorize(Roles = "BO")]
-        public JsonResult updateValidity(int NIC, bool status)
+        [Authorize(Roles = "BO")]
+        public ActionResult updateValidity(int NIC, bool status)
         {
-            string query = @$"UPDATE dbo.JS_USERS SET Validity='" + status + "' WHERE NIC=" + NIC;
-            DataTable table = new DataTable();
-            string sqlDataSource = _configuration.GetConnectionString("SLBFEDB");
-            SqlDataReader myReader;
             using (SqlConnection myCon = new SqlConnection(sqlDataSource))
             {
-                myCon.Open();
-                using (SqlCommand myCommand = new SqlCommand(query, myCon))
+                string query = @$"UPDATE dbo.JS_USERS SET Validity={status} WHERE NIC=" + NIC;
+                DataTable table = new DataTable();
+                string sqlDataSource = _configuration.GetConnectionString("SLBFEDB");
+                SqlDataReader myReader;
+                using (SqlConnection myCon = new SqlConnection(sqlDataSource))
                 {
-                    myReader = myCommand.ExecuteReader();
-                    table.Load(myReader);
-                    myReader.Close();
+                    myCon.Open();
+                    using (SqlCommand myCommand = new SqlCommand(query, myCon))
+                    {
+                        myReader = myCommand.ExecuteReader();
+                        table.Load(myReader);
+                        myReader.Close();
+                    }
                 }
+                return new JsonResult("Validated Successfully!");
             }
-            return new JsonResult("Validated Successfully!");
+            catch(Exception ex)
+            {
+                return BadRequest(ex);
+            }
         }
 
         /// <summary>
@@ -638,42 +706,35 @@ namespace SLBFE_API.Controllers
         /// </summary>
         /// <returns></returns>
         [HttpGet, Route("non-validated")]
-        //[Authorize(Roles = "BO")]
-        public JsonResult GetUsersToValidate()
+        [Authorize(Roles = "BO")]
+        public ActionResult GetUsersToValidate()
         {
-            string query = @"SELECT [NIC]
-                  ,[Email]
-                  ,[FirstName]
-                  ,[LastName]
-                  ,[DOB]
-                  ,[Address]
-                  ,[Latitude]
-                  ,[Longitude]
-                  ,[Profession]
-                  ,[Affiliation]
-                  ,[Gender]
-                  ,[Nationality]
-                  ,[MaritalStatus]
-                  ,[Validity]
-                  ,[PrimaryPhone]
+            try
+            {
+                string query = @"SELECT [NIC],[Email],[FirstName],[LastName],[DOB],[Address],[Latitude],[Longitude],[Profession],[Affiliation],[Gender],[Nationality],[MaritalStatus],[Validity],[PrimaryPhone]
               FROM [dbo].[JS_USERS]
               WHERE Validity = 'False';";
-            DataTable table = new DataTable();
-            string sqlDataSource = _configuration.GetConnectionString("SLBFEDB");
-            SqlDataReader myReader;
-            using (SqlConnection myCon = new SqlConnection(sqlDataSource))
-            {
-                myCon.Open();
-                using (SqlCommand myCommand = new SqlCommand(query, myCon))
+                DataTable table = new DataTable();
+                string sqlDataSource = _configuration.GetConnectionString("SLBFEDB");
+                SqlDataReader myReader;
+                using (SqlConnection myCon = new SqlConnection(sqlDataSource))
                 {
-                    myReader = myCommand.ExecuteReader();
-                    table.Load(myReader);
-                    myReader.Close();
-                    myCon.Close();
+                    myCon.Open();
+                    using (SqlCommand myCommand = new SqlCommand(query, myCon))
+                    {
+                        myReader = myCommand.ExecuteReader();
+                        table.Load(myReader);
+                        myReader.Close();
+                        myCon.Close();
 
+                    }
                 }
+                return new JsonResult(table);
             }
-            return new JsonResult(table);
+            catch (Exception ex)
+            {
+                return BadRequest();
+            }
         }
 
         
@@ -683,7 +744,7 @@ namespace SLBFE_API.Controllers
         /// <param name="keyword"></param>
         /// <returns></returns>
         [HttpGet, Route("search")]
-        //[Authorize]
+        [Authorize]
         public ActionResult SearchByKeyword(string keyword)
         {
             try
@@ -714,71 +775,50 @@ namespace SLBFE_API.Controllers
         /// <summary>
         /// Returns a list of users that matches with the given qualifications
         /// </summary>
-        /// <param name="filterOn"></param>
-        /// <param name="olEnglish"></param>
-        /// <param name="olScience"></param>
-        /// <param name="olMaths"></param>
-        /// <param name="alStream"></param>
-        /// <param name="alResults"></param>
-        /// <param name="hEdu"></param>
-        /// <param name="hEduField"></param>
         /// <returns></returns>
         [HttpGet, Route("search/by-qualifications")]
-        //[Authorize(Roles = "BO,FC")]
+        [Authorize(Roles = "BO,FC")]
         public ActionResult SearchByQualifications(bool filterOn, string? olEnglish, string? olScience, string? olMaths, string? alStream, string? alResults, string? hEdu, string? hEduField)
         {
-            string query = @"SELECT [NIC]
-                      ,[Email]
-                      ,[FirstName]
-                      ,[LastName]
-                      ,[DOB]
-                      ,[Address]
-                      ,[Profession]
-                      ,[Affiliation]
-                      ,[Gender]
-                      ,[Nationality]
-                      ,[MaritalStatus]
-                      ,[Validity]
-                      ,[PrimaryPhone]
-                      ,[OLScience]
-                      ,[OLMaths]
-                      ,[OLEnglish]
-                      ,[ALStream]
-                      ,[ALResults]
-                      ,[ALEnglish]
-                      ,[HigherEducation]
-                      ,[HigherEducationField]
+            try
+            {
+                string query = @"SELECT [NIC],[Email],[FirstName],[LastName],[DOB],[Address],[Profession],[Affiliation],[Gender],[Nationality],[MaritalStatus],[Validity],[PrimaryPhone],[OLScience],[OLMaths],[OLEnglish],[ALStream],[ALResults],[ALEnglish],[HigherEducation],[HigherEducationField]
                   FROM [dbo].[JSUserQualifications]";
 
-            if (filterOn)
-            {
-
-                query = query + " WHERE 1=1";
-
-                if (olEnglish != "Any") { query = query + $" AND [OLEnglish] = '{olEnglish}'"; }
-                if (olScience != "Any") { query = query + $" AND [OLScience] = '{olScience}'"; }
-                if (olMaths != "Any") { query = query + $" AND [OLMaths] = '{olMaths}'"; }
-                if (alStream != "Any") { query = query + $" AND [ALStream] = '{alStream}'"; }
-                if (alResults != "Any") { query = query + $" AND [ALResults] = '{alResults}'"; }
-                if (hEdu != "Any") { query = query + $" AND [HigherEducation] = '{hEdu}'"; }
-                if (hEduField != "Any") { query = query + $" AND [HigherEducationField] = '{hEduField}'"; }
-            }
-
-            DataTable table = new DataTable();
-            string sqlDataSource = _configuration.GetConnectionString("SLBFEDB");
-            SqlDataReader myReader;
-            using (SqlConnection myCon = new SqlConnection(sqlDataSource))
-            {
-                myCon.Open();
-                using (SqlCommand myCommand = new SqlCommand(query, myCon))
+                if (filterOn)
                 {
-                    myReader = myCommand.ExecuteReader();
-                    table.Load(myReader);
-                    myReader.Close();
-                    myCon.Close();
+
+                    query = query + " WHERE 1=1";
+
+                    if (olEnglish != "Any") { query = query + $" AND [OLEnglish] = '{olEnglish}'"; }
+                    if (olScience != "Any") { query = query + $" AND [OLScience] = '{olScience}'"; }
+                    if (olMaths != "Any") { query = query + $" AND [OLMaths] = '{olMaths}'"; }
+                    if (alStream != "Any") { query = query + $" AND [ALStream] = '{alStream}'"; }
+                    if (alResults != "Any") { query = query + $" AND [ALResults] = '{alResults}'"; }
+                    if (hEdu != "Any") { query = query + $" AND [HigherEducation] = '{hEdu}'"; }
+                    if (hEduField != "Any") { query = query + $" AND [HigherEducationField] = '{hEduField}'"; }
                 }
+
+                DataTable table = new DataTable();
+                string sqlDataSource = _configuration.GetConnectionString("SLBFEDB");
+                SqlDataReader myReader;
+                using (SqlConnection myCon = new SqlConnection(sqlDataSource))
+                {
+                    myCon.Open();
+                    using (SqlCommand myCommand = new SqlCommand(query, myCon))
+                    {
+                        myReader = myCommand.ExecuteReader();
+                        table.Load(myReader);
+                        myReader.Close();
+                        myCon.Close();
+                    }
+                }
+                return Ok(table);
             }
-            return Ok(table);
+            catch(Exception ex)
+            {
+                return BadRequest();
+            }
         }
 
 
