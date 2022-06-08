@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:slbfe_citizenapp/secrets.dart';
 import 'package:twilio_phone_verify/twilio_phone_verify.dart';
 
 void main() {
@@ -41,10 +42,9 @@ class _PhoneVerificationState extends State<PhoneVerification> {
     // TODO: implement initState
     super.initState();
     _twilioPhoneVerify = TwilioPhoneVerify(
-      accountSid:
-          'AC0af284e07dd78c2b827ec036ba464315', // replace with Account SID
-      authToken: '388f87fc7fc687da4f6cd9653ba7ab7b', // replace with Auth Token
-      serviceSid: 'VA29c290f4dea236b23784ee851f40183b',
+      accountSid:Secrets.twilioSid, // replace with Account SID
+      authToken: Secrets.twilioAuthToken, // replace with Auth Token
+      serviceSid: Secrets.twilioServiceSid,
     );
   }
 

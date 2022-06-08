@@ -4,7 +4,7 @@
 ## Get latest from https://github.com/github/gitignore/blob/main/VisualStudio.gitignore
 
 # API Keys
-slbfe_citizenapp\lib\secrets.dart
+/slbfe_citizenapp/lib/secrets.dart
 
 # User-specific files
 *.rsuser
