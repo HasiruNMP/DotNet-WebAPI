@@ -677,7 +677,7 @@ namespace SLBFE_API.Controllers
         [Authorize(Roles = "BO")]
         public ActionResult updateValidity(int NIC, bool status)
         {
-            using (SqlConnection myCon = new SqlConnection(sqlDataSource))
+            try
             {
                 string query = @$"UPDATE dbo.JS_USERS SET Validity={status} WHERE NIC=" + NIC;
                 DataTable table = new DataTable();
